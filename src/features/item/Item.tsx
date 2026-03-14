@@ -1,5 +1,5 @@
-import { Box, Button, Heading, Table } from "@chakra-ui/react"
-import { LuEllipsis } from "react-icons/lu"
+import { Box, Button, Heading, Input, InputGroup, Table } from "@chakra-ui/react"
+import { LuEllipsis, LuSearch } from "react-icons/lu"
 
 
 
@@ -17,6 +17,7 @@ const Item = () => {
     <>
 
       <Heading
+        size={'md'}
         mb={10}
       >Item</Heading>
 
@@ -27,6 +28,26 @@ const Item = () => {
         color="fg.disabled"
         rounded={'md'}
       >
+
+        <Box 
+          mb={4} 
+          css={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+           <InputGroup startElement={<LuSearch />} w={200} >
+              <Input 
+                placeholder="Search keyword..."
+                size={'sm'}
+              />
+            </InputGroup>
+            <Button size={'sm'}>
+              Create
+            </Button>
+        </Box>
+
         <Table.Root size="sm">
           <Table.Header>
             <Table.Row>
