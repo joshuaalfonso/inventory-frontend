@@ -15,14 +15,13 @@ const items = [
 const Item = () => {
   return (
     <>
-
-      <Heading
+      <Heading 
         size={'md'}
         mb={10}
       >Item</Heading>
 
-      <Box
-        p={8}
+      <Box 
+        p={8} 
         borderWidth="1px"
         borderColor="border.disabled"
         color="fg.disabled"

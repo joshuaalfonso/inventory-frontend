@@ -9,11 +9,13 @@ import Category from "./features/category/Category"
 import Brand from "./features/brand/Brand"
 import ItemType from "./features/item-type/ItemType"
 import UnitOfMeasure from "./features/unit-of-measure/UnitOfMeasure"
+import { Toaster } from "@/components/ui/toaster";
 
 function App() {
 
   return (
     <>
+      <Toaster />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Auth />} />

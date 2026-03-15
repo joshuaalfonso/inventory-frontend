@@ -3,6 +3,7 @@ import { LuSearch } from "react-icons/lu"
 import type { Brands } from "../../brand.model"
 import BrandTableRow from "./BrandTableRow"
 import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
+import { useColorModeValue } from "@/components/ui/color-mode"
 
 
 
@@ -16,6 +17,7 @@ const BrandTable = ({ brands }: Props) => {
     console.log('brand table')
 
     const openDialog = useBrandDialogStore(state => state.openDialog);
+    const bg = useColorModeValue('white', 'bg.subtle')
 
     return (
         <>
@@ -25,6 +27,7 @@ const BrandTable = ({ brands }: Props) => {
                 borderColor="border.disabled"
                 color="fg.disabled"
                 rounded={'md'}
+                bg={bg}
             >
 
                 <Box
@@ -43,6 +46,7 @@ const BrandTable = ({ brands }: Props) => {
                     </InputGroup>
                     <Button 
                         size={'sm'}
+                        variant={'solid'}
                         onClick={() => openDialog(null)}
                     >
                         Create
@@ -52,12 +56,12 @@ const BrandTable = ({ brands }: Props) => {
 
                 <Table.Root size="sm">
                     <Table.Header>
-                        <Table.Row>
-                        <Table.ColumnHeader>#</Table.ColumnHeader>
-                        <Table.ColumnHeader>Brand</Table.ColumnHeader>
-                        <Table.ColumnHeader>Created By</Table.ColumnHeader>
-                        <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                        <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                        <Table.Row bg={bg}>
+                            <Table.ColumnHeader>#</Table.ColumnHeader>
+                            <Table.ColumnHeader>Brand</Table.ColumnHeader>
+                            <Table.ColumnHeader>Created By</Table.ColumnHeader>
+                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
