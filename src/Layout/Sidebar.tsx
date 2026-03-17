@@ -1,4 +1,4 @@
-import { useColorMode } from "@/components/ui/color-mode";
+import { useColorMode, useColorModeValue } from "@/components/ui/color-mode";
 import { Avatar, Box, Button, Heading, Menu, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuBox, LuChevronDown, LuCircleUser, LuEllipsisVertical, LuForklift, LuLayoutPanelLeft, LuMoon, LuSun, LuTag } from "react-icons/lu"
@@ -19,16 +19,19 @@ const Sidebar = () => {
       }));
     };
 
+    const bg = useColorModeValue('white', 'bg.subtle')
+
 
   return (
-    <aside 
+    <Box 
+        bg={bg}
         className="w-0 xl:w-69 flex flex-col gap-6 border-r-0! xl:border-r! border-(--chakra-colors-border) px-0! xl:px-4! pb-4! overflow-x-hidden" 
-    >
+    > 
 
             <div className="flex items-center justify-center gap-2 h-12">
                 <LuBox 
                     size={26}
-                    color={'teal.200'} 
+                    className="text-teal-500" 
                 />
                 <Heading size={'xl'}>
                     Logo
@@ -49,10 +52,10 @@ const Sidebar = () => {
                         <NavLink
                             to="/dashboard"
                             className={({ isActive }) =>
-                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             }
                         >
-                            <LuLayoutPanelLeft size={'19px'} />
+                            <LuLayoutPanelLeft size={'21px'} className="text-teal-500" />
                             Dashboard
                         </NavLink>
                     </li>
@@ -90,7 +93,7 @@ const Sidebar = () => {
                             className="cursor-pointer flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
                             onClick={() => toggle('item')}
                         >
-                            <LuTag size={'19px'} />
+                            <LuTag size={'21px'} className="text-teal-500" />
                             <span className="flex-1">Item</span>
                             <LuChevronDown 
                                 size={'19px'}
@@ -110,7 +113,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/item"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         List
@@ -120,7 +123,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/brand"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Brand
@@ -130,7 +133,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/category"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Category
@@ -140,7 +143,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/item-type"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Type
@@ -150,7 +153,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/unit-of-measure"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-xs! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Unit of Measure
@@ -164,10 +167,10 @@ const Sidebar = () => {
                         <NavLink
                             to="/employee"
                             className={({ isActive }) =>
-                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             }
                         >
-                            <LuCircleUser size={'19px'} />
+                            <LuCircleUser size={'21px'} className="text-teal-500" />
                             Employee
                         </NavLink>
                     </li>
@@ -178,7 +181,7 @@ const Sidebar = () => {
                                 `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             }
                         >
-                            <LuForklift size={'19px'} />
+                            <LuForklift size={'21px'} className="text-teal-500" />
                             Supplier
                         </NavLink>
                     </li>
@@ -186,7 +189,7 @@ const Sidebar = () => {
             </div>
 
             <Box 
-                className="flex items-center gap-3 bg-teal-400/5"
+                className="flex items-center gap-3 bg-teal-500/5"
                 px={3}
                 py={2.5}
                 rounded={'md'}
@@ -259,7 +262,7 @@ const Sidebar = () => {
                 </Menu.Root>
             </Box>
 
-        </aside>
+        </Box>
   )
 }
 
