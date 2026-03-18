@@ -104,7 +104,7 @@ const Sidebar = () => {
                         </a>
 
                         <div 
-                            className={`grid transition-all duration-100 ${
+                            className={`grid  ease-out duration-100 ${
                                 open?.item ? 'grid-rows-[1fr] mt-1.5!' : 'grid-rows-[0fr]'
                             }`}
                         >
@@ -178,7 +178,7 @@ const Sidebar = () => {
                         <NavLink
                             to="/supplier"
                             className={({ isActive }) =>
-                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             }
                         >
                             <LuForklift size={'21px'} className="text-teal-500" />

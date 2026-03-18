@@ -4,7 +4,7 @@ import type { Brands } from "../../brand.model"
 import BrandTableRow from "./BrandTableRow"
 import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
 import { useColorModeValue } from "@/components/ui/color-mode"
-
+import {  useMemo, useState } from "react"
 
 
 interface Props {
@@ -16,8 +16,26 @@ const BrandTable = ({ brands }: Props) => {
 
     console.log('brand table')
 
+    const [search, setSearch] = useState<string>('');
+    // const [debouncedSearch, setDebouncedSearch] = useState(search);
+
+    const filteredBrands = useMemo(() => {
+        const keyword = search.toLowerCase().trim();
+
+        if (!keyword) return brands;
+
+        return brands.filter(p =>
+            p.brand_name?.toLowerCase().includes(keyword)
+        );
+    }, [brands, search]);
+
     const openDialog = useBrandDialogStore(state => state.openDialog);
-    const bg = useColorModeValue('white', 'bg.subtle')
+    const bg = useColorModeValue('white', 'bg.subtle');
+
+    // useEffect(() => {
+    //     const t = setTimeout(() => setDebouncedSearch(search), 200);
+    //     return () => clearTimeout(t);
+    // }, [search]);
 
     return (
         <>
@@ -42,6 +60,9 @@ const BrandTable = ({ brands }: Props) => {
                     <Input 
                         placeholder="Search keyword..."
                         size={'sm'}
+                        onChange={(e) => {
+                            setSearch(e.target.value)
+                        }}
                     />
                     </InputGroup>
                     <Button 
@@ -65,7 +86,7 @@ const BrandTable = ({ brands }: Props) => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {brands?.map((item, index) => (
+                        {filteredBrands?.map((item, index) => (
                             <BrandTableRow 
                                 key={item.brand_id}
                                 row={item} 
