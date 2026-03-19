@@ -1,42 +1,40 @@
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react"
-import { LuSearch } from "react-icons/lu"
+import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu"
 import type { Brands } from "../../brand.model"
 import BrandTableRow from "./BrandTableRow"
 import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
 import { useColorModeValue } from "@/components/ui/color-mode"
-import {  useMemo, useState } from "react"
+import {  useState } from "react"
+import { useBrandSearch } from "../../hooks/useBrandSearch"
+import { usePagination } from "@/shared/hooks/usePagination"
 
 
 interface Props {
     brands: Brands[]
 }
 
+const PAGE_SIZE = 10; 
 
 const BrandTable = ({ brands }: Props) => {
 
     console.log('brand table')
 
     const [search, setSearch] = useState<string>('');
-    // const [debouncedSearch, setDebouncedSearch] = useState(search);
 
-    const filteredBrands = useMemo(() => {
-        const keyword = search.toLowerCase().trim();
+    const filteredBrands = useBrandSearch(brands, search);
 
-        if (!keyword) return brands;
-
-        return brands.filter(p =>
-            p.brand_name?.toLowerCase().includes(keyword)
-        );
-    }, [brands, search]);
+    const {
+        paginatedData,
+        currentPage,
+        totalPages,
+        nextPage,
+        prevPage
+    } = usePagination(filteredBrands, PAGE_SIZE);
 
     const openDialog = useBrandDialogStore(state => state.openDialog);
     const bg = useColorModeValue('white', 'bg.subtle');
 
-    // useEffect(() => {
-    //     const t = setTimeout(() => setDebouncedSearch(search), 200);
-    //     return () => clearTimeout(t);
-    // }, [search]);
-
+    
     return (
         <>
             <Box
@@ -86,15 +84,53 @@ const BrandTable = ({ brands }: Props) => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {filteredBrands?.map((item, index) => (
+                        {paginatedData?.map((item, index) => (
                             <BrandTableRow 
                                 key={item.brand_id}
                                 row={item} 
-                                index={index} 
+                                index={(currentPage - 1) * PAGE_SIZE + index + 1}
                             />
                         ))}
                     </Table.Body>
                 </Table.Root>
+                { totalPages > 1 && (
+                    <div 
+                        className="flex justify-end items-center"
+                    >
+                        <Box
+                            mt={4}
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap={4}
+                        >
+                            <Button 
+                                size="xs" 
+                                variant={'ghost'}
+                                colorPalette={'gray'}
+                                onClick={prevPage} 
+                                disabled={currentPage === 1}
+                            >
+                                <LuChevronLeft />
+                            </Button>
+
+                            <Box fontSize={'xs'}>
+                                Page {currentPage} of {totalPages}
+                            </Box>
+
+                            <Button 
+                                size="xs" 
+                                variant={'ghost'}
+                                colorPalette={'gray'}
+                                onClick={nextPage} 
+                                disabled={currentPage === totalPages}
+                            >
+                                <LuChevronRight />
+                            </Button>
+
+                        </Box>
+                    </div>
+                ) }
 
             </Box>
 

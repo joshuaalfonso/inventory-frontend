@@ -50,9 +50,10 @@ const BrandDialog = () => {
             {
                 onSuccess: (response) => {
                     toaster.create({
-                        title: "Hooray 🥳!",
+                        title: "Success!",
                         description: response.message,
                         closable: true,
+                        // type: 'success'
                     })
                     closeDialog();
                     reset(defaultValue);
@@ -63,6 +64,7 @@ const BrandDialog = () => {
                         title: "Oops!",
                         description: getApiErrorMessage(err),
                         closable: true,
+                        // type: 'error'
                     })
                 }
             }
@@ -120,6 +122,7 @@ const BrandDialog = () => {
                                         </Field.Label>
                                         <Input  
                                             {...register("brand_name", { required: "Brand name is required" })}
+                                            autoComplete="off"
                                         />
 
                                         {errors.brand_name?.message && (
