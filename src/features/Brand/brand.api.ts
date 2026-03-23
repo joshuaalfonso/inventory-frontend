@@ -1,6 +1,6 @@
 import { api } from "@/lib/axios";
 import type { Brands, CreateBrand, UpdateBrand } from "./brand.model";
-import type { ApiResponse } from "@/shared/model/response";
+import type { ApiResponse } from "@/shared/models/response";
 
 
 export const getBrandApi = async () => {
@@ -28,9 +28,6 @@ export const updateBrandApi = async (updatedItem: UpdateBrand) => {
 export const softDeleteBrandApi = async (brand_id: number) => {
   const { data } = await api.delete<ApiResponse>(
     `brand/${brand_id}`, 
-    // {
-    //   params: { brand_id },
-    // }
   );
   return data
 }

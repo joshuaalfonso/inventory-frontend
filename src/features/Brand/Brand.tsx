@@ -8,8 +8,6 @@ const Brand = () => {
 
   const { brands, isPending, error } = useBrands();
 
-  // console.log('brand page')
-
   if (isPending) return <LoadingSpinner />
   if (error) return <p>Failed to fetch brands {error.name}</p>;
 

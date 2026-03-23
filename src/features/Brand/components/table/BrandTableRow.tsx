@@ -4,7 +4,7 @@ import { LuEllipsis, LuPencil, LuTrash } from "react-icons/lu"
 import { useColorModeValue } from "@/components/ui/color-mode"
 import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
 import { useSoftDeleteBrand } from "../../hooks/useSoftDeleteBrand"
-import { useState } from "react"
+import  { useState } from "react"
 import { toaster } from "@/components/ui/toaster"
 import {  displayDateTime } from "@/lib/dateFormat"
 import { getApiErrorMessage } from "@/lib/errorMessage"
@@ -16,7 +16,6 @@ interface Props {
     index: number
 }
 
-
 const BrandTableRow = ({row, index}: Props) => {
 
   const [isDeleteOpen, setDeleteOpen] = useState(false);
@@ -26,6 +25,8 @@ const BrandTableRow = ({row, index}: Props) => {
   const openDialog = useBrandDialogStore(state => state.openDialog);
 
   const { softDeleteBrandMutation, isDeleting } = useSoftDeleteBrand();
+
+  console.log('brand table row', index)
 
   const handleSoftDelete = () => {
 
@@ -84,14 +85,12 @@ const BrandTableRow = ({row, index}: Props) => {
                       Edit
                     </Menu.Item>
 
-                    {/* <Menu.Separator /> */}
 
                     <Menu.Item 
                       value="delete" 
                       cursor={'pointer'}
                       color="fg.error"
                       _hover={{ bg: "bg.error", color: "fg.error" }}
-                      // onClick={() => softDeleteBrandMutation(row.brand_id)}
                       onClick={() => setDeleteOpen(true)}
                     >
                       <LuTrash />

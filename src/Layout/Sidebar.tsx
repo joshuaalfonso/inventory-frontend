@@ -19,16 +19,17 @@ const Sidebar = () => {
       }));
     };
 
-    const bg = useColorModeValue('white', 'bg.subtle')
+    // const bg = useColorModeValue('white', 'bg.emphisized');
+    const bg = useColorModeValue('white', '#0e0e10')
 
 
   return (
     <Box 
         bg={bg}
-        className="w-0 xl:w-69 flex flex-col gap-6 border-r-0! xl:border-r! border-(--chakra-colors-border) px-0! xl:px-4! pb-4! overflow-x-hidden" 
+        className="w-0 xl:w-69 flex flex-col gap-6 border-r-0! xl:border-r! border-(--chakra-colors-border) px-0! xl:px-4! py-4! overflow-x-hidden" 
     > 
 
-            <div className="flex items-center justify-center gap-2 h-12">
+            <div className="flex items-center justify-center gap-2">
                 <LuBox 
                     size={26}
                     className="text-teal-500" 

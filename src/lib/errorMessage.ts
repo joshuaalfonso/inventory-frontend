@@ -2,7 +2,11 @@ import { AxiosError } from "axios"
 
 
 export const getApiErrorMessage = (err: unknown) => {
-  if (err instanceof AxiosError) return err.response?.data?.message || err.message
-  if (err instanceof Error) return err.message
-  return 'Something went wrong'
+  const defaultMessage = 'Something went wrong';
+  if (err instanceof AxiosError) return err.response?.data?.message || defaultMessage
+  if (err instanceof Error) {
+    console.log(err)
+    return err.message
+  }
+  return defaultMessage
 }
