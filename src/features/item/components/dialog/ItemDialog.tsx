@@ -1,13 +1,10 @@
-import { Button, CloseButton, Combobox, DatePicker, Dialog, Field, Fieldset, Heading, Input, Portal, Stack, Text, useFilter, useListCollection } from "@chakra-ui/react";
+import { Button, CloseButton, Dialog, Field, Fieldset, Heading, Input, Portal, Stack, Text} from "@chakra-ui/react";
 import { useItemDialogStore } from "../../hooks/useItemDialogStore";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useBrands } from "@/features/brand/hooks/useBrand";
-import { useMemo, useRef } from "react";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import { flushSync } from "react-dom";
-import { LuCalendar } from "react-icons/lu";
-
-
+import { useCategories } from "@/features/category/hooks/useCategories";
+import { useItemTypes } from "@/features/item-type/hooks/useItemTypes";
+import RHFVirtualComboBox from "../../../../shared/components/RHFVirtualComboBox";
 
 const defaultValue = {
     item_id: 0,
@@ -28,7 +25,6 @@ interface FormInputs {
 }
 
 
-
 const ItemDialog = () => {
 
     const isOpen = useItemDialogStore(state => state.isOpen);
@@ -37,42 +33,15 @@ const ItemDialog = () => {
     console.log('item dialog')
 
     const { brands } = useBrands();
-
-    const contentRef = useRef<HTMLDivElement | null>(null)
-
-    const { startsWith } = useFilter({ sensitivity: "base" });
-
-    const stableBrands = useMemo(() => brands ?? [], [brands])
-
-    const { collection, filter, reset: resetCollection } = useListCollection({
-        initialItems: stableBrands ?? [],
-        filter: startsWith,
-        itemToString: (item) => item.brand_name,
-        itemToValue: (item) => String(item.brand_id),
-    });
-
-    const virtualizer = useVirtualizer({
-        count: collection.size,
-        getScrollElement: () => contentRef.current,
-        estimateSize: () => 28,
-        overscan: 10,
-        scrollPaddingEnd: 32,
-    })
-
-    const handleScrollToIndexFn = (details: { index: number }) => {
-        flushSync(() => {
-            virtualizer.scrollToIndex(details.index, {
-                align: "center",
-                behavior: "auto",
-            })
-        })
-    }
+    const { categories } = useCategories();
+    const { itemTypes } = useItemTypes();
 
 
     const { 
         register, 
         handleSubmit,
         reset,
+        control,
         formState: { errors, isDirty } 
     } = useForm<FormInputs>({
         defaultValues: defaultValue
@@ -130,140 +99,43 @@ const ItemDialog = () => {
                                         />
 
                                         {errors.item_name?.message && (
-                                            // <Field.ErrorText>This is an error text</Field.ErrorText>
                                             <Text color={'fg.error'}>{errors.item_name.message}</Text>
                                         )}
                                         
-                                        {/* <Field.ErrorText>This is an error text</Field.ErrorText> */}
                                     </Field.Root>
 
-
-                                    {/* <RHFCombobox
+                                    <RHFVirtualComboBox
                                         name="brand_id"
                                         control={control}
-                                        label="Brand"
-                                        rules={{
-                                            required: "Brand is required",
-                                        }}
                                         items={brands ?? []}
-                                        getLabel={(item) => item.brand_name}
-                                        getValue={(item) => item.brand_id}
-                                    /> */}
+                                        label="Brand"
+                                        rules={{ required: "Brand is required" }}
+                                        placeholder="Search"
+                                        itemToLabel={(item) => item.brand_name}
+                                        itemToValue={(item) => item.brand_id}
+                                    />      
 
-                                    {/* <Field.Root required>
-                                        <Field.Label>
-                                            Brand
-                                            <Field.RequiredIndicator />
-                                        </Field.Label>
+                                    <RHFVirtualComboBox 
+                                        name="category_id"
+                                        control={control}
+                                        items={categories ?? []}
+                                        label="Category"
+                                        rules={{ required: "Category is required" }}
+                                        placeholder="Search "
+                                        itemToLabel={(item) => item.category_name}
+                                        itemToValue={(item) => item.category_id}
+                                    />      
 
-                                        <RHFCombobox
-                                            name="brand_id"
-                                            control={control}
-                                            label=""
-                                            rules={{
-                                                required: "Brand is required",
-                                            }}
-                                            items={frameworks ?? []}
-                                        />
-
-                                        {errors.brand_id?.message && (
-                                            <Field.ErrorText>This is an error text</Field.ErrorText>
-                                            <Text color={'fg.error'}>{errors.brand_id.message}</Text>
-                                        )}
-                                        
-                                        <Field.ErrorText>This is an error text</Field.ErrorText>
-                                    </Field.Root> */}
-
-                                    <Combobox.Root
-                                        collection={collection}
-                                        onInputValueChange={(e) => filter(e.inputValue)}
-                                        scrollToIndexFn={handleScrollToIndexFn}
-                                        width=""
-                                    >
-                                        <Combobox.Label>Select framework</Combobox.Label>
-                                        <Combobox.Control>
-                                            <Combobox.Input placeholder="Type to search" />
-                                            <Combobox.IndicatorGroup>
-                                            <Combobox.ClearTrigger />
-                                            <Combobox.Trigger onClick={resetCollection} />
-                                            </Combobox.IndicatorGroup>
-                                        </Combobox.Control>
-                                        {/* <Portal> */}
-                                            <Combobox.Positioner>
-                                            <Combobox.Content 
-                                                ref={contentRef}
-                                                maxH="200px"
-                                                overflowY="auto"
-                                            >
-                                                <div
-                                                    style={{
-                                                        height: `${virtualizer.getTotalSize()}px`,
-                                                        width: "100%",
-                                                        position: "relative",
-                                                    }}
-                                                >
-                                                {virtualizer.getVirtualItems().map((virtualItem) => {
-                                                    const item = collection.items[virtualItem.index]
-                                                    return (
-                                                    <Combobox.Item
-                                                        key={item.brand_id}
-                                                        item={item}
-                                                        style={{
-                                                        position: "absolute",
-                                                        top: 0,
-                                                        left: 0,
-                                                        width: "100%",
-                                                        height: `${virtualItem.size}px`,
-                                                        transform: `translateY(${virtualItem.start}px)`,
-                                                        whiteSpace: "nowrap",
-                                                        overflow: "hidden",
-                                                        textOverflow: "ellipsis",
-                                                        }}
-                                                    >
-                                                        <Combobox.ItemText truncate>
-                                                            {item.brand_name}
-                                                        </Combobox.ItemText>
-                                                        <Combobox.ItemIndicator />
-                                                    </Combobox.Item>
-                                                    )
-                                                })}
-                                                </div>
-                                            </Combobox.Content>
-                                            </Combobox.Positioner>
-                                        {/* </Portal> */}
-                                    </Combobox.Root>
-
-                                    <DatePicker.Root maxWidth="">
-                                        <DatePicker.Label>Date of birth</DatePicker.Label>
-                                        <DatePicker.Control>
-                                            <DatePicker.Input />
-                                            <DatePicker.IndicatorGroup>
-                                            <DatePicker.Trigger>
-                                                <LuCalendar />
-                                            </DatePicker.Trigger>
-                                            </DatePicker.IndicatorGroup>
-                                        </DatePicker.Control>
-                                        {/* <Portal> */}
-                                            <DatePicker.Positioner>
-                                            <DatePicker.Content>
-                                                <DatePicker.View view="day">
-                                                <DatePicker.Header />
-                                                <DatePicker.DayTable />
-                                                </DatePicker.View>
-                                                <DatePicker.View view="month">
-                                                <DatePicker.Header />
-                                                <DatePicker.MonthTable />
-                                                </DatePicker.View>
-                                                <DatePicker.View view="year">
-                                                <DatePicker.Header />
-                                                <DatePicker.YearTable />
-                                                </DatePicker.View>
-                                            </DatePicker.Content>
-                                            </DatePicker.Positioner>
-                                        {/* </Portal> */}
-                                    </DatePicker.Root>
-
-                                    
+                                    <RHFVirtualComboBox 
+                                        name="item_type_id"
+                                        control={control}
+                                        items={itemTypes ?? []}
+                                        label="Item Type"
+                                        rules={{ required: "Item type is required" }}
+                                        placeholder="Search"
+                                        itemToLabel={(item) => item.item_type_name}
+                                        itemToValue={(item) => item.item_type_id}
+                                    />      
 
                                 </Fieldset.Content>
                             </Fieldset.Root>
