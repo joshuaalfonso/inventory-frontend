@@ -20,7 +20,7 @@ const RHFVirtualComboBox = <T,> ({
     name,
     control,
     items,
-    label,
+    // label,
     placeholder,
     rules,
     itemToLabel,
@@ -58,86 +58,84 @@ const RHFVirtualComboBox = <T,> ({
     return (
         <>
             <Controller
-            name={name}
-            control={control}
-            rules={rules}
-            render={({ field, fieldState }) => {
-                const hasError = !!fieldState.error
+                name={name}
+                control={control}
+                rules={rules}
+                render={({ field }) => {
+                // const hasError = !!fieldState.error
 
                 return (
-                <div>
-                    <Combobox.Root
-                    collection={collection}
-                    value={field.value ? [String(field.value)] : []}
-                    onValueChange={(details) => {
-                        const val = details.value[0]
-                        field.onChange(val)
-                    }}
-                    onInputValueChange={(e) => filter(e.inputValue)}
-                    scrollToIndexFn={handleScrollToIndexFn}
-                    invalid={hasError} // 🔥 important for styling (if supported)
-                    >
-                    {label && <Combobox.Label>{label}</Combobox.Label>}
-
-                    <Combobox.Control>
-                        <Combobox.Input
-                        placeholder={placeholder || "Search..."}
-                        />
-                        <Combobox.IndicatorGroup>
-                        <Combobox.ClearTrigger />
-                        <Combobox.Trigger onClick={reset} />
-                        </Combobox.IndicatorGroup>
-                    </Combobox.Control>
-
-                    <Combobox.Positioner>
-                        <Combobox.Content
-                        ref={contentRef}
-                        maxH="200px"
-                        overflowY="auto"
-                        >
-                        <div
-                            style={{
-                            height: `${virtualizer.getTotalSize()}px`,
-                            position: "relative",
+                    <div className="w-full">
+                        <Combobox.Root
+                            collection={collection}
+                            value={field.value ? [String(field.value)] : []}
+                            onValueChange={(details) => {
+                                const val = details.value[0]
+                                field.onChange(val)
                             }}
-                        >
-                            {virtualizer.getVirtualItems().map((virtualItem) => {
-                            const item = collection.items[virtualItem.index]
+                            onInputValueChange={(e) => filter(e.inputValue)}
+                            scrollToIndexFn={handleScrollToIndexFn}
+                            >
+                            {/* {label && <Combobox.Label>{label}</Combobox.Label>} */}
 
-                            return (
-                                <Combobox.Item
-                                key={itemToValue(item)}
-                                item={item}
-                                style={{
-                                    position: "absolute",
-                                    top: 0,
-                                    left: 0,
-                                    width: "100%",
-                                    height: `${virtualItem.size}px`,
-                                    transform: `translateY(${virtualItem.start}px)`,
-                                }}
+                            <Combobox.Control>
+                                <Combobox.Input
+                                    placeholder={placeholder || "Search..."}
+                                />
+                                <Combobox.IndicatorGroup>
+                                <Combobox.ClearTrigger />
+                                <Combobox.Trigger onClick={reset} />
+                                </Combobox.IndicatorGroup>
+                            </Combobox.Control>
+
+                            <Combobox.Positioner>
+                                <Combobox.Content
+                                    ref={contentRef}
+                                    maxH="200px"
+                                    overflowY="auto"
                                 >
-                                <Combobox.ItemText truncate>
-                                    {itemToLabel(item)}
-                                </Combobox.ItemText>
-                                <Combobox.ItemIndicator />
-                                </Combobox.Item>
-                            )
-                            })}
-                        </div>
-                        </Combobox.Content>
-                    </Combobox.Positioner>
-                    </Combobox.Root>
+                                    <div
+                                        style={{
+                                        height: `${virtualizer.getTotalSize()}px`,
+                                        position: "relative",
+                                        }}
+                                    >
+                                        {virtualizer.getVirtualItems().map((virtualItem) => {
+                                        const item = collection.items[virtualItem.index]
 
-                    {/* 🔥 ERROR MESSAGE */}
-                    {hasError && (
-                    <p style={{ color: "red", fontSize: "12px", marginTop: "4px" }}>
-                        {fieldState.error?.message}
-                    </p>
-                    )}
-                </div>
-                )
-            }}
+                                        return (
+                                            <Combobox.Item
+                                                key={itemToValue(item)}
+                                                item={item}
+                                                style={{
+                                                    position: "absolute",
+                                                    top: 0,
+                                                    left: 0,
+                                                    width: "100%",
+                                                    height: `${virtualItem.size}px`,
+                                                    transform: `translateY(${virtualItem.start}px)`,
+                                                }}
+                                            >
+                                            <Combobox.ItemText truncate>
+                                                {itemToLabel(item)}
+                                            </Combobox.ItemText>
+                                            <Combobox.ItemIndicator />
+                                            </Combobox.Item>
+                                        )
+                                        })}
+                                    </div>
+                                    </Combobox.Content>
+                            </Combobox.Positioner>
+                        </Combobox.Root>
+
+                            {/* {hasError && (
+                                <Text color={'fg.error'} mt="1">
+                                    {fieldState.error?.message}
+                                </Text>
+                            )} */}
+                        </div>
+                    )
+                }}
             />
 
         </>

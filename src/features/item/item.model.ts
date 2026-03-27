@@ -3,7 +3,7 @@
 
 
 
-export interface ItemList {
+export interface Items {
     item_id: number
     item_name: string
     brand_id: number

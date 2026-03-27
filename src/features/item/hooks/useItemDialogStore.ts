@@ -1,12 +1,12 @@
 
 
 import { create } from 'zustand';
-import type { ItemList } from '../item.model';
+import type { Items } from '../item.model';
 
 interface ItemDialogState {
   isOpen: boolean;
-  selectedItem: ItemList | null;
-  openDialog: (item?: ItemList | null) => void;
+  selectedItem: Items | null;
+  openDialog: (item?: Items | null) => void;
   closeDialog: () => void;
 }
 

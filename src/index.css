@@ -11,3 +11,14 @@
 * {
   @apply font-google
 }
+
+
+
+
+:root {
+  --sileo-toast-zindex: 2000; /* higher than your modal */
+}
+
+[data-sileo-toast] {
+  z-index: 2000 !important;
+}

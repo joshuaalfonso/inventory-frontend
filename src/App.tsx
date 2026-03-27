@@ -10,12 +10,16 @@ import Brand from "./features/brand/Brand"
 import ItemType from "./features/item-type/ItemType"
 import UnitOfMeasure from "./features/unit-of-measure/UnitOfMeasure"
 import { Toaster } from "@/components/ui/toaster";
+import SileoToaster from "./shared/components/SileoToaster"
+import Department from "./features/department/Department"
+
 
 function App() {
 
   return (
     <>
       <Toaster />
+      <SileoToaster />
       <BrowserRouter>
         <Routes>
           <Route path="/login" element={<Auth />} />
@@ -27,6 +31,7 @@ function App() {
             <Route path="/category" element={<Category />} />
             <Route path="/item-type" element={<ItemType />} />
             <Route path="/unit-of-measure" element={<UnitOfMeasure />} />
+            <Route path="/department" element={<Department />} />
             <Route path="/employee" element={<Employee />} />
             <Route path="/supplier" element={<Supplier />} />
           </Route>

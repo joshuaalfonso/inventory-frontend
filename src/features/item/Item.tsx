@@ -1,13 +1,18 @@
-import { Button, Heading} from "@chakra-ui/react"
-import { useItemDialogStore } from "./hooks/useItemDialogStore";
+import {  Heading} from "@chakra-ui/react"
 import ItemDialog from "./components/dialog/ItemDialog";
+import ItemTable from "./components/table/ItemTable";
+import { useItems } from "./hooks/useItem";
+import LoadingSpinner from "@/shared/components/LoadingSpinner";
 // import VirtualComboBox from "./components/VirtualComboBox";
 
 
 
 const Item = () => {
 
-  const openDialog = useItemDialogStore(state => state.openDialog);
+  const { items, isPending, error } = useItems();
+
+  if (isPending) return <LoadingSpinner />
+  if (error) return <p>Failed to fetch items {error.name}</p>;
 
   return (
     <>
@@ -16,11 +21,7 @@ const Item = () => {
         mb={10}
       >Item</Heading>
 
-      <Button
-        onClick={() => openDialog(null)}
-      >
-        Create
-      </Button>
+      <ItemTable items={items ?? []} />
 
       <ItemDialog />
 

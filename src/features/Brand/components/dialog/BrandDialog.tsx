@@ -4,10 +4,11 @@ import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { useCreateBrand } from "../../hooks/useCreateBrand";
 
-import { toaster } from "@/components/ui/toaster";
+// import { toaster } from "@/components/ui/toaster";
 import { getApiErrorMessage } from "@/lib/errorMessage";
 import { useEffect } from "react";
 import { useUpdateBrand } from "../../hooks/useUpdateBrand";
+import { sileo } from "sileo";
 
 
 
@@ -49,22 +50,28 @@ const BrandDialog = () => {
             data,
             {
                 onSuccess: (response) => {
-                    toaster.create({
-                        title: "Success!",
-                        description: response.message,
-                        closable: true,
-                        // type: 'success'
+                    // toaster.create({
+                    //     title: "Success!",
+                    //     description: response.message,
+                    //     closable: true,
+                    // })
+                    sileo.success({
+                        title: 'Success',
+                        description: response.message
                     })
                     closeDialog();
                     reset(defaultValue);
                 },
                 onError: (err) => {
                     console.error(err);
-                    toaster.create({
-                        title: "Oops!",
+                    // toaster.create({
+                    //     title: "Oops!",
+                    //     description: getApiErrorMessage(err),
+                    //     closable: true,
+                    // })
+                    sileo.error({
+                        title: 'Error',
                         description: getApiErrorMessage(err),
-                        closable: true,
-                        // type: 'error'
                     })
                 }
             }

@@ -164,7 +164,57 @@ const Sidebar = () => {
                         </div>
 
                     </li>
-                    <li>
+
+
+                    <li className="flex flex-col">
+                        <a
+                            // className={({ isActive }) =>
+                            //     `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                            // }
+                            className="cursor-pointer flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
+                            onClick={() => toggle('employee')}
+                        >
+                            <LuCircleUser size={'21px'} className="text-teal-500" />
+                            <span className="flex-1">Employee</span>
+                            <LuChevronDown 
+                                size={'19px'}
+                                className={
+                                    `${open?.employee ? '-rotate-90' : ''} transition-transform duration-100`
+                                } 
+                            />
+                        </a>
+
+                        <div 
+                            className={`grid  ease-out duration-100 ${
+                                open?.employee ? 'grid-rows-[1fr] mt-1.5!' : 'grid-rows-[0fr]'
+                            }`}
+                        >
+                            <ul className="overflow-hidden ml-6! pl-6! space-y-1.5! border-l! border-red-200">
+                                <li>
+                                    <NavLink 
+                                        to="/employee"
+                                        className={({ isActive }) =>
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                    }
+                                    >
+                                        List
+                                    </NavLink>
+                                </li>
+                                <li>
+                                    <NavLink 
+                                        to="/department"
+                                        className={({ isActive }) =>
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                    }
+                                    >
+                                        Department
+                                    </NavLink>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    {/* <li>
                         <NavLink
                             to="/employee"
                             className={({ isActive }) =>
@@ -174,7 +224,7 @@ const Sidebar = () => {
                             <LuCircleUser size={'21px'} className="text-teal-500" />
                             Employee
                         </NavLink>
-                    </li>
+                    </li> */}
                     <li>
                         <NavLink
                             to="/supplier"
@@ -188,6 +238,7 @@ const Sidebar = () => {
                     </li>
                 </ul>
             </div>
+            
 
             <Box 
                 className="flex items-center gap-3 bg-teal-500/5"
