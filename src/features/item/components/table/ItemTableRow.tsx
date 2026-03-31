@@ -54,7 +54,7 @@ const ItemTableRow = ({row, index}: Props) => {
 
   return (
     <>
-      <Table.Row key={row.item_id} bg={bg}>
+      <Table.Row key={row.item_id} bg={bg} color={'fg.muted'}>
           <Table.Cell>{index}</Table.Cell>
           <Table.Cell>{row.item_name}</Table.Cell>
           <Table.Cell>{row.brand_name}</Table.Cell>

@@ -42,7 +42,7 @@ const Sidebar = () => {
             <div>
                 <Heading
                     fontSize={'xs'}
-                    color={'fg.muted'}
+                    // color={'fg.muted'}
                     mb={1.5}
                     textTransform={'uppercase'}
                 >
@@ -53,10 +53,10 @@ const Sidebar = () => {
                         <NavLink
                             to="/dashboard"
                             className={({ isActive }) =>
-                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             }
                         >
-                            <LuLayoutPanelLeft size={'21px'} className="text-teal-500" />
+                            <LuLayoutPanelLeft size={'21px'} />
                             Dashboard
                         </NavLink>
                     </li>
@@ -67,7 +67,7 @@ const Sidebar = () => {
 
                 <Heading
                     fontSize={'xs'}
-                    color={'fg.muted'}
+                    // color={'fg.muted'}
                     mb={1.5}
                     textTransform={'uppercase'}
                 >
@@ -91,10 +91,10 @@ const Sidebar = () => {
                             // className={({ isActive }) =>
                             //     `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             // }
-                            className="cursor-pointer flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
+                            className="cursor-pointer text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
                             onClick={() => toggle('item')}
                         >
-                            <LuTag size={'21px'} className="text-teal-500" />
+                            <LuTag size={'21px'} />
                             <span className="flex-1">Item</span>
                             <LuChevronDown 
                                 size={'19px'}
@@ -114,7 +114,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/item"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         List
@@ -124,7 +124,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/brand"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Brand
@@ -134,7 +134,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/category"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Category
@@ -144,7 +144,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/item-type"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Type
@@ -154,7 +154,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/unit-of-measure"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Unit of Measure
@@ -171,10 +171,10 @@ const Sidebar = () => {
                             // className={({ isActive }) =>
                             //     `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-400!' : '' } flex! items-center gap-2 text-sm! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             // }
-                            className="cursor-pointer flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
+                            className="cursor-pointer text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
                             onClick={() => toggle('employee')}
                         >
-                            <LuCircleUser size={'21px'} className="text-teal-500" />
+                            <LuCircleUser size={'21px'}  />
                             <span className="flex-1">Employee</span>
                             <LuChevronDown 
                                 size={'19px'}
@@ -194,7 +194,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/employee"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         List
@@ -204,7 +204,7 @@ const Sidebar = () => {
                                     <NavLink 
                                         to="/department"
                                         className={({ isActive }) =>
-                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                        `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                                     }
                                     >
                                         Department
@@ -229,10 +229,10 @@ const Sidebar = () => {
                         <NavLink
                             to="/supplier"
                             className={({ isActive }) =>
-                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } text-(--chakra-colors-fg-muted)! flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
                             }
                         >
-                            <LuForklift size={'21px'} className="text-teal-500" />
+                            <LuForklift size={'21px'}  />
                             Supplier
                         </NavLink>
                     </li>
