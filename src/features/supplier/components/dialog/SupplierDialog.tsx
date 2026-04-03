@@ -1,32 +1,42 @@
-import { useForm, type SubmitHandler } from "react-hook-form";
-import { useCreateItemType } from "../../hooks/useCreateItemType";
-import { useItemTypeDialogStore } from "../../hooks/useItemTypeDialogStore";
-import { useUpdateItemType } from "../../hooks/useUpdateItemType";
-import { toaster } from "@/components/ui/toaster";
-import { getApiErrorMessage } from "@/lib/errorMessage";
-import { useEffect } from "react";
-import { Button, CloseButton, Dialog, Field, Fieldset, Heading, Input, Portal, Stack, Text, Textarea } from "@chakra-ui/react";
+import { useForm, type SubmitHandler } from "react-hook-form"
+import { useCreateSupplier } from "../../hooks/useCreateSupplier"
+import { useSupplierDialogStore } from "../../hooks/useSupplierDialogStore"
+import { useUpdateSupplier } from "../../hooks/useUpdateSupplier"
+import { toaster } from "@/components/ui/toaster"
+import { getApiErrorMessage } from "@/lib/errorMessage"
+import { useEffect } from "react"
+import { Button, CloseButton, Dialog, Field, Fieldset, Heading, Input, Portal, Stack, Text } from "@chakra-ui/react"
+
+
+
+
+
+
 
 const defaultValue = {
-    item_type_id: 0,
-    item_type_name: '',
-    description: '',
+    supplier_id: 0,
+    supplier_name: '',
+    supplier_address: '',
+    contact_person: '',
+    contact_number: ''
 }
 
 interface FormInputs {
-    item_type_id: number;
-    item_type_name: string;
-    description: string;
+    supplier_id: number
+    supplier_name: string
+    supplier_address: string
+    contact_person: string
+    contact_number: string
 }
 
-const ItemTypeDialog = () => {
+const SupplierDialog = () => {
 
-    const isOpen = useItemTypeDialogStore(state => state.isOpen);
-    const closeDialog = useItemTypeDialogStore(state => state.closeDialog);
-    const selectedItem = useItemTypeDialogStore(state => state.selectedItem);
+    const isOpen = useSupplierDialogStore(state => state.isOpen);
+    const closeDialog = useSupplierDialogStore(state => state.closeDialog);
+    const selectedItem = useSupplierDialogStore(state => state.selectedItem);
 
-    const { createItemTypeMutation, isCreating } = useCreateItemType();
-    const { updateItemTypeMutation, isUpdating } = useUpdateItemType();
+    const { createSupplierMutation, isCreating } = useCreateSupplier();
+    const { updateSupplierMutation, isUpdating } = useUpdateSupplier();
 
     const { 
         register, 
@@ -41,7 +51,7 @@ const ItemTypeDialog = () => {
 
     const onSubmit: SubmitHandler<FormInputs> = data => {
 
-        const mutate = selectedItem?.item_type_id ? updateItemTypeMutation : createItemTypeMutation;
+        const mutate = selectedItem?.supplier_id ? updateSupplierMutation : createSupplierMutation;
 
         mutate(
             data,
@@ -75,7 +85,8 @@ const ItemTypeDialog = () => {
         }
     }, [selectedItem, reset]);
 
-    console.log('brand dialog')
+    console.log('supplier dialog')
+
 
     return (
         <Dialog.Root 
@@ -101,7 +112,7 @@ const ItemTypeDialog = () => {
                     <Dialog.Header>
                         <Dialog.Title>
                             <Stack>
-                                <Heading size={'xl'}>Item Type Form</Heading>
+                                <Heading size={'xl'}>Supplier Form</Heading>
                                 <Text fontSize={'sm'} color={'fg.muted'}>
                                     Field with * is required
                                 </Text>
@@ -116,37 +127,68 @@ const ItemTypeDialog = () => {
 
                                     <Field.Root required>
                                         <Field.Label>
-                                            Item Type
+                                            Supplier Name
                                             <Field.RequiredIndicator />
                                         </Field.Label>
-                                        <Input  
-                                            {...register("item_type_name", { required: "Brand name is required" })}
+                                        <Input 
+                                            {...register("supplier_name", { required: "Supplier name is required" })}
                                             autoComplete="off"
                                         />
 
-                                        {errors.item_type_name?.message && (
-                                            // <Field.ErrorText>This is an error text</Field.ErrorText>
-                                            <Text color={'fg.error'}>{errors.item_type_name.message}</Text>
+                                        {errors.supplier_name?.message && (
+                                            <Text color={'fg.error'}>{errors.supplier_name.message}</Text>
                                         )}
                                         
-                                        {/* <Field.ErrorText>This is an error text</Field.ErrorText> */}
                                     </Field.Root>
 
-                                    <Field.Root required>
+                                    <Field.Root>
                                         <Field.Label>
-                                            Description
+                                            Supplier Address
                                             <Field.RequiredIndicator />
                                         </Field.Label>
-                                        <Textarea  
-                                            {...register("description", { required: "Description is required" })}
+                                        <Input 
+                                            {...register("supplier_address")}
                                             autoComplete="off"
                                         />
 
-                                        {errors.description?.message && (
-                                            <Text color={'fg.error'}>{errors.description.message}</Text>
+                                        {errors.supplier_address?.message && (
+                                            <Text color={'fg.error'}>{errors.supplier_address.message}</Text>
                                         )}
                                         
                                     </Field.Root>
+
+                                    <Field.Root>
+                                        <Field.Label>
+                                            Contact Person
+                                            <Field.RequiredIndicator />
+                                        </Field.Label>
+                                        <Input 
+                                            {...register("contact_person")}
+                                            autoComplete="off"
+                                        />
+
+                                        {errors.contact_person?.message && (
+                                            <Text color={'fg.error'}>{errors.contact_person.message}</Text>
+                                        )}
+                                        
+                                    </Field.Root>
+
+                                    <Field.Root>
+                                        <Field.Label>
+                                            Contact #
+                                            <Field.RequiredIndicator />
+                                        </Field.Label>
+                                        <Input 
+                                            {...register("contact_number")}
+                                            autoComplete="off"
+                                        />
+
+                                        {errors.contact_number?.message && (
+                                            <Text color={'fg.error'}>{errors.contact_number.message}</Text>
+                                        )}
+                                        
+                                    </Field.Root>
+                                    
 
                                 </Fieldset.Content>
                             </Fieldset.Root>
@@ -156,7 +198,7 @@ const ItemTypeDialog = () => {
                         <Dialog.ActionTrigger asChild>
                             <Button variant="outline" colorPalette={'gray'}>Cancel</Button>
                         </Dialog.ActionTrigger>
-                        <Button 
+                        <Button
                             onClick={handleSubmit(onSubmit)} 
                             loading={isWorking}
                             disabled={!isDirty}
@@ -172,6 +214,7 @@ const ItemTypeDialog = () => {
             </Portal>
         </Dialog.Root>
     )
+
 }
 
-export default ItemTypeDialog
+export default SupplierDialog

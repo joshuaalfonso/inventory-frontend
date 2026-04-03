@@ -1,6 +1,6 @@
-import { Button, CloseButton, Dialog, Field, Fieldset, Heading, Input, Portal, Stack, Text} from "@chakra-ui/react";
+import { Button, CloseButton, Dialog, Field, Fieldset, Heading, HStack, Input, Portal, RadioCard, Stack, Text} from "@chakra-ui/react";
 import { useItemDialogStore } from "../../hooks/useItemDialogStore";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { useBrands } from "@/features/brand/hooks/useBrand";
 import { useCategories } from "@/features/category/hooks/useCategories";
 import { useItemTypes } from "@/features/item-type/hooks/useItemTypes";
@@ -97,6 +97,11 @@ const ItemDialog = () => {
 
     }
 
+    // const items = [
+    //     { value: "next", title: "Consumable", description: "Tracked by quantity only" },
+    //     { value: "vite", title: "Asset", description: "Tracked individually" },
+    // ]
+
     useEffect(() => {
         if (selectedItem) {
             reset(selectedItem);
@@ -156,6 +161,50 @@ const ItemDialog = () => {
                                         
                                     </Field.Root>
 
+                                    <Field.Root required>
+                                        <Field.Label>
+                                            Type
+                                            <Field.RequiredIndicator />
+                                        </Field.Label>
+
+                                        <Controller
+                                            name="item_type_id"
+                                            control={control}
+                                            rules={{ 
+                                                required: "Type is required", 
+                                                validate: value => value != 0 || "Type is required" 
+                                            }}
+                                            render={({ field }) => (
+                                            <RadioCard.Root
+                                                value={field.value ? String(field.value) : ""}
+                                                onValueChange={(val) => field.onChange(Number(val.value))}
+                                                w="full"
+                                            >
+                                                <HStack align="stretch">
+                                                {itemTypes?.map((item) => (
+                                                    <RadioCard.Item key={item.item_type_id} value={String(item.item_type_id)}>
+                                                    <RadioCard.ItemHiddenInput />
+                                                    <RadioCard.ItemControl>
+                                                        <RadioCard.ItemContent>
+                                                        <RadioCard.ItemText>{item.item_type_name}</RadioCard.ItemText>
+                                                        <RadioCard.ItemDescription>
+                                                            {item.description}
+                                                        </RadioCard.ItemDescription>
+                                                        </RadioCard.ItemContent>
+                                                        <RadioCard.ItemIndicator />
+                                                    </RadioCard.ItemControl>
+                                                    </RadioCard.Item>
+                                                ))}
+                                                </HStack>
+                                            </RadioCard.Root>
+                                            )}
+                                        />
+
+                                        {errors.item_type_id && (
+                                            <Text color="fg.error">{errors.item_type_id.message}</Text>
+                                        )}
+                                    </Field.Root>
+
 
                                     <Field.Root required>
                                         <Field.Label>
@@ -208,7 +257,7 @@ const ItemDialog = () => {
                                     </Field.Root>  
                                     
 
-                                    <Field.Root required>
+                                    {/* <Field.Root required>
                                         <Field.Label>
                                             Type
                                             <Field.RequiredIndicator />
@@ -231,7 +280,7 @@ const ItemDialog = () => {
                                             <Text color={'fg.error'}>{errors.item_type_id.message}</Text>
                                         )}
                                         
-                                    </Field.Root>  
+                                    </Field.Root>   */}
 
 
                                     <Field.Root required>

@@ -215,7 +215,7 @@ const EmployeeDialog = () => {
                             loading={isWorking}
                             disabled={!isDirty}
                         >
-                            Save
+                            { selectedItem?.employee_id ? 'Apply changes' : 'Create' }
                         </Button>
                     </Dialog.Footer>
                     <Dialog.CloseTrigger asChild colorPalette={'gray'}>

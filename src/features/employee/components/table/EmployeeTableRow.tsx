@@ -61,6 +61,7 @@ const EmployeeTableRow = ({row, index}: Props) => {
                   <Table.Cell>{index}</Table.Cell>
                   <Table.Cell>{row.employee_name}</Table.Cell>
                   <Table.Cell>{row.department_name}</Table.Cell>
+                  <Table.Cell>{row.email}</Table.Cell>
                   <Table.Cell>{displayDateTime(row.created_at)}</Table.Cell>
                   <Table.Cell textAlign="end">
                     

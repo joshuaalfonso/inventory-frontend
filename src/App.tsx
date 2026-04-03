@@ -12,6 +12,7 @@ import UnitOfMeasure from "./features/unit-of-measure/UnitOfMeasure"
 import { Toaster } from "@/components/ui/toaster";
 import SileoToaster from "./shared/components/SileoToaster"
 import Department from "./features/department/Department"
+import PurchaseOrder from "./features/purchase-order/PurchaseOrder"
 
 
 function App() {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/department" element={<Department />} />
             <Route path="/employee" element={<Employee />} />
             <Route path="/supplier" element={<Supplier />} />
+            <Route path="/purchase-order" element={<PurchaseOrder />} />
           </Route>
         </Routes>
       </BrowserRouter>

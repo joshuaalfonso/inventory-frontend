@@ -20,7 +20,7 @@ interface Props {
 const DepartmentTable = ({ departments }: Props) => {
 
 
-     console.log('department table')
+    console.log('department table')
     
     const [search, setSearch] = useState<string>('');
 

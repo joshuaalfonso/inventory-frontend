@@ -1,47 +1,34 @@
-import { startTransition, useState, type ChangeEvent } from "react";
-import type { Employees } from "../../employee.model";
+import { PAGE_SIZE } from "@/lib/constants";
+import type { Suppliers } from "../../supplier.model"
 import { usePagination } from "@/shared/hooks/usePagination";
-import { useEmployeeDialogStore } from "../../hooks/useEmployeeDialogStore";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
-import EmployeeTableRow from "./EmployeeTableRow";
-import { PAGE_SIZE } from "@/lib/constants";
+import SupplierTableRow from "./SupplierTableRow";
+import { useSupplierDialogStore } from "../../hooks/useSupplierDialogStore";
 
 
 interface Props {
-    employees: Employees[]
+    suppliers: Suppliers[]
 }
 
-const EmployeeTable = ({ employees }: Props) => {
+const SupplierTable = ({ suppliers }: Props) => {
 
-    console.log('department table')
-        
-    const [search, setSearch] = useState<string>('');
-
-    console.log(search)
-
-    const filteredEmployees = employees;
-
-    const {
-        paginatedData,
-        currentPage,
-        totalPages,
-        nextPage,
-        prevPage
-    } = usePagination(filteredEmployees, PAGE_SIZE);
-
-    const openDialog = useEmployeeDialogStore(state => state.openDialog);
-    const bg = useColorModeValue('white', 'bg.subtle');
-
-    const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        startTransition(() => {
-            setSearch(value);
-        });
-    };
-
-
+    console.log('supplier table')
+    
+    const filteredSuppliers = suppliers;
+    
+        const {
+            paginatedData,
+            currentPage,
+            totalPages,
+            nextPage,
+            prevPage
+        } = usePagination(filteredSuppliers, PAGE_SIZE);
+    
+        const openDialog = useSupplierDialogStore(state => state.openDialog);
+        const customCardBg = useColorModeValue('white', 'bg.subtle');
+    
     return (
         <>
             <Box
@@ -50,7 +37,7 @@ const EmployeeTable = ({ employees }: Props) => {
                 borderColor="border.disabled"
                 color="fg.disabled"
                 rounded={'md'}
-                bg={bg}
+                bg={customCardBg}
             >
 
                 <Box
@@ -65,7 +52,9 @@ const EmployeeTable = ({ employees }: Props) => {
                     <Input
                         placeholder="Search keyword..."
                         size={'sm'}
-                        onChange={handleSearch}
+                        // onChange={(e) => {
+                        //     setSearch(e.target.value)
+                        // }}
                     />
                     </InputGroup>
                     <Button 
@@ -75,24 +64,26 @@ const EmployeeTable = ({ employees }: Props) => {
                     >
                         Create
                     </Button>
+                    {/* <CreateItemTypeButton /> */}
                 </Box>
 
 
                 <Table.Root size="sm">
                     <Table.Header>
-                        <Table.Row bg={bg}>
+                        <Table.Row bg={customCardBg}>
                             <Table.ColumnHeader>#</Table.ColumnHeader>
-                            <Table.ColumnHeader>Employee</Table.ColumnHeader>
-                            <Table.ColumnHeader>Department</Table.ColumnHeader>
-                            <Table.ColumnHeader>Email</Table.ColumnHeader>
+                            <Table.ColumnHeader>Supplier</Table.ColumnHeader>
+                            <Table.ColumnHeader>Address</Table.ColumnHeader>
+                            <Table.ColumnHeader>Contact Person</Table.ColumnHeader>
+                            <Table.ColumnHeader>Contact #</Table.ColumnHeader>
                             <Table.ColumnHeader>Created At</Table.ColumnHeader>
                             <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         {paginatedData?.map((item, index) => (
-                            <EmployeeTableRow
-                                key={item.employee_id}
+                            <SupplierTableRow 
+                                key={item.supplier_id}
                                 row={item} 
                                 index={(currentPage - 1) * PAGE_SIZE + index + 1}
                             />
@@ -142,6 +133,7 @@ const EmployeeTable = ({ employees }: Props) => {
 
         </>
     )
+
 }
 
-export default EmployeeTable
+export default SupplierTable
