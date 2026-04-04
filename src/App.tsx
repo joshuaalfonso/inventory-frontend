@@ -13,6 +13,7 @@ import { Toaster } from "@/components/ui/toaster";
 import SileoToaster from "./shared/components/SileoToaster"
 import Department from "./features/department/Department"
 import PurchaseOrder from "./features/purchase-order/PurchaseOrder"
+import PurchaseOrderForm from "./features/purchase-order/components/PurchaseOrderForm"
 
 
 function App() {
@@ -36,6 +37,8 @@ function App() {
             <Route path="/employee" element={<Employee />} />
             <Route path="/supplier" element={<Supplier />} />
             <Route path="/purchase-order" element={<PurchaseOrder />} />
+            <Route path="/purchase-order/new" element={<PurchaseOrderForm />} />
+            <Route path="/purchase-order/:purchase_order_id/edit" element={<PurchaseOrderForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

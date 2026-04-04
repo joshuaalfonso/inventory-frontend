@@ -49,9 +49,9 @@ const RHFVirtualComboBox = <T,> ({
 
     const handleScrollToIndexFn = ({ index }: { index: number }) => {
         flushSync(() => {
-        virtualizer.scrollToIndex(index, {
-            align: "center",
-        })
+            virtualizer.scrollToIndex(index, {
+                align: "center",
+            })
         })
     }
 
@@ -68,10 +68,14 @@ const RHFVirtualComboBox = <T,> ({
                     <div className="w-full">
                         <Combobox.Root
                             collection={collection}
-                            value={field.value ? [String(field.value)] : []}
+                            // value={field.value ? [String(field.value)] : []}
+                            value={field.value !== undefined && field.value !== null
+                                ? [String(field.value)]
+                                : []
+                            }
                             onValueChange={(details) => {
                                 const val = details.value[0]
-                                field.onChange(val)
+                                field.onChange(val ? Number(val) : 0)
                             }}
                             onInputValueChange={(e) => filter(e.inputValue)}
                             scrollToIndexFn={handleScrollToIndexFn}
