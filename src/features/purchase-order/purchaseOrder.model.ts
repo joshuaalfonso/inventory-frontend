@@ -22,7 +22,11 @@ export interface PurchaseOrders {
   purchase_order_number: string;
   purchase_order_date: string;
   supplier_id: number;
+  supplier_name: string;
   purchase_order_item: PurchaseOrderItem[];
+  total_quantity: number;
+  total_price: number;
+  created_at: string;
 };
 
 

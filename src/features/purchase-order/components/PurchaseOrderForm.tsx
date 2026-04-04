@@ -7,16 +7,19 @@ import { RHFDatePicker } from "@/shared/components/RFHDatePicker";
 import { RHFCombobox } from "@/shared/components/RHFComboBox";
 // import { RHFCombobox } from "@/shared/components/RHFComboBox";
 import RHFVirtualComboBox from "@/shared/components/RHFVirtualComboBox";
-import { Box, Button, Combobox, Field, Fieldset, Heading, Input, InputGroup, Portal, Separator, Stack, Text, useFilter, useListCollection } from "@chakra-ui/react";
+import { Box, Button, Combobox, Field, Fieldset, Float, Heading, Input, InputGroup, Portal, Separator, Stack, Text, useFilter, useListCollection } from "@chakra-ui/react";
 import { useVirtualizer } from "@tanstack/react-virtual";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { flushSync } from "react-dom";
 import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
-import {  LuPhilippinePeso, LuSearch, LuSigma, LuTrash2 } from "react-icons/lu";
-import { useParams } from "react-router-dom";
+import { LuSearch, LuTrash2 } from "react-icons/lu";
+import { useNavigate, useParams } from "react-router-dom";
 import { useCreatePurchaseOrder } from "../hooks/useCreatePurchaseOrder";
 import { toaster } from "@/components/ui/toaster";
 import { getApiErrorMessage } from "@/lib/errorMessage";
+import { useSinglePurchaseOrder } from "../hooks/useSinglePurchaseOrder";
+import LoadingSpinner from "@/shared/components/LoadingSpinner";
+import { useUpdatePurchaseOrder } from "../hooks/useUpdatePurchaseOrder";
 
 
 
@@ -63,16 +66,24 @@ const defaultItem = {
 
 const PurchaseOrderForm = () => {
 
+    const navigate = useNavigate();
     const { items } = useItems();
     const { suppliers } = useSuppliers();
     const { employees } = useEmployees();
     const { createPurchaseOrderMutation, isCreating } = useCreatePurchaseOrder();
+    const { updatePurchaseOrderMutation, isUpdating } = useUpdatePurchaseOrder();
+
+    const isWorking = isCreating || isUpdating;
 
     const { purchase_order_id } = useParams();
 
+    const { purchaseOrder, isPending: isPurchaseOrderLoading} = useSinglePurchaseOrder(purchase_order_id ? +purchase_order_id : 0);
+
+    console.log(purchaseOrder)
+
     console.log(purchase_order_id);
 
-    const { register, control, handleSubmit, formState: { errors, isDirty }  } =
+    const { register, control, handleSubmit, reset, formState: { errors, isDirty }  } =
     useForm<PurchaseOrderFormValues>({
       defaultValues: defaultValues
     });
@@ -85,7 +96,9 @@ const PurchaseOrderForm = () => {
     const onSubmit: SubmitHandler<PurchaseOrderFormValues> = (data) => {
         console.log(data);
 
-        createPurchaseOrderMutation(
+        const mutate = purchaseOrder?.purchase_order_id ? updatePurchaseOrderMutation : createPurchaseOrderMutation;
+
+        mutate(
             data,
             {
                 onSuccess: (response) => {
@@ -97,6 +110,7 @@ const PurchaseOrderForm = () => {
                     })
                     // closeDialog();
                     // reset(defaultValue);
+                    navigate('/purchase-order')
                 },
                 onError: (err) => {
                     console.error(err);
@@ -112,13 +126,13 @@ const PurchaseOrderForm = () => {
 
     };
 
-     const contentRef = useRef<HTMLDivElement | null>(null)
+    const contentRef = useRef<HTMLDivElement | null>(null)
 
     const { startsWith } = useFilter({ sensitivity: "base" })
 
     const stableItems = useMemo(() => items ?? [], [items])
 
-    const { collection, filter, reset } = useListCollection({
+    const { collection, filter } = useListCollection({
         initialItems: stableItems,
         filter: startsWith,
         itemToString: (item) => item.item_name,
@@ -141,6 +155,17 @@ const PurchaseOrderForm = () => {
     }
 
     const customCardBg = useColorModeValue('white', 'bg.subtle');
+
+    useEffect(() => {
+        if (purchaseOrder) {
+            reset({
+                ...purchaseOrder,
+                purchase_order_date: purchaseOrder.purchase_order_date.split("T")[0]
+            });
+        }
+    }, [purchaseOrder, reset]);
+
+    if (isPurchaseOrderLoading && purchase_order_id) return <LoadingSpinner />
 
     return (
 
@@ -332,8 +357,6 @@ const PurchaseOrderForm = () => {
                                                 textOverflow: "ellipsis",
                                             }}
                                             onClick={() => {
-                                                console.log(item.brand_name);
-                                                reset()
                                                 append({
                                                     ...defaultItem,
                                                     item_id: item.item_id,
@@ -382,7 +405,7 @@ const PurchaseOrderForm = () => {
                                         </Stack>
                                     </div>
 
-                                    <div>
+                                    <Box position="relative">
                                         <RHFCombobox 
                                             name={`purchase_order_item.${index}.employee_id` as const}
                                             control={control}
@@ -409,36 +432,58 @@ const PurchaseOrderForm = () => {
                                             itemToLabel={(item) => item.employee_name}
                                             itemToValue={(item) => item.employee_id}
                                         /> */}
-                                    </div>
+                                         <Float offsetX="11" placement={'top-start'} bg={customCardBg} px={1.5}>
+                                            <Text fontSize={'xs'} color={'fg.muted'}>
+                                                Employee
+                                            </Text>
+                                        </Float>
+                                    </Box>
 
 
-                                    <InputGroup 
-                                        startElement={<LuSigma />} 
-                                        endElement={<span className="uppercase">{field.unit_of_measure_name}</span>}
-                                    >
-                                        <Input
-                                            type="number"
-                                            placeholder="Qty"
-                                            {...register(`purchase_order_item.${index}.ordered_quantity` as const, {
-                                            valueAsNumber: true,
-                                            min: 1
-                                            })}
-                                        />
-                                    </InputGroup>
-
-                                    <InputGroup 
-                                        startElement={<LuPhilippinePeso />} 
-                                        endElement="PHP"
-                                    >
-                                        <Input
-                                            type="number"
-                                            placeholder="Price"
-                                            {...register(`purchase_order_item.${index}.price` as const, {
+                                    <Box position="relative">
+                                        <InputGroup 
+                                            // startElement={<LuRuler />} 
+                                            endElement={<span className="uppercase">{field.unit_of_measure_name}</span>}
+                                        >
+                                            <Input
+                                                type="number"
+                                                placeholder="Qty"
+                                                {...register(`purchase_order_item.${index}.ordered_quantity` as const, {
                                                 valueAsNumber: true,
-                                                min: 0
-                                            })}
-                                        />
-                                    </InputGroup>
+                                                min: 1
+                                                })}
+                                            />
+                                        </InputGroup>
+                                        <Float offsetX="10" placement={'top-start'} bg={customCardBg} px={1.5}>
+                                            <Text fontSize={'xs'} color={'fg.muted'}>
+                                                Quantity
+                                            </Text>
+                                        </Float>
+                                    </Box>
+
+                                    <Box position="relative">
+                                        
+                                        <InputGroup 
+                                            // startElement={<LuPhilippinePeso />} 
+                                            endElement="PHP"
+                                        >
+                                            <Input
+                                                type="number"
+                                                placeholder="Price"
+                                                {...register(`purchase_order_item.${index}.price` as const, {
+                                                    valueAsNumber: true,
+                                                    min: 0
+                                                })}
+                                            />
+                                        </InputGroup>
+
+                                        <Float offsetX="7" placement={'top-start'} bg={customCardBg} px={1.5}>
+                                            <Text fontSize={'xs'} color={'fg.muted'}>
+                                                Price
+                                            </Text>
+                                        </Float>
+
+                                    </Box>
 
                                     <div className="flex justify-center">
                                         <Button 
@@ -536,7 +581,7 @@ const PurchaseOrderForm = () => {
                             type="submit" 
                             alignSelf="flex-start" 
                             disabled={!isDirty}
-                            loading={isCreating}
+                            loading={isWorking}
                             onClick={handleSubmit(onSubmit)} 
                         >
                             Create

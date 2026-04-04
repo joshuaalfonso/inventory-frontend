@@ -1,22 +1,24 @@
-import { PAGE_SIZE } from "@/lib/constants";
-import type { Suppliers } from "../../supplier.model"
 import { usePagination } from "@/shared/hooks/usePagination";
+import type { PurchaseOrders } from "../../purchaseOrder.model"
+import { PAGE_SIZE } from "@/lib/constants";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
-import SupplierTableRow from "./SupplierTableRow";
-import { useSupplierDialogStore } from "../../hooks/useSupplierDialogStore";
+import PurchaseOrderTableRow from "./PurchaseOrderTableRow";
+import { useNavigate } from "react-router-dom";
 
 
 interface Props {
-    suppliers: Suppliers[]
+    purchaseOrders: PurchaseOrders[]
 }
 
-const SupplierTable = ({ suppliers }: Props) => {
+const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
 
-    console.log('supplier table')
-    
-    const filteredSuppliers = suppliers;
+
+    console.log('purchase order table')
+    const navigate = useNavigate();
+        
+    const filteredPurchaseOrders = purchaseOrders;
     
     const {
         paginatedData,
@@ -24,11 +26,10 @@ const SupplierTable = ({ suppliers }: Props) => {
         totalPages,
         nextPage,
         prevPage
-    } = usePagination(filteredSuppliers, PAGE_SIZE);
+    } = usePagination(filteredPurchaseOrders, PAGE_SIZE);
 
-    const openDialog = useSupplierDialogStore(state => state.openDialog);
     const customCardBg = useColorModeValue('white', 'bg.subtle');
-    
+
     return (
         <>
             <Box
@@ -60,11 +61,11 @@ const SupplierTable = ({ suppliers }: Props) => {
                     <Button 
                         size={'sm'}
                         variant={'solid'}
-                        onClick={() => openDialog(null)}
+                        // onClick={() => openDialog(null)}
+                        onClick={() => navigate('new')}
                     >
                         Create
                     </Button>
-                    {/* <CreateItemTypeButton /> */}
                 </Box>
 
 
@@ -72,18 +73,19 @@ const SupplierTable = ({ suppliers }: Props) => {
                     <Table.Header>
                         <Table.Row bg={customCardBg}>
                             <Table.ColumnHeader>#</Table.ColumnHeader>
+                            {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
+                            <Table.ColumnHeader>PO #</Table.ColumnHeader>
                             <Table.ColumnHeader>Supplier</Table.ColumnHeader>
-                            <Table.ColumnHeader>Address</Table.ColumnHeader>
-                            <Table.ColumnHeader>Contact Person</Table.ColumnHeader>
-                            <Table.ColumnHeader>Contact #</Table.ColumnHeader>
+                            <Table.ColumnHeader>PR #</Table.ColumnHeader>
+                            <Table.ColumnHeader>Total Price</Table.ColumnHeader>
                             <Table.ColumnHeader>Created At</Table.ColumnHeader>
                             <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
                         {paginatedData?.map((item, index) => (
-                            <SupplierTableRow 
-                                key={item.supplier_id}
+                            <PurchaseOrderTableRow 
+                                key={item.purchase_order_id}
                                 row={item} 
                                 index={(currentPage - 1) * PAGE_SIZE + index + 1}
                             />
@@ -133,7 +135,6 @@ const SupplierTable = ({ suppliers }: Props) => {
 
         </>
     )
-
 }
 
-export default SupplierTable
+export default PurchaseOrderTable

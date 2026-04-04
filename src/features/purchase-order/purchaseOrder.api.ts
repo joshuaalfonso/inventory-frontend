@@ -15,6 +15,14 @@ export const getPurchaseOrderApi = async () => {
 };
 
 
+export const getSinglePurchaseOrderApi = async (purchase_order_id: number) => {
+    const { data } = await api.get<PurchaseOrders>(
+        `${TABLE_NAME}/${purchase_order_id}`
+    );
+    return data;
+};
+
+
 export const createPurchaseOrderApi = async (newItem: CreatePurchaseOrder) => {
     const { data } = await api.post<ApiResponse>(
         `${TABLE_NAME}`,
