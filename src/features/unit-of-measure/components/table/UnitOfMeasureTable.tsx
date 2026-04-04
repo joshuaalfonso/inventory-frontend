@@ -5,6 +5,7 @@ import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
 import UnitOfMeasureTableRow from "./UnitOfMeasureTableRow";
+import { useUnitOfMeasureDialogStore } from "../../hooks/useUnitOfMeasureDialogStore";
 
 
 interface Props {
@@ -23,7 +24,7 @@ const UnitOfMeasureTable = ({ unitOfMeasures }: Props) => {
         prevPage
     } = usePagination(filteredBrands, PAGE_SIZE);
 
-    // const openDialog = useItemTypeDialogStore(state => state.openDialog);
+    const openDialog = useUnitOfMeasureDialogStore(state => state.openDialog);
     const customCardBg = useColorModeValue('white', 'bg.subtle');
 
     return (
@@ -54,13 +55,13 @@ const UnitOfMeasureTable = ({ unitOfMeasures }: Props) => {
                         // }}
                     />
                     </InputGroup>
-                    {/* <Button 
+                    <Button 
                         size={'sm'}
                         variant={'solid'}
                         onClick={() => openDialog(null)}
                     >
                         Create
-                    </Button> */}
+                    </Button>
                     {/* <CreateItemTypeButton /> */}
                 </Box>
 

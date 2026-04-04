@@ -2,6 +2,8 @@ import { useColorModeValue } from "@/components/ui/color-mode"
 import Sidebar from "./Sidebar"
 import { Outlet } from "react-router-dom"
 import { Box } from "@chakra-ui/react"
+import '../bones/registry';
+
 
 const Layout = () => {
 
@@ -17,7 +19,7 @@ const Layout = () => {
         <Sidebar />
 
         <div 
-            className="flex-1 py-5! px-16!"
+            className="flex-1 py-5! px-8! md:px-16!"
         >
             <Outlet />
         </div>

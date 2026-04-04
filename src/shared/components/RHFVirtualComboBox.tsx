@@ -2,9 +2,9 @@ import { Combobox, useFilter, useListCollection } from "@chakra-ui/react"
 import { useVirtualizer } from "@tanstack/react-virtual"
 import { useMemo, useRef } from "react"
 import { flushSync } from "react-dom"
-import { Controller, type RegisterOptions } from "react-hook-form"
+import { Controller, type FieldValues, type RegisterOptions } from "react-hook-form"
 
-interface RHFVirtualComboBoxProps<T> {
+interface RHFVirtualComboBoxProps<T extends FieldValues> {
     name: string
     control: any
     items: T[]
@@ -16,7 +16,7 @@ interface RHFVirtualComboBoxProps<T> {
 
 }
 
-const RHFVirtualComboBox = <T,> ({ 
+const RHFVirtualComboBox = <T extends FieldValues> ({ 
     name,
     control,
     items,
@@ -67,6 +67,7 @@ const RHFVirtualComboBox = <T,> ({
                 return (
                     <div className="w-full">
                         <Combobox.Root
+                            key={name}
                             collection={collection}
                             // value={field.value ? [String(field.value)] : []}
                             value={field.value !== undefined && field.value !== null
@@ -98,6 +99,7 @@ const RHFVirtualComboBox = <T,> ({
                                     maxH="200px"
                                     overflowY="auto"
                                 >
+                                    <Combobox.Empty>No items found</Combobox.Empty>
                                     <div
                                         style={{
                                         height: `${virtualizer.getTotalSize()}px`,

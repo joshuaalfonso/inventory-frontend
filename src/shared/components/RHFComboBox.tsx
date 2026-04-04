@@ -7,11 +7,10 @@ import {
   useListCollection,
   Field,
 } from "@chakra-ui/react"
+import { useMemo } from "react"
 import {
   Controller,
-  type Control,
   type FieldValues,
-  type Path,
   type RegisterOptions,
 } from "react-hook-form"
 
@@ -20,18 +19,18 @@ import {
 //   value: string
 // }
 
-type RHFComboboxProps<T extends FieldValues, TItem> = {
-    name: Path<T>
-    control: Control<T>
+type RHFComboboxProps<T extends FieldValues> = {
+    name: string
+    control: any
     label?: string
     placeholder?: string
-    items: TItem[]
-    getLabel: (item: TItem) => string
-    getValue: (item: TItem) => number
-    rules?: RegisterOptions<T, Path<T>>
+    items: T[]
+    getLabel: (item: T) => string
+    getValue: (item: T) => string | number
+    rules?: RegisterOptions
 }
 
-export function RHFCombobox<T extends FieldValues, TItem>({
+export function RHFCombobox<T extends FieldValues>({
     name,
     control,
     label,
@@ -40,17 +39,21 @@ export function RHFCombobox<T extends FieldValues, TItem>({
     getLabel,
     getValue,
     rules,
-}: RHFComboboxProps<T, TItem>) {
+}: RHFComboboxProps<T>) {
   const { contains } = useFilter({ sensitivity: "base" });
 
-    const normalizedItems = items.map((item) => ({
-        label: getLabel(item),
-        value: getValue(item),
-    }))
+    // const normalizedItems = items.map((item) => ({
+    //     label: getLabel(item),
+    //     value: getValue(item),
+    // }))
+
+    const stableItems = useMemo(() => items ?? [], [items]);
 
     const { collection, filter } = useListCollection({
-        initialItems: normalizedItems,
+        initialItems: stableItems,
         filter: contains,
+        itemToString: getLabel,
+        itemToValue: (item) => String(getValue(item)),
     })
 
   return (
@@ -64,9 +67,18 @@ export function RHFCombobox<T extends FieldValues, TItem>({
 
           <Combobox.Root
             collection={collection}
-            value={field.value ? [field.value] : []}
-            onValueChange={(e) => field.onChange(e.value[0] ?? "")}
+            // value={field.value ? [field.value] : []}
+            // onValueChange={(e) => field.onChange(e.value[0] ?? "")}
+            value={field.value !== undefined && field.value !== null
+              ? [String(field.value)]
+              : []
+            }
+            onValueChange={(details) => {
+                  const val = details.value[0]
+                  field.onChange(val ? Number(val) : 0)
+              }}
             onInputValueChange={(e) => filter(e.inputValue)}
+            lazyMount
           >
             <Combobox.Control>
               <Combobox.Input placeholder={placeholder} />
@@ -82,8 +94,8 @@ export function RHFCombobox<T extends FieldValues, TItem>({
                   <Combobox.Empty>No items found</Combobox.Empty>
 
                   {collection.items.map((item) => (
-                    <Combobox.Item item={item} key={item.value}>
-                      {item.label}
+                    <Combobox.Item item={item} key={getValue(item)}>
+                      {getLabel(item)}
                       <Combobox.ItemIndicator />
                     </Combobox.Item>
                   ))}

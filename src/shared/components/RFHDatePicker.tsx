@@ -24,7 +24,7 @@ export function RHFDatePicker<T extends FieldValues>({
       name={name} 
       control={control}
       rules={rules}
-      render={({ field, fieldState }) => (
+      render={({ field }) => (
         <div className="w-full">
           <DatePicker.Root
             {...field}

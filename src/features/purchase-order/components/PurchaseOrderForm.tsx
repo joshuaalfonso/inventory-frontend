@@ -1,23 +1,29 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
+import { useEmployees } from "@/features/employee/hooks/useEmployee";
 import { useItems } from "@/features/item/hooks/useItem";
 import { useSuppliers } from "@/features/supplier/hooks/useSuppliers";
 import ReusableEmptyState from "@/shared/components/ReusableEmptyState";
 import { RHFDatePicker } from "@/shared/components/RFHDatePicker";
+import { RHFCombobox } from "@/shared/components/RHFComboBox";
+// import { RHFCombobox } from "@/shared/components/RHFComboBox";
 import RHFVirtualComboBox from "@/shared/components/RHFVirtualComboBox";
 import { Box, Button, Combobox, Field, Fieldset, Heading, Input, InputGroup, Portal, Separator, Stack, Text, useFilter, useListCollection } from "@chakra-ui/react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { useMemo, useRef } from "react";
 import { flushSync } from "react-dom";
 import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
-import {  LuPhilippinePeso, LuSearch, LuTrash2, LuWeight } from "react-icons/lu";
+import {  LuPhilippinePeso, LuSearch, LuSigma, LuTrash2 } from "react-icons/lu";
 import { useParams } from "react-router-dom";
-
+import { useCreatePurchaseOrder } from "../hooks/useCreatePurchaseOrder";
+import { toaster } from "@/components/ui/toaster";
+import { getApiErrorMessage } from "@/lib/errorMessage";
 
 
 
 interface PurchaseOrderItem {
   purchase_order_item_id: number;
   purchase_order_id: number;
+  employee_id: number;
   item_id: number;
   item_name: string;
   brand_name: string;
@@ -33,7 +39,7 @@ interface PurchaseOrderFormValues  {
   purchase_request_number: string;
   purchase_order_number: string;
   purchase_order_date: string;
-  supplier_id?: number;
+  supplier_id: number;
   purchase_order_item: PurchaseOrderItem[];
 };
 
@@ -50,6 +56,7 @@ const defaultItem = {
     purchase_order_item_id: 0, 
     purchase_order_id: 0, 
     item_id: 0,
+    employee_id: 0,
     ordered_quantity: 0,
     price: 0,
 }
@@ -58,6 +65,8 @@ const PurchaseOrderForm = () => {
 
     const { items } = useItems();
     const { suppliers } = useSuppliers();
+    const { employees } = useEmployees();
+    const { createPurchaseOrderMutation, isCreating } = useCreatePurchaseOrder();
 
     const { purchase_order_id } = useParams();
 
@@ -75,6 +84,32 @@ const PurchaseOrderForm = () => {
 
     const onSubmit: SubmitHandler<PurchaseOrderFormValues> = (data) => {
         console.log(data);
+
+        createPurchaseOrderMutation(
+            data,
+            {
+                onSuccess: (response) => {
+                    toaster.create({
+                        title: "Success!",
+                        description: response.message,
+                        closable: true,
+                        // type: 'success'
+                    })
+                    // closeDialog();
+                    // reset(defaultValue);
+                },
+                onError: (err) => {
+                    console.error(err);
+                    toaster.create({
+                        title: "Oops!",
+                        description: getApiErrorMessage(err),
+                        closable: true,
+                        // type: 'error'
+                    })
+                }
+            }
+        )
+
     };
 
      const contentRef = useRef<HTMLDivElement | null>(null)
@@ -250,12 +285,14 @@ const PurchaseOrderForm = () => {
                             <Field.Label>Items</Field.Label>
                             {/* <Input name="name" /> */}
                             <Combobox.Root
+                                key="item-combobox"
                                 collection={collection}
                                 onInputValueChange={(e) => filter(e.inputValue)}
                                 scrollToIndexFn={handleScrollToIndexFn}
                                 width=""
                                 openOnClick
                                 mt={2}
+                                variant={'subtle'}
                             >
                             {/* <Combobox.Label>Select</Combobox.Label> */}
                             <Combobox.Control>
@@ -269,6 +306,7 @@ const PurchaseOrderForm = () => {
                             <Portal>
                                 <Combobox.Positioner>
                                 <Combobox.Content ref={contentRef}>
+                                    <Combobox.Empty>No items found</Combobox.Empty>
                                     <div
                                     style={{
                                         height: `${virtualizer.getTotalSize()}px`,
@@ -308,7 +346,7 @@ const PurchaseOrderForm = () => {
                                             }}
                                         >
                                             <Combobox.ItemText truncate>   
-                                                {item.item_name}
+                                                {item.item_name} - {item.brand_name}
                                             </Combobox.ItemText>
                                             <Combobox.ItemIndicator />
                                         </Combobox.Item>
@@ -321,7 +359,7 @@ const PurchaseOrderForm = () => {
                             </Combobox.Root>
 
                             {fields.map((field, index) => (
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 border-b! last:border-b-0! py-6! w-full">
+                                <div key={field.id} className="grid grid-cols-1 md:grid-cols-5 gap-4 border-b! border-dashed last:border-b-0! py-6! w-full">
                                     
                                     <div>
                                         <h1 className="flex-1 my-auto! text-sm!">
@@ -344,9 +382,38 @@ const PurchaseOrderForm = () => {
                                         </Stack>
                                     </div>
 
+                                    <div>
+                                        <RHFCombobox 
+                                            name={`purchase_order_item.${index}.employee_id` as const}
+                                            control={control}
+                                            items={employees ?? []}
+                                            label=""
+                                            rules={{ 
+                                                required: "Employee is required", 
+                                                validate: value => value != 0 || "Employee is required" 
+                                            }}
+                                            placeholder="Employee"
+                                            getLabel={(item) => item.employee_name}
+                                            getValue={(item) => item.employee_id}
+                                        />
+                                        {/* <RHFVirtualComboBox
+                                            name={`purchase_order_item.${index}.employee_id` as const}
+                                            control={control}
+                                            items={employees ?? []}
+                                            label="Item"
+                                            rules={{ 
+                                                required: "Employee is required", 
+                                                validate: value => value != 0 || "Employee is required" 
+                                            }}
+                                            placeholder="Employee"
+                                            itemToLabel={(item) => item.employee_name}
+                                            itemToValue={(item) => item.employee_id}
+                                        /> */}
+                                    </div>
+
 
                                     <InputGroup 
-                                        startElement={<LuWeight />} 
+                                        startElement={<LuSigma />} 
                                         endElement={<span className="uppercase">{field.unit_of_measure_name}</span>}
                                     >
                                         <Input
@@ -469,6 +536,7 @@ const PurchaseOrderForm = () => {
                             type="submit" 
                             alignSelf="flex-start" 
                             disabled={!isDirty}
+                            loading={isCreating}
                             onClick={handleSubmit(onSubmit)} 
                         >
                             Create

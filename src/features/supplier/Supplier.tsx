@@ -1,4 +1,4 @@
-import LoadingSpinner from "@/shared/components/LoadingSpinner";
+// import LoadingSpinner from "@/shared/components/LoadingSpinner";
 import { useSuppliers } from "./hooks/useSuppliers";
 import { Alert, Button, Heading } from "@chakra-ui/react";
 import { getApiErrorMessage } from "@/lib/errorMessage";
@@ -7,8 +7,6 @@ import SupplierTable from "./components/table/SupplierTable";
 import { useSupplierDialogStore } from "./hooks/useSupplierDialogStore";
 import SupplierDialog from "./components/dialog/SupplierDialog";
 
-
-
 const Supplier = () => {
 
 
@@ -16,7 +14,7 @@ const Supplier = () => {
 
   const openDialog = useSupplierDialogStore(state => state.openDialog);
 
-  if (isPending) return <LoadingSpinner />;
+  // if (isPending) return <LoadingSpinner />;
 
   if (error) return (
     <Alert.Root status="error" mt={10}>
@@ -40,7 +38,7 @@ const Supplier = () => {
         Supplier
       </Heading>
 
-      {suppliers?.length === 0 && (
+      {suppliers?.length === 0 && !isPending && (
         <ReusableEmptyState>
           {/* <CreateItemTypeButton /> */}
           <Button onClick={() => openDialog()}>
@@ -49,7 +47,7 @@ const Supplier = () => {
         </ReusableEmptyState>
       ) }
 
-      {(suppliers ?? []).length > 0 && (
+      {(suppliers ?? []).length > 0 && !isPending && (
         <SupplierTable
           suppliers={suppliers ?? []} 
         />
