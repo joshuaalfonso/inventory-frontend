@@ -12,15 +12,15 @@ import { useCallback, useEffect, useMemo } from "react";
 import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 import { LuMoveLeft } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router-dom";
-import { useCreatePurchaseOrder } from "../hooks/useCreatePurchaseOrder";
 import { toaster } from "@/components/ui/toaster";
 import { getApiErrorMessage } from "@/lib/errorMessage";
-import { useSinglePurchaseOrder } from "../hooks/useSinglePurchaseOrder";
 import LoadingSpinner from "@/shared/components/LoadingSpinner";
-import { useUpdatePurchaseOrder } from "../hooks/useUpdatePurchaseOrder";
-import PurchaseOrderItemRow from "../components/form/PurchaseOrderItemRow";
-import ItemSelector from "../components/form/ItemSelector";
 import type { Items } from "@/features/item/item.model";
+import { useCreatePurchaseOrder } from "../../hooks/useCreatePurchaseOrder";
+import { useUpdatePurchaseOrder } from "../../hooks/useUpdatePurchaseOrder";
+import { useSinglePurchaseOrder } from "../../hooks/useSinglePurchaseOrder";
+import ItemSelector from "./ItemSelector";
+import PurchaseOrderItemRow from "./PurchaseOrderItemRow";
 
 
 
@@ -316,7 +316,7 @@ const PurchaseOrderForm = () => {
                         <Field.Root>
                             <Field.Label>Items</Field.Label>
 
-                            <ItemSelector 
+                            <ItemSelector
                                 items={items ?? []} 
                                 onSelect={handleSelectItem} 
                             />

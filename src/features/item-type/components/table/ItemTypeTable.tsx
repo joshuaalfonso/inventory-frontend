@@ -19,16 +19,16 @@ const ItemTypeTable = ({itemTypes}: Props) => {
 
     const filteredBrands = itemTypes;
     
-        const {
-            paginatedData,
-            currentPage,
-            totalPages,
-            nextPage,
-            prevPage
-        } = usePagination(filteredBrands, PAGE_SIZE);
-    
-        // const openDialog = useItemTypeDialogStore(state => state.openDialog);
-        const customCardBg = useColorModeValue('white', 'bg.subtle');
+    const {
+        paginatedData,
+        currentPage,
+        totalPages,
+        nextPage,
+        prevPage
+    } = usePagination(filteredBrands, PAGE_SIZE);
+
+    // const openDialog = useItemTypeDialogStore(state => state.openDialog);
+    const customCardBg = useColorModeValue('white', 'bg.subtle');
 
     return (
         <>

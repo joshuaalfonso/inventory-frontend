@@ -48,6 +48,7 @@ const ItemSelector: React.FC<Props> = ({ items, onSelect }) => {
       onInputValueChange={(e) => filter(e.inputValue)}
       scrollToIndexFn={handleScrollToIndexFn}
       openOnClick
+      variant={'subtle'}
     >
         <Combobox.Control>
             <Combobox.Input placeholder="Search item..." />

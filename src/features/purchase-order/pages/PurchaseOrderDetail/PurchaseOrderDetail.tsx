@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { useSinglePurchaseOrder } from "../hooks/useSinglePurchaseOrder";
+import { useSinglePurchaseOrder } from "../../hooks/useSinglePurchaseOrder";
 import LoadingSpinner from "@/shared/components/LoadingSpinner";
-import { Box, Button, DataList, FormatNumber, Heading, Separator, Stack, Text } from "@chakra-ui/react";
+import { Box, Button, DataList, FormatNumber, Heading, Separator, Text } from "@chakra-ui/react";
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { LuMoveLeft, LuPhilippinePeso } from "react-icons/lu";
+import { LuMoveLeft } from "react-icons/lu";
+import PurchaseOrderDetailList from "./PurchaseOrderDetailList";
 
 
 const PurchaseOrderDetail = () => {
@@ -23,7 +24,7 @@ const PurchaseOrderDetail = () => {
 
     if (isPurchaseOrderLoading && purchase_order_id) return <LoadingSpinner />;
 
-    if (error) return <span>Error...</span>;
+    if (error) return <span>Failed to load...</span>;
 
     if (!purchaseOrder) return <span>No data found</span>
 
@@ -75,71 +76,16 @@ const PurchaseOrderDetail = () => {
 
                     <Separator />
 
-                    <ul>
-                        {(purchaseOrder?.purchase_order_item ?? []).map((item) => (
-                            <li key={item.purchase_order_item_id} className="grid grid-cols-1 md:grid-cols-5 gap-4 border-b! border-dashed last:border-b-0! py-4! w-full">
+       
 
-
-                                {/* <span className="my-auto!">{index + 1}</span> */}
-
-
-                                <div>
-                                    <h1 className="flex-1 my-auto! text-sm!">
-                                        {item.item_name} - {item.brand_name}
-                                    </h1>
-                                    <Stack direction={'row'}>
-                                        <Text 
-                                            color={'fg.muted'} 
-                                            fontSize={'xs'}
-                                        >
-                                            {item.category_name}
-                                        </Text>
-                                        <Separator orientation="vertical" />
-                                        <Text 
-                                            color={'fg.muted'} 
-                                            fontSize={'xs'}
-                                        >
-                                            {item.item_type_name}
-                                        </Text>
-                                    </Stack>
-                                </div>
-
-                                <Stack gap={0}>
-                                    <Text fontSize={'sm'}>
-                                        {item.employee_name}
-                                    </Text>
-                                    <Text 
-                                        fontSize={'xs'} 
-                                        color={'fg.muted'}
-                                    >
-                                        {item.department_name}
-                                    </Text>
-                                </Stack>
-
-                                <Stack direction={'row'} alignItems={'center'}>
-                                    <Text fontSize={'sm'}>
-                                        <FormatNumber value={item.ordered_quantity || 0} />
-                                    </Text>
-                                    <Text fontSize={'sm'}>{item.unit_of_measure_name}</Text>
-                                </Stack>
-
-                                <Stack direction={'row'} alignItems={'center'}>
-                                    <Text fontSize={'sm'}><LuPhilippinePeso /></Text>
-                                    <Text fontSize={'sm'}>
-                                        <FormatNumber value={item.price || 0} />
-                                    </Text>
-                                </Stack>
-
-                                <Stack direction={'row'} alignItems={'center'}>
-                                    <Text fontSize={'sm'}><LuPhilippinePeso /></Text>
-                                    <Text fontSize={'sm'}>
-                                        <FormatNumber value={(item.ordered_quantity || 0) * (item.price || 0)} />
-                                    </Text>
-                                </Stack>
-
-                            </li>
-                        ))}
-                    </ul>
+                    <div>
+                        <Heading fontSize={'sm'} color={'fg.muted'}>
+                            Items
+                        </Heading>
+                        <PurchaseOrderDetailList 
+                            purchaseOrder={purchaseOrder} 
+                        />
+                    </div>
 
                     <Separator />
 
@@ -178,12 +124,8 @@ const PurchaseOrderDetail = () => {
 
                 </Box>
 
-
-
             </Box>
 
-
-        
         </>
     )
 

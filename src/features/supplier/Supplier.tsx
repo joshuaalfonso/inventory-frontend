@@ -1,4 +1,4 @@
-// import LoadingSpinner from "@/shared/components/LoadingSpinner";
+import LoadingSpinner from "@/shared/components/LoadingSpinner";
 import { useSuppliers } from "./hooks/useSuppliers";
 import { Alert, Button, Heading } from "@chakra-ui/react";
 import { getApiErrorMessage } from "@/lib/errorMessage";
@@ -14,7 +14,7 @@ const Supplier = () => {
 
   const openDialog = useSupplierDialogStore(state => state.openDialog);
 
-  // if (isPending) return <LoadingSpinner />;
+  if (isPending) return <LoadingSpinner />;
 
   if (error) return (
     <Alert.Root status="error" mt={10}>

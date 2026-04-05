@@ -13,8 +13,8 @@ import { Toaster } from "@/components/ui/toaster";
 import SileoToaster from "./shared/components/SileoToaster"
 import Department from "./features/department/Department"
 import PurchaseOrder from "./features/purchase-order/PurchaseOrder"
-import PurchaseOrderForm from "./features/purchase-order/pages/PurchaseOrderForm"
-import PurchaseOrderDetail from "./features/purchase-order/pages/PurchaseOrderDetail"
+import PurchaseOrderDetail from "./features/purchase-order/pages/PurchaseOrderDetail/PurchaseOrderDetail"
+import PurchaseOrderForm from "./features/purchase-order/pages/PurchaseOrderForm/PurchaseOrderForm"
 
 
 function App() {
