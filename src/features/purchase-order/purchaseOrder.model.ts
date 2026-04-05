@@ -6,6 +6,8 @@ interface PurchaseOrderItem {
   purchase_order_item_id: number;
   purchase_order_id: number;
   employee_id: number;
+  employee_name: string;
+  department_name: string;
   item_id: number;
   item_name: string;
   brand_name: string;

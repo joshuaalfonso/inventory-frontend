@@ -2,7 +2,7 @@ import { Button, FormatNumber, Menu, Portal, Stack, Table, Text } from "@chakra-
 import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { displayDate, displayDateTime } from "@/lib/dateFormat";
-import { LuEllipsis, LuPencil, LuPhilippinePeso } from "react-icons/lu";
+import { LuEllipsis, LuEye, LuPencil, LuPhilippinePeso } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 
 
@@ -49,6 +49,15 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                     <Portal>
                     <Menu.Positioner>
                         <Menu.Content>
+
+                        <Menu.Item 
+                            value="view_details" 
+                            onClick={() => navigate(`${row.purchase_order_id}`)}
+                            cursor={'pointer'}
+                        >
+                            <LuEye />
+                            View Details
+                        </Menu.Item>
 
                         <Menu.Item 
                             value="edit" 

@@ -12,7 +12,7 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import { useEffect, useMemo, useRef } from "react";
 import { flushSync } from "react-dom";
 import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
-import { LuSearch, LuTrash2 } from "react-icons/lu";
+import { LuMoveLeft, LuSearch, LuTrash2 } from "react-icons/lu";
 import { useNavigate, useParams } from "react-router-dom";
 import { useCreatePurchaseOrder } from "../hooks/useCreatePurchaseOrder";
 import { toaster } from "@/components/ui/toaster";
@@ -27,6 +27,8 @@ interface PurchaseOrderItem {
   purchase_order_item_id: number;
   purchase_order_id: number;
   employee_id: number;
+  employee_name: string;
+  department_name: string;
   item_id: number;
   item_name: string;
   brand_name: string;
@@ -106,10 +108,8 @@ const PurchaseOrderForm = () => {
                         title: "Success!",
                         description: response.message,
                         closable: true,
-                        // type: 'success'
+                        type: 'success'
                     })
-                    // closeDialog();
-                    // reset(defaultValue);
                     navigate('/purchase-order')
                 },
                 onError: (err) => {
@@ -118,7 +118,7 @@ const PurchaseOrderForm = () => {
                         title: "Oops!",
                         description: getApiErrorMessage(err),
                         closable: true,
-                        // type: 'error'
+                        type: 'error'
                     })
                 }
             }
@@ -189,11 +189,30 @@ const PurchaseOrderForm = () => {
 
                 <Fieldset.Root maxW="6xl" mx={'auto'}>
 
+                    <div className="flex">
+                        <Button 
+                            width={'auto'} 
+                            size={'xs'}
+                            variant={'plain'}
+                            color={'fg.muted'}
+                            px={0}
+                            gap={2}
+                            onClick={() => navigate(-1)}
+                        >
+                            <LuMoveLeft size={20} /> 
+                            Go back
+                        </Button>
+                    </div>
+
                     <Stack>
-                        <Fieldset.Legend fontSize={'md'}>Purchase Order Form</Fieldset.Legend>
+                        <Fieldset.Legend fontSize={'md'}>
+                            Purchase Order Form
+                        </Fieldset.Legend>
+
                         <Fieldset.HelperText>
                         Please provide order details below.
                         </Fieldset.HelperText>
+
                     </Stack>
 
                     <Fieldset.Content spaceY={4}>
@@ -359,6 +378,8 @@ const PurchaseOrderForm = () => {
                                             onClick={() => {
                                                 append({
                                                     ...defaultItem,
+                                                    employee_name: '',
+                                                    department_name: '',
                                                     item_id: item.item_id,
                                                     item_name: item.item_name,
                                                     brand_name: item.brand_name,
@@ -508,75 +529,9 @@ const PurchaseOrderForm = () => {
 
                         </Field.Root>
 
-
-                        {/* <Field.Root>
-                            <Field.Label>Items</Field.Label>
-                            {fields.map((field, index) => (
-                                <div key={field.id} className="flex gap-4 justify-between w-full">
-                                    <RHFVirtualComboBox
-                                        key={`purchase_item_${field.id}`}
-                                        name={`purchase_order_item.${index}.item_id` as const}
-                                        control={control}
-                                        items={items ?? []}
-                                        label="Item"
-                                        rules={{ 
-                                            required: "Item is required", 
-                                            validate: value => value != 0 || "Item is required" 
-                                        }}
-                                        placeholder="Search"
-                                        itemToLabel={(item) => item.item_name}
-                                        itemToValue={(item) => item.item_id}
-                                    />    
-
-                                    <Input
-                                        type="number"
-                                        placeholder="Qty"
-                                        {...register(`purchase_order_item.${index}.ordered_quantity` as const, {
-                                        valueAsNumber: true,
-                                        min: 1
-                                        })}
-                                    />
-
-                                    <Input
-                                        type="number"
-                                        placeholder="Price"
-                                        {...register(`purchase_order_item.${index}.price` as const, {
-                                        valueAsNumber: true,
-                                        min: 0
-                                        })}
-                                    />
-
-                                    <Button 
-                                        type="button" 
-                                        variant={'surface'} 
-                                        colorPalette={'red'}
-                                        onClick={() => remove(index)}
-                                    >
-                                        <LuTrash2 />
-                                    </Button>
-                                </div>
-                            ))}
-
-                            <Button
-                                type="button"
-                                variant={'surface'} 
-                                onClick={() =>
-                                    append({
-                                        ...defaultValues.purchase_order_item[0]
-                                    })
-                                }
-                                mt={4}
-                            >
-                                <LuPlus />
-                            </Button>
-
-                        </Field.Root> */}
-
-                       
-
                     </Fieldset.Content>
 
-                    <div className="flex justify-end">
+                    <div className="flex justify-end mt-10!">
                         <Button 
                             type="submit" 
                             alignSelf="flex-start" 
