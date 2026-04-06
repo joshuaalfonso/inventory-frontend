@@ -1,4 +1,4 @@
-import { usePagination } from "@/shared/hooks/usePagination";
+// import { usePagination } from "@/shared/hooks/usePagination";
 import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { PAGE_SIZE } from "@/lib/constants";
 import { useColorModeValue } from "@/components/ui/color-mode";
@@ -6,6 +6,7 @@ import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
 import PurchaseOrderTableRow from "./PurchaseOrderTableRow";
 import { useNavigate } from "react-router-dom";
+import { usePaginatedPurchaseOrders } from "../../hooks/usePaginatedPurchaseOrder";
 
 
 interface Props {
@@ -17,16 +18,26 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
 
     console.log('purchase order table')
     const navigate = useNavigate();
+
+    const { 
+        data, 
+        page, 
+        setPage,
+        searchInput,
+        setSearchInput
+    } = usePaginatedPurchaseOrders();
         
     const filteredPurchaseOrders = purchaseOrders;
+
+    console.log(filteredPurchaseOrders)
     
-    const {
-        paginatedData,
-        currentPage,
-        totalPages,
-        nextPage,
-        prevPage
-    } = usePagination(filteredPurchaseOrders, PAGE_SIZE);
+    // const {
+    //     paginatedData,
+    //     currentPage,
+    //     totalPages,
+    //     nextPage,
+    //     prevPage
+    // } = usePagination(filteredPurchaseOrders, PAGE_SIZE);
 
     const customCardBg = useColorModeValue('white', 'bg.subtle');
 
@@ -53,6 +64,8 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                     <Input
                         placeholder="Search keyword..."
                         size={'sm'}
+                        value={searchInput}
+                        onChange={(e) => setSearchInput(e.target.value)}
                         // onChange={(e) => {
                         //     setSearch(e.target.value)
                         // }}
@@ -83,16 +96,57 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {paginatedData?.map((item, index) => (
+                        {filteredPurchaseOrders?.map((item, index) => (
                             <PurchaseOrderTableRow 
                                 key={item.purchase_order_id}
                                 row={item} 
-                                index={(currentPage - 1) * PAGE_SIZE + index + 1}
+                                index={(page - 1) * PAGE_SIZE + index + 1}
                             />
                         ))}
                     </Table.Body>
                 </Table.Root>
-                { totalPages > 1 && (
+
+                {data!.totalPages > 1 && (
+                    <div 
+                        className="flex justify-end items-center"
+                    >
+                        <Box
+                            mt={4}
+                            display="flex"
+                            justifyContent="space-between"
+                            alignItems="center"
+                            gap={4}
+                        >
+                            <Button 
+                                size="xs" 
+                                variant={'ghost'}
+                                colorPalette={'gray'}
+                                onClick={() => setPage(page - 1)}
+                                disabled={page === 1}
+                            >
+                                <LuChevronLeft />
+                            </Button>
+
+                            <Box fontSize={'xs'}>
+                                Page {page} of {data!.totalPages}
+                            </Box>
+
+                            <Button 
+                                size="xs" 
+                                variant={'ghost'}
+                                colorPalette={'gray'}
+                                onClick={() => setPage(page + 1)}
+                                disabled={page === data!.totalPages}
+                            >
+                                <LuChevronRight />
+                            </Button>
+
+                        </Box>
+                    </div>
+                )}
+
+
+                {/* { totalPages > 1 && (
                     <div 
                         className="flex justify-end items-center"
                     >
@@ -129,7 +183,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
 
                         </Box>
                     </div>
-                ) }
+                ) } */}
 
             </Box>
 

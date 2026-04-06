@@ -1,14 +1,11 @@
 import { Alert, Button, Heading } from "@chakra-ui/react"
 import { useNavigate } from "react-router-dom"
-import { usePurchaseOrders } from "./hooks/usePurchaseOrders";
+// import { usePurchaseOrders } from "./hooks/usePurchaseOrders";
 import LoadingSpinner from "@/shared/components/LoadingSpinner";
 import { getApiErrorMessage } from "@/lib/errorMessage";
 import ReusableEmptyState from "@/shared/components/ReusableEmptyState";
 import PurchaseOrderTable from "./components/table/PurchaseOrderTable";
-
-
-
-
+import { usePaginatedPurchaseOrders } from "./hooks/usePaginatedPurchaseOrder";
 
 
 
@@ -17,8 +14,9 @@ const PurchaseOrder = () => {
 
   const navigate = useNavigate();
 
-  const { purchaseOrders, isPending, error } = usePurchaseOrders();
-  
+  // const { purchaseOrders, isPending, error } = usePurchaseOrders();
+
+  const { data, isPending, error } = usePaginatedPurchaseOrders();
 
   if (isPending) return <LoadingSpinner />;
 
@@ -44,7 +42,7 @@ const PurchaseOrder = () => {
         Purchase Order
       </Heading>
 
-      {purchaseOrders?.length === 0 && !isPending && (
+      {data.data?.length === 0 && !isPending && (
         <ReusableEmptyState>
           <Button onClick={()=> navigate(`new`)}>
             Create
@@ -52,9 +50,9 @@ const PurchaseOrder = () => {
         </ReusableEmptyState>
       ) }
 
-      {(purchaseOrders ?? []).length > 0 && !isPending && (
+      {(data.data ?? []).length > 0 && !isPending && (
         <PurchaseOrderTable
-          purchaseOrders={purchaseOrders ?? []} 
+          purchaseOrders={data.data ?? []} 
         />
       ) }
     

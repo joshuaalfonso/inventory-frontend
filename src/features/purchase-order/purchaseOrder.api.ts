@@ -5,11 +5,29 @@ import type { ApiResponse } from "@/shared/models/response";
 import type { CreatePurchaseOrder, PurchaseOrders } from "./purchaseOrder.model";
 
 
+export interface PaginatedPurchaseOrder {
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+  data: PurchaseOrders[]
+}
+
 const TABLE_NAME = 'purchase-order';
 
 export const getPurchaseOrderApi = async () => {
     const { data } = await api.get<PurchaseOrders[]>(
         `${TABLE_NAME}`
+    );
+    return data;
+};
+
+export const getPaginatedPurchaseOrderApi = async (params: any) => {
+    const { data } = await api.get<PaginatedPurchaseOrder>(
+        `${TABLE_NAME}/paginated`,
+        {
+            params
+        }
     );
     return data;
 };
