@@ -15,7 +15,6 @@ interface Props {
 
 const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
 
-
     console.log('purchase order table')
     const navigate = useNavigate();
 
@@ -27,18 +26,6 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
         setSearchInput
     } = usePaginatedPurchaseOrders();
         
-    const filteredPurchaseOrders = purchaseOrders;
-
-    console.log(filteredPurchaseOrders)
-    
-    // const {
-    //     paginatedData,
-    //     currentPage,
-    //     totalPages,
-    //     nextPage,
-    //     prevPage
-    // } = usePagination(filteredPurchaseOrders, PAGE_SIZE);
-
     const customCardBg = useColorModeValue('white', 'bg.subtle');
 
     return (
@@ -66,15 +53,11 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                         size={'sm'}
                         value={searchInput}
                         onChange={(e) => setSearchInput(e.target.value)}
-                        // onChange={(e) => {
-                        //     setSearch(e.target.value)
-                        // }}
                     />
                     </InputGroup>
                     <Button 
                         size={'sm'}
                         variant={'solid'}
-                        // onClick={() => openDialog(null)}
                         onClick={() => navigate('new')}
                     >
                         Create
@@ -96,7 +79,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {filteredPurchaseOrders?.map((item, index) => (
+                        {purchaseOrders?.map((item, index) => (
                             <PurchaseOrderTableRow 
                                 key={item.purchase_order_id}
                                 row={item} 
@@ -144,46 +127,6 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                         </Box>
                     </div>
                 )}
-
-
-                {/* { totalPages > 1 && (
-                    <div 
-                        className="flex justify-end items-center"
-                    >
-                        <Box
-                            mt={4}
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={4}
-                        >
-                            <Button 
-                                size="xs" 
-                                variant={'ghost'}
-                                colorPalette={'gray'}
-                                onClick={prevPage} 
-                                disabled={currentPage === 1}
-                            >
-                                <LuChevronLeft />
-                            </Button>
-
-                            <Box fontSize={'xs'}>
-                                Page {currentPage} of {totalPages}
-                            </Box>
-
-                            <Button 
-                                size="xs" 
-                                variant={'ghost'}
-                                colorPalette={'gray'}
-                                onClick={nextPage} 
-                                disabled={currentPage === totalPages}
-                            >
-                                <LuChevronRight />
-                            </Button>
-
-                        </Box>
-                    </div>
-                ) } */}
 
             </Box>
 

@@ -15,6 +15,9 @@ import Department from "./features/department/Department"
 import PurchaseOrder from "./features/purchase-order/PurchaseOrder"
 import PurchaseOrderDetail from "./features/purchase-order/pages/PurchaseOrderDetail/PurchaseOrderDetail"
 import PurchaseOrderForm from "./features/purchase-order/pages/PurchaseOrderForm/PurchaseOrderForm"
+import Incoming from "./features/incoming/Incoming"
+import IncomingForm from "./features/incoming/pages/Incoming-form/IncomingForm"
+import IncomingDetail from "./features/incoming/pages/incoming-detail/IncomingDetail"
 
 
 function App() {
@@ -41,6 +44,9 @@ function App() {
             <Route path="/purchase-order/:purchase_order_id" element={<PurchaseOrderDetail />} />
             <Route path="/purchase-order/new" element={<PurchaseOrderForm />} />
             <Route path="/purchase-order/:purchase_order_id/edit" element={<PurchaseOrderForm />} />
+            <Route path="/incoming" element={<Incoming />} />
+            <Route path="/incoming/:incoming_id" element={<IncomingDetail />} />
+             <Route path="/incoming/new" element={<IncomingForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

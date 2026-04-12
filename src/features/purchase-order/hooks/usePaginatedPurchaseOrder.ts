@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query"
 import { useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { getPaginatedPurchaseOrderApi } from "../purchaseOrder.api"
+import type { PoSortField } from "../purchaseOrder.model"
 
 
 
@@ -79,7 +80,7 @@ export const usePaginatedPurchaseOrders = () => {
     updateParams({ status: value, page: 1 })
   }
 
-  const setSort = (value: string) => {
+  const setSort = (value: PoSortField) => {
     updateParams({ sort: value })
   }
 

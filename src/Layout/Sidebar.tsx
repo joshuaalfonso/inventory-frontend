@@ -1,7 +1,7 @@
 import { useColorMode, useColorModeValue } from "@/components/ui/color-mode";
 import { Avatar, Box, Button, Heading, Menu, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { LuBox, LuChevronDown, LuCircleUser, LuEllipsisVertical, LuForklift, LuLayoutPanelLeft, LuMoon, LuShoppingCart, LuSun, LuTag } from "react-icons/lu"
+import { LuArrowUp10, LuBox, LuChevronDown, LuCircleUser, LuEllipsisVertical, LuForklift, LuLayoutPanelLeft, LuMoon, LuShoppingCart, LuSun, LuTag } from "react-icons/lu"
 import { NavLink } from "react-router-dom"
 
 
@@ -235,6 +235,7 @@ const Sidebar = () => {
                 </div>
 
                 <div>
+
                     <Heading
                         fontSize={'xs'}
                         color={'fg.muted'}
@@ -243,6 +244,7 @@ const Sidebar = () => {
                     >
                         Transaction
                     </Heading>
+
                     <ul className="flex flex-col gap-1.5 [&>li]:flex!">
                         <li>
                             <NavLink
@@ -255,7 +257,20 @@ const Sidebar = () => {
                                 Purchase Order
                             </NavLink>
                         </li>
+                        <li>
+                            <NavLink
+                                to="/incoming"
+                                className={({ isActive }) =>
+                                    `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                }
+                            >
+                                <LuArrowUp10 size={'21px'} className="text-teal-500!" />
+                                Incoming
+                            </NavLink>
+                        </li>
                     </ul>
+
+
                 </div>
             </div>
 

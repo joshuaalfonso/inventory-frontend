@@ -40,3 +40,12 @@ export interface CreatePurchaseOrder {
     supplier_id: number;
     purchase_order_item: PurchaseOrderItem[];
 }
+
+
+
+export type PoSortField =
+  | 'purchase_order_date'
+  | 'purchase_order_number'
+  | 'supplier_name'
+  | 'purchase_request_number'
+  | 'total_price'
