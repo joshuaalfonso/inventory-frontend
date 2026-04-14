@@ -252,16 +252,29 @@ const IncomingForm = () => {
                                     </Box>
 
                                     <Box position="relative">
-                                        <InputGroup endElement={<span>{field.unit_of_measure_name}</span>}>
-                                          <Input
-                                            type="number"
-                                            placeholder="Qty"
-                                            {...register(`incoming_item.${index}.received_quantity`, {
-                                              valueAsNumber: true,
-                                              min: 1
-                                            })}
-                                          />
+
+                                        <InputGroup endElement={<span>{field.unit_of_measure_name}</span>} >
+                                            <Input
+                                                type="number"
+                                                placeholder="Qty"
+                                                {...register(`incoming_item.${index}.received_quantity`, {
+                                                    valueAsNumber: true,
+                                                    min: {
+                                                        value: 1,
+                                                        message: "Minimum quantity is 1"
+                                                    },
+                                                    max: {
+                                                        value: field.ordered_quantity,
+                                                        message: `Cannot exceed ordered quantity (${field.ordered_quantity})`
+                                                    }
+                                                })}
+                                            />
                                         </InputGroup>
+                                        {errors.incoming_item?.[index]?.received_quantity && (
+                                            <Text color={'fg.error'} fontSize={'sm'} mt={1}>
+                                                {errors.incoming_item[index].received_quantity.message}
+                                            </Text>
+                                        )}
                                         <Float offsetX="10" placement={'top-start'} bg={customCardBg} px={1.5}>
                                           <Text fontSize={'xs'} color={'fg.muted'}>Received </Text>
                                         </Float>

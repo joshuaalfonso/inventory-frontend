@@ -33,6 +33,11 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                         <FormatNumber value={row.total_price} />
                     </Stack>
                 </Table.Cell>
+                <Table.Cell>
+                    <Stack direction={'row'} alignItems={'center'}>
+                        <FormatNumber value={row.total_delivered} />/<FormatNumber value={row.total_quantity} />
+                    </Stack>
+                </Table.Cell>
                 <Table.Cell>{displayDateTime(row.created_at)}</Table.Cell>
                 <Table.Cell textAlign="end">
                 

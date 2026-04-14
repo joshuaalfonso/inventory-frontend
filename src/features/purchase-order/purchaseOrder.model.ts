@@ -28,6 +28,7 @@ export interface PurchaseOrders {
   purchase_order_item: PurchaseOrderItem[];
   total_quantity: number;
   total_price: number;
+  total_delivered: number;
   created_at: string;
 };
 

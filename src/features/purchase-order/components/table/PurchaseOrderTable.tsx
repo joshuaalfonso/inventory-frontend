@@ -74,6 +74,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                             <Table.ColumnHeader>Supplier</Table.ColumnHeader>
                             <Table.ColumnHeader>PR #</Table.ColumnHeader>
                             <Table.ColumnHeader>Total Price</Table.ColumnHeader>
+                            <Table.ColumnHeader>Total Quantity</Table.ColumnHeader>
                             <Table.ColumnHeader>Created At</Table.ColumnHeader>
                             <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                         </Table.Row>
