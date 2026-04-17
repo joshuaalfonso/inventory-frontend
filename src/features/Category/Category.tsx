@@ -1,9 +1,9 @@
 import LoadingSpinner from "@/shared/components/LoadingSpinner";
-import { useCategories } from "./hooks/useCategories";
 import { Alert, Heading } from "@chakra-ui/react";
 import { getApiErrorMessage } from "@/lib/errorMessage";
 import CategoryTable from "./components/table/CategoryTable";
 import CategoryDialog from "./components/dialog/CategoryDialog";
+import { useCategories } from "./hooks/useCategories";
 
 
 

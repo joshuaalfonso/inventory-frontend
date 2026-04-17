@@ -10,6 +10,7 @@ import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 import { LuMoveLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { useCreateIncoming } from "../../hooks/useCreateIncoming";
+import AssetItemsField from "./components/AssetInputField";
 
 
 export interface IncomingItem {
@@ -62,10 +63,11 @@ const IncomingForm = () => {
 
     const { createIncomingMutation, isCreating } = useCreateIncoming();
 
-    const { control, handleSubmit, register, watch, formState: { errors, isDirty } } =
-    useForm<IncomingFormValues>({
-      defaultValues: defaultValues,
+    const form = useForm<IncomingFormValues>({
+    defaultValues,
     });
+
+    const { control, handleSubmit, register, setValue, watch, formState: { errors, isDirty } } = form;
 
     const { fields, replace } = useFieldArray({
         control,
@@ -86,7 +88,7 @@ const IncomingForm = () => {
     
         console.log(data)
 
-        createIncomingMutation(data)
+        // createIncomingMutation(data)
 
     };
 
@@ -103,11 +105,12 @@ const IncomingForm = () => {
 
         replace(mappedItems);
 
-    }, [selectedPO, purchaseOrder, replace])
+    }, [selectedPO, purchaseOrder, replace]);
 
 
     return (
         <>
+
                 
             <Heading
                 size={'md'} 
@@ -172,7 +175,7 @@ const IncomingForm = () => {
                                         validate: value => value != 0 || "PO is required" 
                                     }}
                                     placeholder="Search"
-                                    itemToLabel={(item) => item.purchase_order_number}
+                                    itemToLabel={(item) => `${item.purchase_order_number} - ${item.supplier_name}`}
                                     itemToValue={(item) => item.purchase_order_id}
                                 />    
                                 {errors.purchase_order_id?.message && (
@@ -279,8 +282,16 @@ const IncomingForm = () => {
                                           <Text fontSize={'xs'} color={'fg.muted'}>Received </Text>
                                         </Float>
                                       </Box>
+
+                                    <AssetItemsField
+                                        index={index}
+                                        control={control}
+                                        register={register}
+                                        itemType={field.item_type_name}
+                                        setValue={setValue}
+                                    />
                                 
-                                    </div>
+                                </div>
                             ))}
 
                             {fields.length === 0 && (

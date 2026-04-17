@@ -3,6 +3,7 @@ import { Avatar, Box, Button, Heading, Menu, Portal, Text } from "@chakra-ui/rea
 import { useState } from "react";
 import { LuArrowUp10, LuBox, LuChevronDown, LuCircleUser, LuEllipsisVertical, LuForklift, LuLayoutPanelLeft, LuMoon, LuShoppingCart, LuSun, LuTag } from "react-icons/lu"
 import { NavLink } from "react-router-dom"
+import SidebarSubLink from "./components/SidebarSubLink";
 
 
 const Sidebar = () => {
@@ -114,56 +115,31 @@ const Sidebar = () => {
                                 }`}
                             >
                                 <ul className="overflow-hidden ml-6! pl-6! space-y-1.5! border-l! border-red-200">
-                                    <li>
-                                        <NavLink 
-                                            to="/item"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            List
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink 
-                                            to="/brand"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            Brand
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink 
-                                            to="/category"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            Category
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink 
-                                            to="/item-type"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            Type
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink 
-                                            to="/unit-of-measure"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-1.5! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            Unit of Measure
-                                        </NavLink>
-                                    </li>
+                                    
+                                    <SidebarSubLink
+                                        to="/item"
+                                        label="List"
+                                    />
+                                    <SidebarSubLink 
+                                        to="/brand"
+                                        label="Brand"
+                                    />
+                                    <SidebarSubLink 
+                                        to="/category"
+                                        label="Category"
+                                    />
+
+                                    <SidebarSubLink 
+                                        to="/item-type"
+                                        label="Type"
+                                    />
+
+                                    <SidebarSubLink 
+                                        to="/unit-of-measure"
+                                        label="Unit of Measure"
+                                    />
+                                   
+                                    
                                 </ul>
                             </div>
 
@@ -194,26 +170,18 @@ const Sidebar = () => {
                                 }`}
                             >
                                 <ul className="overflow-hidden ml-6! pl-6! space-y-1.5! border-l! border-red-200">
-                                    <li>
-                                        <NavLink 
-                                            to="/employee"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            List
-                                        </NavLink>
-                                    </li>
-                                    <li>
-                                        <NavLink 
-                                            to="/department"
-                                            className={({ isActive }) =>
-                                            `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-xs! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                        }
-                                        >
-                                            Department
-                                        </NavLink>
-                                    </li>
+
+                                    <SidebarSubLink 
+                                        to="/employee"
+                                        label="List"
+                                    />
+
+                                    <SidebarSubLink 
+                                        to="/department"
+                                        label="Department"
+                                    />
+
+                                   
                                 </ul>
                             </div>
                         </li>
@@ -341,10 +309,6 @@ const Sidebar = () => {
                                     </>
                                 )}
                             </Menu.Item>
-                            {/* <Menu.Item value="new-file">New File...</Menu.Item>
-                            <Menu.Item value="new-win">New Window</Menu.Item>
-                            <Menu.Item value="open-file">Open File...</Menu.Item>
-                            <Menu.Item value="export">Export</Menu.Item> */}
                         </Menu.Content>
                         </Menu.Positioner>
                     </Portal>

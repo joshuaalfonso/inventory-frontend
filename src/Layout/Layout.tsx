@@ -1,8 +1,8 @@
 import { useColorModeValue } from "@/components/ui/color-mode"
-import Sidebar from "./Sidebar"
 import { Outlet } from "react-router-dom"
 import { Box } from "@chakra-ui/react"
 import '../bones/registry';
+import Sidebar from "./components/sidebar/Sidebar";
 
 
 const Layout = () => {
@@ -12,14 +12,14 @@ const Layout = () => {
 
   return (
     <Box 
-      className="min-h-svh flex" 
+      className="max-h-svh flex overflow-hidden" 
       bg={bg}
     >
 
         <Sidebar />
 
         <div 
-            className="flex-1 py-5! px-8! md:px-16!"
+            className="min-h-svh flex-1 py-5! px-8! md:px-16! overflow-auto"
         >
             <Outlet />
         </div>

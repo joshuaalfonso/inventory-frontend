@@ -1,12 +1,10 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import Layout from "./layout/Layout"
+import Layout from "./Layout/Layout"
 import Dashboard from "./features/dashboard/Dashboard"
 import Item from "./features/item/Item"
 import Auth from "./features/auth/Auth"
 import Supplier from "./features/supplier/Supplier"
 import Employee from "./features/employee/Employee"
-import Category from "./features/category/Category"
-import Brand from "./features/brand/Brand"
 import ItemType from "./features/item-type/ItemType"
 import UnitOfMeasure from "./features/unit-of-measure/UnitOfMeasure"
 import { Toaster } from "@/components/ui/toaster";
@@ -18,6 +16,8 @@ import PurchaseOrderForm from "./features/purchase-order/pages/PurchaseOrderForm
 import Incoming from "./features/incoming/Incoming"
 import IncomingForm from "./features/incoming/pages/Incoming-form/IncomingForm"
 import IncomingDetail from "./features/incoming/pages/incoming-detail/IncomingDetail"
+import Brand from "./features/Brand/Brand"
+import Category from "./features/Category/Category"
 
 
 function App() {

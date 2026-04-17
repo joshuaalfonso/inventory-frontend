@@ -22,3 +22,10 @@
 [data-sileo-toast] {
   z-index: 2000 !important;
 }
+
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
