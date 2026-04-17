@@ -1,6 +1,6 @@
 import { Box, Button, CloseButton, Dialog, Input, Portal, Text } from "@chakra-ui/react";
 import { Suspense, useEffect, useState } from "react";
-import { useFieldArray, useWatch, type Control, type UseFormRegister, type UseFormSetValue } from "react-hook-form";
+import { useFieldArray, useWatch, type Control, type Path, type UseFormRegister, type UseFormSetValue } from "react-hook-form";
 import type { IncomingFormValues } from "../IncomingForm";
 import SerialScanner from "./SerialScanner";
 import { LuScanBarcode } from "react-icons/lu";
@@ -13,10 +13,10 @@ interface Props {
   itemType: string;
 }
 
-const AssetItemsField = ({ index, control, register, itemType }: Props) => {
+const AssetItemsField = ({ index, control, register, itemType, setValue }: Props) => {
 
 
-    const [scannerOpen, setScannerOpen] = useState(false);
+  const [scannerOpen, setScannerOpen] = useState(false);
   const [activeAssetIndex, setActiveAssetIndex] = useState<number | null>(null);
 
   const { fields, replace } = useFieldArray({
@@ -34,8 +34,9 @@ const AssetItemsField = ({ index, control, register, itemType }: Props) => {
     assetIndex: number,
     value: string
   ) => {
+    console.log(value)
     setValue(
-      `incoming_item.${itemIndex}.asset_item.${assetIndex}.serial_number` as any,
+      `incoming_item.${itemIndex}.asset_item.${assetIndex}.serial_number` as Path<IncomingFormValues>,
       value,
       { shouldDirty: true }
     );
@@ -57,14 +58,19 @@ const AssetItemsField = ({ index, control, register, itemType }: Props) => {
   if (itemType !== "Asset") return null;
 
   return (
-    <Box mt={4} pl={6} borderLeft="2px solid" borderColor="border.muted" spaceY={3}>
+    <Box 
+      // mt={receivedQty > 0 ? 4 : 0 } 
+      borderLeft="2px solid" 
+      borderColor="border.muted" 
+      pl={4}
+    >
 
       {/* <Text fontSize="sm" mb={2}>
         Serial Numbers
       </Text> */}
 
       {fields.map((field, assetIndex) => (
-        <div key={field.id} className="flex items-center gap-3 mb-2">
+        <div key={field.id} className="flex items-center gap-3 w-full mt-6!">
 
           <Input
             placeholder="Serial Number"
@@ -72,7 +78,6 @@ const AssetItemsField = ({ index, control, register, itemType }: Props) => {
               `incoming_item.${index}.asset_item.${assetIndex}.serial_number`,
               { required: "Serial number is required" }
             )}
-            // w={500}
           />
 
 
@@ -86,7 +91,8 @@ const AssetItemsField = ({ index, control, register, itemType }: Props) => {
 
           <Button
             size="md"
-            variant={'subtle'}
+            variant={'surface'}
+            colorPalette={'gray'}
             onClick={() => {
               setActiveAssetIndex(assetIndex);
               setScannerOpen(true);

@@ -22,8 +22,18 @@ const SerialScanner = ({ onScanSuccess, onClose }: Props) => {
           onClose(); // auto close after scan
         }}
         onError={(err) => console.log(err)}
+        components={{
+            onOff: true,
+            torch: true,
+            zoom: true,
+            finder: true,
+          }}
+          formats={['code_128', 'qr_code']}
         constraints={{
           facingMode: "environment",
+          aspectRatio: 1, 
+          width: { ideal: 1920 },
+          height: { ideal: 1080 },
         }}
       />
 

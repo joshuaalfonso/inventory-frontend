@@ -76,7 +76,7 @@ const Dashboard = () => {
             width: { ideal: 1920 },
             height: { ideal: 1080 },
           }}
-           components={{
+          components={{
             tracker: highlightCodeOnCanvas,
             onOff: true,
             torch: true,

@@ -88,7 +88,7 @@ const IncomingForm = () => {
     
         console.log(data)
 
-        // createIncomingMutation(data)
+        createIncomingMutation(data)
 
     };
 
@@ -213,75 +213,79 @@ const IncomingForm = () => {
                             <Field.Label>Items</Field.Label>
 
                             {fields.map((field, index) => (
-                                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 border-b! border-dashed last:border-b-0! py-6! w-full" key={field.id}>
+                                <div key={field.id} className="border-b! border-dashed last:border-b-0! py-6! w-full ">
                                 
-                                    <div>
-                                        <h1 className="flex-1 my-auto! text-sm!">
-                                            {field.item_name} - {field.brand_name}
-                                        </h1>
-                                        <Stack direction={'row'}>
-                                            <Text fontSize={'xs'} color={'fg.muted'}>
-                                            {field.category_name}
-                                            </Text>
-                                            <Separator orientation="vertical" />
-                                            <Text fontSize={'xs'} color={'fg.muted'}>
-                                            {field.item_type_name}
-                                            </Text>
-                                        </Stack>
-                                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
                                 
-                                    <div>
-                                        <h1 className="flex-1 my-auto! text-sm!">
-                                            {field.employee_name} 
-                                        </h1>
-                                        <Text fontSize={'xs'} color={'fg.muted'}>{field.department_name}</Text>
-                                    </div>
-                                      
-                                    <Box position="relative">
-                                        <InputGroup endElement={<span>{field.unit_of_measure_name}</span>}>
-                                          <Input
-                                            type="number"
-                                            placeholder="Price"
-                                            {...register(`incoming_item.${index}.ordered_quantity`, {
-                                              valueAsNumber: true,
-                                              min: 0
-                                            })}
-                                            disabled 
-                                          />
-                                        </InputGroup>
-                                        <Float offsetX="9" placement={'top-start'} bg={customCardBg} px={1.5}>
-                                          <Text fontSize={'xs'} color={'fg.muted'}>Ordered</Text>
-                                        </Float>
-                                    </Box>
-
-                                    <Box position="relative">
-
-                                        <InputGroup endElement={<span>{field.unit_of_measure_name}</span>} >
+                                        <div>
+                                            <h1 className="flex-1 my-auto! text-sm!">
+                                                {field.item_name} - {field.brand_name}
+                                            </h1>
+                                            <Stack direction={'row'}>
+                                                <Text fontSize={'xs'} color={'fg.muted'}>
+                                                {field.category_name}
+                                                </Text>
+                                                <Separator orientation="vertical" />
+                                                <Text fontSize={'xs'} color={'fg.muted'}>
+                                                {field.item_type_name}
+                                                </Text>
+                                            </Stack>
+                                        </div>
+                                    
+                                        <div>
+                                            <h1 className="flex-1 my-auto! text-sm!">
+                                                {field.employee_name} 
+                                            </h1>
+                                            <Text fontSize={'xs'} color={'fg.muted'}>{field.department_name}</Text>
+                                        </div>
+                                        
+                                        <Box position="relative">
+                                            <InputGroup endElement={<span>{field.unit_of_measure_name}</span>}>
                                             <Input
                                                 type="number"
-                                                placeholder="Qty"
-                                                {...register(`incoming_item.${index}.received_quantity`, {
-                                                    valueAsNumber: true,
-                                                    min: {
-                                                        value: 1,
-                                                        message: "Minimum quantity is 1"
-                                                    },
-                                                    max: {
-                                                        value: field.ordered_quantity,
-                                                        message: `Cannot exceed ordered quantity (${field.ordered_quantity})`
-                                                    }
+                                                placeholder="Price"
+                                                {...register(`incoming_item.${index}.ordered_quantity`, {
+                                                valueAsNumber: true,
+                                                min: 0
                                                 })}
+                                                disabled 
                                             />
-                                        </InputGroup>
-                                        {errors.incoming_item?.[index]?.received_quantity && (
-                                            <Text color={'fg.error'} fontSize={'sm'} mt={1}>
-                                                {errors.incoming_item[index].received_quantity.message}
-                                            </Text>
-                                        )}
-                                        <Float offsetX="10" placement={'top-start'} bg={customCardBg} px={1.5}>
-                                          <Text fontSize={'xs'} color={'fg.muted'}>Received </Text>
-                                        </Float>
-                                      </Box>
+                                            </InputGroup>
+                                            <Float offsetX="9" placement={'top-start'} bg={customCardBg} px={1.5}>
+                                            <Text fontSize={'xs'} color={'fg.muted'}>Ordered</Text>
+                                            </Float>
+                                        </Box>
+
+                                        <Box position="relative">
+
+                                            <InputGroup endElement={<span>{field.unit_of_measure_name}</span>} >
+                                                <Input
+                                                    type="number"
+                                                    placeholder="Qty"
+                                                    {...register(`incoming_item.${index}.received_quantity`, {
+                                                        valueAsNumber: true,
+                                                        min: {
+                                                            value: 1,
+                                                            message: "Minimum quantity is 1"
+                                                        },
+                                                        max: {
+                                                            value: field.ordered_quantity,
+                                                            message: `Cannot exceed ordered quantity (${field.ordered_quantity})`
+                                                        }
+                                                    })}
+                                                />
+                                            </InputGroup>
+                                            {errors.incoming_item?.[index]?.received_quantity && (
+                                                <Text color={'fg.error'} fontSize={'sm'} mt={1}>
+                                                    {errors.incoming_item[index].received_quantity.message}
+                                                </Text>
+                                            )}
+                                            <Float offsetX="10" placement={'top-start'} bg={customCardBg} px={1.5}>
+                                            <Text fontSize={'xs'} color={'fg.muted'}>Received </Text>
+                                            </Float>
+                                        </Box>
+                                    
+                                    </div>
 
                                     <AssetItemsField
                                         index={index}
@@ -290,7 +294,7 @@ const IncomingForm = () => {
                                         itemType={field.item_type_name}
                                         setValue={setValue}
                                     />
-                                
+
                                 </div>
                             ))}
 
