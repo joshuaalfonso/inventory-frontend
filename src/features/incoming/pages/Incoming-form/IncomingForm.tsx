@@ -11,6 +11,8 @@ import { LuMoveLeft } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { useCreateIncoming } from "../../hooks/useCreateIncoming";
 import AssetItemsField from "./components/AssetInputField";
+import { toaster } from "@/components/ui/toaster";
+import { getApiErrorMessage } from "@/lib/errorMessage";
 
 
 export interface IncomingItem {
@@ -88,7 +90,29 @@ const IncomingForm = () => {
     
         console.log(data)
 
-        createIncomingMutation(data)
+        createIncomingMutation(
+            data,
+            {
+                onSuccess: (response) => {
+                    toaster.create({
+                        title: "Success!",
+                        description: response.message,
+                        closable: true,
+                        type: 'success'
+                    })
+                    navigate('/incoming')
+                },
+                onError: (err) => {
+                    console.error(err);
+                    toaster.create({
+                        title: "Oops!",
+                        description: getApiErrorMessage(err),
+                        closable: true,
+                        type: 'error'
+                    })
+                }
+            }
+        )
 
     };
 

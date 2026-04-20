@@ -3,12 +3,6 @@ import { useNavigate } from "react-router-dom"
 
 
 
-
-
-
-
-
-
 const Incoming = () => {
 
 
@@ -28,7 +22,6 @@ const Incoming = () => {
       <Button onClick={() => navigate('new')}>
         Create
       </Button>
-
     
     </>
   )
