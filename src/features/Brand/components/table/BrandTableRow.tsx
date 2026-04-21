@@ -4,7 +4,7 @@ import { LuEllipsis, LuPencil, LuTrash } from "react-icons/lu"
 import { useColorModeValue } from "@/components/ui/color-mode"
 import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
 import { useSoftDeleteBrand } from "../../hooks/useSoftDeleteBrand"
-import  { useState } from "react"
+import { useState } from "react"
 import { toaster } from "@/components/ui/toaster"
 import {  displayDateTime } from "@/lib/dateFormat"
 import { getApiErrorMessage } from "@/lib/errorMessage"
@@ -54,7 +54,7 @@ const BrandTableRow = ({row, index}: Props) => {
 
   return (
     <>
-      <Table.Row key={row.brand_id} bg={bg} color={'fg.muted'}>
+      <Table.Row key={row.brand_id} bg={bg} >
           <Table.Cell>{index}</Table.Cell>
           <Table.Cell>{row.brand_name}</Table.Cell>
           <Table.Cell>Eric Menk</Table.Cell>
@@ -119,3 +119,4 @@ const BrandTableRow = ({row, index}: Props) => {
 }
 
 export default BrandTableRow  
+// export default React.memo(BrandTableRow)  

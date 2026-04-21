@@ -1,9 +1,10 @@
 import { Box, Button, CloseButton, Dialog, Input, Portal, Text } from "@chakra-ui/react";
 import { Suspense, useEffect, useState } from "react";
-import { useFieldArray, useWatch, type Control, type Path, type UseFormRegister, type UseFormSetValue } from "react-hook-form";
+import { useFieldArray, useWatch, type Control, type FieldError, type Path, type UseFormRegister, type UseFormSetValue } from "react-hook-form";
 import type { IncomingFormValues } from "../IncomingForm";
 import SerialScanner from "./SerialScanner";
 import { LuScanBarcode } from "react-icons/lu";
+
 
 interface Props {
   index: number;
@@ -11,6 +12,7 @@ interface Props {
   register: UseFormRegister<IncomingFormValues>;
   setValue: UseFormSetValue<IncomingFormValues>;
   itemType: string;
+  error?: FieldError;
 }
 
 const AssetItemsField = ({ index, control, register, itemType, setValue }: Props) => {

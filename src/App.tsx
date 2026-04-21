@@ -1,5 +1,4 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import Layout from "./Layout/Layout"
 import Dashboard from "./features/dashboard/Dashboard"
 import Item from "./features/item/Item"
 import Auth from "./features/auth/Auth"
@@ -16,8 +15,11 @@ import PurchaseOrderForm from "./features/purchase-order/pages/PurchaseOrderForm
 import Incoming from "./features/incoming/Incoming"
 import IncomingForm from "./features/incoming/pages/Incoming-form/IncomingForm"
 import IncomingDetail from "./features/incoming/pages/incoming-detail/IncomingDetail"
-import Brand from "./features/Brand/Brand"
-import Category from "./features/Category/Category"
+import InventoryConsumable from "./features/inventory-consumable/InventoryConsumable"
+import InventoryAsset from "./features/inventory-asset/InventoryAsset"
+import Category from "./features/category/Category"
+import Brand from "./features/brand/Brand"
+import Layout from "./layout/Layout"
 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index  element={<Navigate to="/dashboard" />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/inventory-consumable" element={<InventoryConsumable />} />
+            <Route path="/inventory-asset" element={<InventoryAsset />} />
             <Route path="/item" element={<Item />} />
             <Route path="/brand" element={<Brand />} />
             <Route path="/category" element={<Category />} />

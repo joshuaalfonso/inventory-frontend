@@ -1,7 +1,7 @@
 import { useColorMode, useColorModeValue } from "@/components/ui/color-mode";
 import { Avatar, Box, Button, Heading, Menu, Portal, Text } from "@chakra-ui/react";
 import { useState } from "react";
-import { LuArrowUp10, LuBox, LuChevronDown, LuCircleUser, LuEllipsisVertical, LuForklift, LuLayoutPanelLeft, LuMoon, LuShoppingCart, LuSun, LuTag } from "react-icons/lu"
+import { LuArrowUp10, LuBox, LuBoxes, LuChevronDown, LuCircleUser, LuEllipsisVertical, LuForklift, LuLayoutPanelLeft, LuMoon, LuShoppingCart, LuSun, LuTag } from "react-icons/lu"
 import { NavLink } from "react-router-dom"
 import SidebarSubLink from "./components/SidebarSubLink";
 
@@ -43,6 +43,7 @@ const Sidebar = () => {
             <div className="space-y-6! flex-1">
 
                 <div>
+
                     <Heading
                         fontSize={'xs'}
                         color={'fg.muted'}
@@ -51,7 +52,9 @@ const Sidebar = () => {
                     >
                         Main
                     </Heading>
+
                     <ul className="flex flex-col gap-1.5 [&>li]:flex!">
+
                         <li>
                             <NavLink
                                 to="/dashboard"
@@ -63,7 +66,46 @@ const Sidebar = () => {
                                 Dashboard
                             </NavLink>
                         </li>
+
+                        <li className="flex flex-col">
+                            <a
+                                className="cursor-pointer flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!"
+                                onClick={() => toggle('inventory')}
+                            >
+                                <LuBoxes size={'21px'} className="text-teal-500!" />
+                                <span className="flex-1">Inventory</span>
+                                <LuChevronDown 
+                                    size={'19px'}
+                                    className={
+                                        `${open?.inventory ? '-rotate-90' : ''} transition-transform duration-100`
+                                    } 
+                                />
+                            </a>
+
+                            <div 
+                                className={`grid  ease-out duration-100 ${
+                                    open?.inventory ? 'grid-rows-[1fr] mt-1.5!' : 'grid-rows-[0fr]'
+                                }`}
+                            >
+                                <ul className="overflow-hidden ml-6! pl-6! space-y-1.5! border-l! border-red-200">
+                                    
+                                    <SidebarSubLink
+                                        to="/inventory-consumable"
+                                        label="Consumable"
+                                    />
+                                    <SidebarSubLink 
+                                        to="/inventory-asset"
+                                        label="Asset"
+                                    />
+                                    
+                                </ul>
+                            </div>
+
+                        </li>
+
+
                     </ul>
+
                 </div>
 
             

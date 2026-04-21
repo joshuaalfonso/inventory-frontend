@@ -5,10 +5,10 @@ import { PAGE_SIZE } from "@/lib/constants";
 import { useItemDialogStore } from "../../hooks/useItemDialogStore";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react";
-import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
+import { LuSearch } from "react-icons/lu";
 import ItemTableRow from "./ItemTableRow";
-
-
+import TablePagination from "@/shared/components/TablePagination";
+import TableCard from "@/shared/components/TableCard";
 
 
 interface Props {
@@ -44,14 +44,8 @@ const ItemTable = ({ items }: Props) => {
 
     return (
         <>
-            <Box
-                p={8}
-                borderWidth="1px"
-                borderColor="border.disabled"
-                color="fg.disabled"
-                rounded={'md'}
-                bg={bg}
-            >
+            
+            <TableCard>
 
                 <Box
                     mb={4} 
@@ -101,46 +95,15 @@ const ItemTable = ({ items }: Props) => {
                         ))}
                     </Table.Body>
                 </Table.Root>
-                { totalPages > 1 && (
-                    <div 
-                        className="flex justify-end items-center"
-                    >
-                        <Box
-                            mt={4}
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={4}
-                        >
-                            <Button 
-                                size="xs" 
-                                variant={'ghost'}
-                                colorPalette={'gray'}
-                                onClick={prevPage} 
-                                disabled={currentPage === 1}
-                            >
-                                <LuChevronLeft />
-                            </Button>
 
-                            <Box fontSize={'xs'}>
-                                Page {currentPage} of {totalPages}
-                            </Box>
+                <TablePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onNext={nextPage}
+                    onPrev={prevPage}
+                />
 
-                            <Button 
-                                size="xs" 
-                                variant={'ghost'}
-                                colorPalette={'gray'}
-                                onClick={nextPage} 
-                                disabled={currentPage === totalPages}
-                            >
-                                <LuChevronRight />
-                            </Button>
-
-                        </Box>
-                    </div>
-                ) }
-
-            </Box>
+            </TableCard>
 
         </>
     )

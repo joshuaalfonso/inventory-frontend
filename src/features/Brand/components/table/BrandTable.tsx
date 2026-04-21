@@ -1,13 +1,15 @@
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react"
-import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu"
-import type { Brands } from "../../brand.model"
+import { LuSearch } from "react-icons/lu"
 import BrandTableRow from "./BrandTableRow"
 import { useBrandDialogStore } from "../../hooks/useBrandDialogStore"
 import { useColorModeValue } from "@/components/ui/color-mode"
-import {  startTransition, useState, type ChangeEvent } from "react"
+import {   useState, type ChangeEvent } from "react"
 import { useBrandSearch } from "../../hooks/useBrandSearch"
 import { usePagination } from "@/shared/hooks/usePagination"
 import { PAGE_SIZE } from "@/lib/constants"
+import type { Brands } from "../../brand.model"
+import { useDebounce } from "@/shared/hooks/useDebounce"
+import TablePagination from "@/shared/components/TablePagination"
 
 
 interface Props {
@@ -20,7 +22,9 @@ const BrandTable = ({ brands }: Props) => {
 
     const [search, setSearch] = useState<string>('');
 
-    const filteredBrands = useBrandSearch(brands, search);
+    const debouncedSearch = useDebounce(search, 300);
+
+    const filteredBrands = useBrandSearch(brands, debouncedSearch);
 
     const {
         paginatedData,
@@ -35,19 +39,17 @@ const BrandTable = ({ brands }: Props) => {
 
     const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
-        startTransition(() => {
-            setSearch(value);
-        });
+        setSearch(value);
     };
 
     
     return (
         <>
+
             <Box
                 p={8}
                 borderWidth="1px"
                 borderColor="border.disabled"
-                color="fg.disabled"
                 rounded={'md'}
                 bg={bg}
             >
@@ -97,44 +99,13 @@ const BrandTable = ({ brands }: Props) => {
                         ))}
                     </Table.Body>
                 </Table.Root>
-                { totalPages > 1 && (
-                    <div 
-                        className="flex justify-end items-center"
-                    >
-                        <Box
-                            mt={4}
-                            display="flex"
-                            justifyContent="space-between"
-                            alignItems="center"
-                            gap={4}
-                        >
-                            <Button 
-                                size="xs" 
-                                variant={'ghost'}
-                                colorPalette={'gray'}
-                                onClick={prevPage} 
-                                disabled={currentPage === 1}
-                            >
-                                <LuChevronLeft />
-                            </Button>
 
-                            <Box fontSize={'xs'}>
-                                Page {currentPage} of {totalPages}
-                            </Box>
-
-                            <Button 
-                                size="xs" 
-                                variant={'ghost'}
-                                colorPalette={'gray'}
-                                onClick={nextPage} 
-                                disabled={currentPage === totalPages}
-                            >
-                                <LuChevronRight />
-                            </Button>
-
-                        </Box>
-                    </div>
-                ) }
+                <TablePagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onNext={nextPage}
+                    onPrev={prevPage}
+                />
 
             </Box>
 
