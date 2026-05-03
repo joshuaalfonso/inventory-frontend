@@ -29,6 +29,7 @@ export interface PurchaseOrders {
   total_quantity: number;
   total_price: number;
   total_delivered: number;
+  status: 'Awaiting cheque' | 'Cheque released' | 'Revised' | 'Completed'
   created_at: string;
 };
 
@@ -50,3 +51,4 @@ export type PoSortField =
   | 'supplier_name'
   | 'purchase_request_number'
   | 'total_price'
+  | 'created_at'

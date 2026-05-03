@@ -1,9 +1,10 @@
-import { Button, FormatNumber, Menu, Portal, Stack, Table, Text } from "@chakra-ui/react";
+import { Badge, Button, FormatNumber, Menu, Portal, Stack, Table, Text } from "@chakra-ui/react";
 import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { displayDate, displayDateTime } from "@/lib/dateFormat";
 import { LuEllipsis, LuEye, LuPencil, LuPhilippinePeso } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
+import { getPurchaseOrderStatusPalette } from "@/lib/status";
 
 
 interface Props {
@@ -37,6 +38,11 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                     <Stack direction={'row'} alignItems={'center'}>
                         <FormatNumber value={row.total_delivered} />/<FormatNumber value={row.total_quantity} />
                     </Stack>
+                </Table.Cell>
+                <Table.Cell>
+                    <Badge colorPalette={getPurchaseOrderStatusPalette(row.status)}>
+                        { row.status }
+                    </Badge>
                 </Table.Cell>
                 <Table.Cell>{displayDateTime(row.created_at)}</Table.Cell>
                 <Table.Cell textAlign="end">

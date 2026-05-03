@@ -1,6 +1,6 @@
 import { useDebounce } from "@/shared/hooks/useDebounce"
 import { useQuery } from "@tanstack/react-query"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { getPaginatedPurchaseOrderApi } from "../purchaseOrder.api"
 import type { PoSortField } from "../purchaseOrder.model"
@@ -19,20 +19,16 @@ export const usePaginatedPurchaseOrders = () => {
   const sort = searchParams.get('sort') || 'purchase_order_date'
   const order = searchParams.get('order') || 'desc'
 
-  // 🧠 LOCAL STATE (for typing only)
-  const [searchInput, setSearchInput] = useState(search)
+  // local state (for typing only)
+  const [searchInput, setSearchInput] = useState<string>(search)
 
-  // 🔁 debounce typing
-  const debouncedSearch = useDebounce(searchInput, 500)
+  // debounce typing
+  const debouncedSearch = useDebounce(searchInput, 500);
 
-  // 🔄 sync debounce → URL
-  useEffect(() => {
-    updateParams({ search: debouncedSearch, page: page })
-  }, [debouncedSearch])
-
-  // 🔧 helper to update URL params
-  const updateParams = (newParams: Record<string, any>) => {
+  const updateParams = useCallback((newParams: Record<string, string | number>) => {
     const params = new URLSearchParams(searchParams)
+
+    // console.log(newParams)
 
     Object.entries(newParams).forEach(([key, value]) => {
       if (value === '' || value === null || value === undefined) {
@@ -43,9 +39,17 @@ export const usePaginatedPurchaseOrders = () => {
     })
 
     setSearchParams(params)
-  }
+}, [searchParams, setSearchParams])
 
-  // 🚀 query
+
+
+  // sync debounce 
+  useEffect(() => {
+      updateParams({ search: debouncedSearch, page: page })
+  }, [debouncedSearch,page, updateParams])
+
+
+  //  query
   const query = useQuery({
     queryKey: [
       'purchase-orders',
@@ -71,17 +75,31 @@ export const usePaginatedPurchaseOrders = () => {
     // keepPreviousData: true
   })
 
-  // 🎯 exposed helpers
+  //  exposed helpers
   const setPage = (newPage: number) => {
     updateParams({ page: newPage })
   }
 
-  const setStatus = (value: string) => {
-    updateParams({ status: value, page: 1 })
+const setStatus = (value: string) => {
+
+   const params = new URLSearchParams(searchParams);
+
+    if (value.trim().toLowerCase() == 'all') {
+      params.delete("status");
+    } else {
+      params.set("status", value);
+    }
+
+    setSearchParams(params);
+    
+};
+
+  const setSort = (value: PoSortField, order: 'asc' | 'desc') => {
+    updateParams({ sort: value, order })
   }
 
-  const setSort = (value: PoSortField) => {
-    updateParams({ sort: value })
+  const setOrder = (value: 'asc' | 'desc') => {
+    updateParams({ order: value })
   }
 
   const toggleOrder = () => {
@@ -107,6 +125,8 @@ export const usePaginatedPurchaseOrders = () => {
     setPage,
     setStatus,
     setSort,
-    toggleOrder
+    toggleOrder,
+    setOrder
   }
+
 }

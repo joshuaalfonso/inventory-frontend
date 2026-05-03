@@ -2,34 +2,35 @@
 import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { PAGE_SIZE } from "@/lib/constants";
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react";
-import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
+import { Box, Button, Table } from "@chakra-ui/react";
+import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import PurchaseOrderTableRow from "./PurchaseOrderTableRow";
-import { useNavigate } from "react-router-dom";
-import { usePaginatedPurchaseOrders } from "../../hooks/usePaginatedPurchaseOrder";
+
 
 
 interface Props {
-    purchaseOrders: PurchaseOrders[]
+    purchaseOrders: PurchaseOrders[],
+    page: number,
+    setPage: (newPage: number) => void
+    totalPages: number
 }
 
-const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
+const PurchaseOrderTable = ({ purchaseOrders, page, setPage, totalPages }: Props) => {
 
     console.log('purchase order table')
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
-    const { 
-        data, 
-        page, 
-        setPage,
-        searchInput,
-        setSearchInput
-    } = usePaginatedPurchaseOrders();
+    // const { 
+    //     data, 
+    //     page, 
+    //     setPage,
+    // } = usePaginatedPurchaseOrders();
         
     const customCardBg = useColorModeValue('white', 'bg.subtle');
 
     return (
         <>
+
             <Box
                 p={8}
                 borderWidth="1px"
@@ -39,7 +40,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                 bg={customCardBg}
             >
 
-                <Box
+                {/* <Box
                     mb={4} 
                     css={{
                     display: 'flex',
@@ -62,7 +63,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                     >
                         Create
                     </Button>
-                </Box>
+                </Box> */}
 
 
                 <Table.Root size="sm">
@@ -75,6 +76,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                             <Table.ColumnHeader>PR #</Table.ColumnHeader>
                             <Table.ColumnHeader>Total Price</Table.ColumnHeader>
                             <Table.ColumnHeader>Total Quantity</Table.ColumnHeader>
+                            <Table.ColumnHeader>Status</Table.ColumnHeader>
                             <Table.ColumnHeader>Created At</Table.ColumnHeader>
                             <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                         </Table.Row>
@@ -90,7 +92,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                     </Table.Body>
                 </Table.Root>
 
-                {data!.totalPages > 1 && (
+                {totalPages > 1 && (
                     <div 
                         className="flex justify-end items-center"
                     >
@@ -112,7 +114,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                             </Button>
 
                             <Box fontSize={'xs'}>
-                                Page {page} of {data!.totalPages}
+                                Page {page} of {totalPages}
                             </Box>
 
                             <Button 
@@ -120,7 +122,7 @@ const PurchaseOrderTable = ({ purchaseOrders }: Props) => {
                                 variant={'ghost'}
                                 colorPalette={'gray'}
                                 onClick={() => setPage(page + 1)}
-                                disabled={page === data!.totalPages}
+                                disabled={page === totalPages}
                             >
                                 <LuChevronRight />
                             </Button>

@@ -1,6 +1,6 @@
 import LoadingSpinner from "@/shared/components/LoadingSpinner";
 import { useInventoryConsumables } from "./hooks/useInventoryConsumable";
-import { Heading } from "@chakra-ui/react";
+import { Breadcrumb, Heading, Stack, Text } from "@chakra-ui/react";
 import InventoryConsumableTable from "./components/table/InventoryConsumableTable";
 
 
@@ -20,12 +20,29 @@ const InventoryConsumable = () => {
   
     return (
       <>
-        <Heading
-          size={'md'}
-          mb={10}
-        >
-            Inventory Consumable
-        </Heading>
+        <Breadcrumb.Root mb={6}>
+          <Breadcrumb.List>
+           
+            <Breadcrumb.Item>
+              <Breadcrumb.Link href="#">Inventory</Breadcrumb.Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Separator />
+    
+            <Breadcrumb.Item>
+              <Breadcrumb.CurrentLink>Consumable</Breadcrumb.CurrentLink>
+            </Breadcrumb.Item>
+
+          </Breadcrumb.List>
+        </Breadcrumb.Root>
+        
+        <Stack mb={10}>
+  
+          <Heading>Consumables</Heading>
+          <Text fontSize={'sm'} color={'fg.muted'}>
+            Track stock levels of items
+          </Text>
+  
+        </Stack>
   
         <InventoryConsumableTable 
             inventoryConsumables={inventoryConsumables ?? []} 

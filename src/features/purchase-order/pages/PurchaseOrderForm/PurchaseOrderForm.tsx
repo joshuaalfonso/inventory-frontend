@@ -7,7 +7,7 @@ import { RHFDatePicker } from "@/shared/components/RFHDatePicker";
 // import { RHFCombobox } from "@/shared/components/RHFComboBox";
 // import { RHFCombobox } from "@/shared/components/RHFComboBox";
 import RHFVirtualComboBox from "@/shared/components/RHFVirtualComboBox";
-import { Box, Button, Field, Fieldset, Heading, Input, Stack, Text } from "@chakra-ui/react";
+import { Box, Breadcrumb, Button, Field, Fieldset, Input, Stack, Text } from "@chakra-ui/react";
 import { useCallback, useEffect, useMemo } from "react";
 import { useFieldArray, useForm, type SubmitHandler } from "react-hook-form";
 import { LuMoveLeft } from "react-icons/lu";
@@ -159,13 +159,43 @@ const PurchaseOrderForm = () => {
 
         <>
 
-            <Heading
-                size={'md'} 
+            <Breadcrumb.Root mb={10}>
+                <Breadcrumb.List>
+                    
+                    <Breadcrumb.Item>
+                        <Breadcrumb.Link href="#">Transaction</Breadcrumb.Link>
+                    </Breadcrumb.Item>
+
+                    <Breadcrumb.Separator />
+            
+                    <Breadcrumb.Item>
+                        <Breadcrumb.Link>Purchase Order</Breadcrumb.Link>
+                    </Breadcrumb.Item>
+
+                    <Breadcrumb.Separator />
+
+                    <Breadcrumb.Item>
+                        <Breadcrumb.CurrentLink>{ purchase_order_id ? 'Edit' : 'New' }</Breadcrumb.CurrentLink>
+                    </Breadcrumb.Item>
+        
+                </Breadcrumb.List>
+            </Breadcrumb.Root>
+
+            {/* <Stack 
                 mb={10}
             >
-                Purchase Order
-            </Heading>
-        
+                <Stack>
+
+                <Heading>Purchase Order Form</Heading>
+
+                <Text fontSize={'sm'} color={'fg.muted'}>
+                   Fields with * are required
+                </Text>
+
+                </Stack>
+
+            </Stack> */}
+
             <Box
                 p={8}
                 borderWidth="1px"
@@ -198,7 +228,7 @@ const PurchaseOrderForm = () => {
                         </Fieldset.Legend>
 
                         <Fieldset.HelperText>
-                        Please provide order details below.
+                            Fields with * are required
                         </Fieldset.HelperText>
 
                     </Stack>
