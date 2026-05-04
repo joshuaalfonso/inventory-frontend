@@ -3,6 +3,7 @@ import { useState } from "react"
 import { HiSortAscending } from "react-icons/hi"
 import { LuFilter, LuSearch } from "react-icons/lu"
 import type { PoSortField } from "../../purchaseOrder.model"
+import { useColorModeValue } from "@/components/ui/color-mode"
 
 
 
@@ -41,7 +42,11 @@ const statusItems = [
 
 const PurchaseOrderToolbar = ({ searchInput, setSearchInput, setSort, setStatus }: Props) => {
 
-   const [value, setValue] = useState(sortItems[1]?.value)
+  const [statusFilter, setStatusFilter] = useState(statusItems[0]?.value);
+
+  const [value, setValue] = useState(sortItems[1]?.value);
+
+  const bg = useColorModeValue("white", "bg.subtle");
 
   return (
     <>
@@ -49,9 +54,9 @@ const PurchaseOrderToolbar = ({ searchInput, setSearchInput, setSort, setStatus 
         <Box
             mb={4} 
             css={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between'
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between'
             }}
         >
 
@@ -63,6 +68,7 @@ const PurchaseOrderToolbar = ({ searchInput, setSearchInput, setSort, setStatus 
                   size={'sm'}
                   value={searchInput}
                   onChange={(e) => setSearchInput(e.target.value)}
+                  bg={bg}
               />
             </InputGroup>
 
@@ -73,6 +79,7 @@ const PurchaseOrderToolbar = ({ searchInput, setSearchInput, setSort, setStatus 
                   size={'sm'} 
                   variant={'outline'}
                   colorPalette={'gray'}
+                  bg={bg}
                 >
                 <LuFilter /> 
               </Button>
@@ -81,10 +88,11 @@ const PurchaseOrderToolbar = ({ searchInput, setSearchInput, setSort, setStatus 
                 <Menu.Positioner>
                   <Menu.Content minW="10rem">
                     <Menu.RadioItemGroup
-                      value={value}
+                      value={statusFilter}
                       onValueChange={(e) => {
                         if (!e) return
-                        setStatus(e.value)
+                        setStatus(e.value);
+                        setStatusFilter(e.value)
                       }}
                     >
                       {statusItems.map((item) => (
@@ -101,7 +109,12 @@ const PurchaseOrderToolbar = ({ searchInput, setSearchInput, setSort, setStatus 
 
             <Menu.Root>
               <Menu.Trigger asChild>
-                <Button variant="outline" size="sm" colorPalette={'gray'}>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  colorPalette={'gray'} 
+                  bg={bg}
+                >
                   <HiSortAscending/> Sort
                 </Button>
               </Menu.Trigger>

@@ -2,7 +2,7 @@
 import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { PAGE_SIZE } from "@/lib/constants";
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { Box, Button, Table } from "@chakra-ui/react";
+import { Box, Button, FormatNumber, Table } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
 import PurchaseOrderTableRow from "./PurchaseOrderTableRow";
 
@@ -114,7 +114,7 @@ const PurchaseOrderTable = ({ purchaseOrders, page, setPage, totalPages }: Props
                             </Button>
 
                             <Box fontSize={'xs'}>
-                                Page {page} of {totalPages}
+                                Page <FormatNumber value={page} /> of <FormatNumber value={totalPages} />
                             </Box>
 
                             <Button 

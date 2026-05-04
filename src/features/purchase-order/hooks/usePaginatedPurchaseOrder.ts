@@ -71,9 +71,14 @@ export const usePaginatedPurchaseOrders = () => {
         sort,
         order
       }),
-    placeholderData: (prev) => prev
-    // keepPreviousData: true
+    placeholderData: (prev) => prev,
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
+    
   })
+
+
+ 
 
   //  exposed helpers
   const setPage = (newPage: number) => {
@@ -128,5 +133,6 @@ const setStatus = (value: string) => {
     toggleOrder,
     setOrder
   }
+
 
 }

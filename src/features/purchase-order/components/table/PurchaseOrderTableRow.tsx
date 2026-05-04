@@ -40,7 +40,7 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                     </Stack>
                 </Table.Cell>
                 <Table.Cell>
-                    <Badge colorPalette={getPurchaseOrderStatusPalette(row.status)}>
+                    <Badge variant={'surface'} colorPalette={getPurchaseOrderStatusPalette(row.status)}>
                         { row.status }
                     </Badge>
                 </Table.Cell>
