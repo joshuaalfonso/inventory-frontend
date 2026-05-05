@@ -32,6 +32,13 @@ export const getPaginatedPurchaseOrderApi = async (params: any) => {
     return data;
 };
 
+export const getPendingPurchaseOrderApi = async () => {
+    const { data } = await api.get<PurchaseOrders[]>(
+        `${TABLE_NAME}/pending`
+    );
+    return data;
+};
+
 
 export const getSinglePurchaseOrderApi = async (purchase_order_id: number) => {
     const { data } = await api.get<PurchaseOrders>(

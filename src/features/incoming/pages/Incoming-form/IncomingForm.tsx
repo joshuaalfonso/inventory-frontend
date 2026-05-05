@@ -1,5 +1,5 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { usePurchaseOrders } from "@/features/purchase-order/hooks/usePurchaseOrders";
+// import { usePurchaseOrders } from "@/features/purchase-order/hooks/usePurchaseOrders";
 import { useSinglePurchaseOrder } from "@/features/purchase-order/hooks/useSinglePurchaseOrder";
 import ReusableEmptyState from "@/shared/components/ReusableEmptyState";
 import { RHFDatePicker } from "@/shared/components/RFHDatePicker";
@@ -13,6 +13,7 @@ import { useCreateIncoming } from "../../hooks/useCreateIncoming";
 import AssetItemsField from "./components/AssetInputField";
 import { toaster } from "@/components/ui/toaster";
 import { getApiErrorMessage } from "@/lib/errorMessage";
+import { usePendingPurchaseOrders } from "@/features/purchase-order/hooks/usePendingPurchaseOrder";
 
 
 export interface IncomingItem {
@@ -35,6 +36,7 @@ export interface IncomingFormValues  {
   incoming_id: number;
   purchase_order_id: number;
   incoming_date: string;
+  sales_invoice_number: string
   incoming_item: IncomingItem[];
 };
 
@@ -66,7 +68,7 @@ const IncomingForm = () => {
     const { createIncomingMutation, isCreating } = useCreateIncoming();
 
     const form = useForm<IncomingFormValues>({
-    defaultValues,
+        defaultValues,
     });
 
     const { control, handleSubmit, register, setValue, watch, formState: { errors, isDirty } } = form;
@@ -84,7 +86,9 @@ const IncomingForm = () => {
 
     const customCardBg = useColorModeValue('white', 'bg.subtle');
 
-    const { purchaseOrders } = usePurchaseOrders();
+    // const { purchaseOrders } = usePurchaseOrders();
+
+    const { pendingPurchaseOrders } = usePendingPurchaseOrders(); 
 
     const onSubmit: SubmitHandler<IncomingFormValues> = (data) => {
     
@@ -191,7 +195,7 @@ const IncomingForm = () => {
                                 <RHFVirtualComboBox
                                     name="purchase_order_id"
                                     control={control}
-                                    items={purchaseOrders ?? []}
+                                    items={pendingPurchaseOrders ?? []}
                                     label="PO"
                                     rules={{ 
                                         required: "PO is required", 
@@ -230,6 +234,40 @@ const IncomingForm = () => {
                                 )}
 
                             </Field.Root>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                           <Field.Root required>
+                                <Field.Label>
+                                    Sales Invoice #
+                                    <Field.RequiredIndicator />
+                                </Field.Label>
+                                
+                                <Input
+                                    {
+                                        ...register(
+                                            "sales_invoice_number", 
+                                            { 
+                                                required: "Sales Invoice is required",
+                                                minLength: {
+                                                    value: 5,
+                                                    message: "Must be at least 5 characters"
+                                                }
+                                            }
+                                        )
+                                    }
+
+                                />
+
+                                {errors.sales_invoice_number?.message && (
+                                    <Text color={'fg.error'} fontSize={'sm'}>
+                                        {errors.sales_invoice_number.message}
+                                    </Text>
+                                )}
+
+                            </Field.Root>
+                        
                         </div>
 
                         <Field.Root>

@@ -25,28 +25,29 @@ export const usePaginatedPurchaseOrders = () => {
   // debounce typing
   const debouncedSearch = useDebounce(searchInput, 500);
 
+
   const updateParams = useCallback((newParams: Record<string, string | number>) => {
-    const params = new URLSearchParams(searchParams)
+      setSearchParams(prev => {
+          const params = new URLSearchParams(prev);
 
-    // console.log(newParams)
+          Object.entries(newParams).forEach(([key, value]) => {
+              if (value === '' || value === null || value === undefined) {
+                  params.delete(key)
+              } else {
+                  params.set(key, String(value))
+              }
+          });
 
-    Object.entries(newParams).forEach(([key, value]) => {
-      if (value === '' || value === null || value === undefined) {
-        params.delete(key)
-      } else {
-        params.set(key, String(value))
-      }
-    })
-
-    setSearchParams(params)
-}, [searchParams, setSearchParams])
-
+          return params;
+      });
+  }, [setSearchParams]);
 
 
-  // sync debounce 
+
+    // sync debounce 
   useEffect(() => {
-      updateParams({ search: debouncedSearch, page: page })
-  }, [debouncedSearch,page, updateParams])
+      updateParams({ search: debouncedSearch });
+  }, [debouncedSearch, updateParams]);
 
 
   //  query

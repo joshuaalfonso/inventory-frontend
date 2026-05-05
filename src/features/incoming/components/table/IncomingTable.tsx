@@ -1,64 +1,50 @@
 // import { usePagination } from "@/shared/hooks/usePagination";
-import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { PAGE_SIZE } from "@/lib/constants";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, FormatNumber, Table } from "@chakra-ui/react";
 import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
-import PurchaseOrderTableRow from "./PurchaseOrderTableRow";
+import type { Incomings } from "../../incoming.model";
+import TableCard from "@/shared/components/TableCard";
+import IncomingTableRow from "./IncomingTableRow";
 
 
 
 interface Props {
-    purchaseOrders: PurchaseOrders[],
+    incomings: Incomings[],
     page: number,
     setPage: (newPage: number) => void
     totalPages: number
 }
 
-const PurchaseOrderTable = ({ purchaseOrders, page, setPage, totalPages }: Props) => {
+const IncomingTable = ({ incomings, page, setPage, totalPages }: Props) => {
 
-    console.log('purchase order table')
-    // const navigate = useNavigate();
-
-    // const { 
-    //     data, 
-    //     page, 
-    //     setPage,
-    // } = usePaginatedPurchaseOrders();
+    console.log('incoming table')
         
+
     const customCardBg = useColorModeValue('white', 'bg.subtle');
 
     return (
         <>
 
-            <Box
-                p={8}
-                borderWidth="1px"
-                borderColor="border.disabled"
-                color="fg.disabled"
-                rounded={'md'}
-                bg={customCardBg}
-            >
+            <TableCard>
 
                 <Table.Root size="sm">
                     <Table.Header>
                         <Table.Row bg={customCardBg}>
                             <Table.ColumnHeader>#</Table.ColumnHeader>
                             {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
-                            <Table.ColumnHeader>PO #</Table.ColumnHeader>
-                            <Table.ColumnHeader>Supplier</Table.ColumnHeader>
-                            <Table.ColumnHeader>PR #</Table.ColumnHeader>
-                            <Table.ColumnHeader>Total Price</Table.ColumnHeader>
-                            <Table.ColumnHeader>Total Quantity</Table.ColumnHeader>
-                            <Table.ColumnHeader>Status</Table.ColumnHeader>
+                            <Table.ColumnHeader>Incoming Date</Table.ColumnHeader>
+                            <Table.ColumnHeader>Sales Invoice #</Table.ColumnHeader>
+                            <Table.ColumnHeader>Purchase Order #</Table.ColumnHeader>
+                            <Table.ColumnHeader>Total Received</Table.ColumnHeader>
                             <Table.ColumnHeader>Created At</Table.ColumnHeader>
                             <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {purchaseOrders?.map((item, index) => (
-                            <PurchaseOrderTableRow 
-                                key={item.purchase_order_id}
+                        {incomings?.map((item, index) => (
+                            <IncomingTableRow 
+                                key={item.incoming_id}
                                 row={item} 
                                 index={(page - 1) * PAGE_SIZE + index + 1}
                             />
@@ -105,10 +91,10 @@ const PurchaseOrderTable = ({ purchaseOrders, page, setPage, totalPages }: Props
                     </div>
                 )}
 
-            </Box>
+            </TableCard>
 
         </>
     )
 }
 
-export default PurchaseOrderTable
+export default IncomingTable
