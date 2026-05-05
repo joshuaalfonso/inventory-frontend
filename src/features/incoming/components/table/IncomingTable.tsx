@@ -28,29 +28,33 @@ const IncomingTable = ({ incomings, page, setPage, totalPages }: Props) => {
 
             <TableCard>
 
-                <Table.Root size="sm">
-                    <Table.Header>
-                        <Table.Row bg={customCardBg}>
-                            <Table.ColumnHeader>#</Table.ColumnHeader>
-                            {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
-                            <Table.ColumnHeader>Incoming Date</Table.ColumnHeader>
-                            <Table.ColumnHeader>Sales Invoice #</Table.ColumnHeader>
-                            <Table.ColumnHeader>Purchase Order #</Table.ColumnHeader>
-                            <Table.ColumnHeader>Total Received</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {incomings?.map((item, index) => (
-                            <IncomingTableRow 
-                                key={item.incoming_id}
-                                row={item} 
-                                index={(page - 1) * PAGE_SIZE + index + 1}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table.Root>
+                <Table.ScrollArea>
+
+                    <Table.Root size="sm">
+                        <Table.Header>
+                            <Table.Row bg={customCardBg}>
+                                <Table.ColumnHeader>#</Table.ColumnHeader>
+                                {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
+                                <Table.ColumnHeader>Incoming Date</Table.ColumnHeader>
+                                <Table.ColumnHeader>Sales Invoice #</Table.ColumnHeader>
+                                <Table.ColumnHeader>Purchase Order #</Table.ColumnHeader>
+                                <Table.ColumnHeader>Total Received</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {incomings?.map((item, index) => (
+                                <IncomingTableRow 
+                                    key={item.incoming_id}
+                                    row={item} 
+                                    index={(page - 1) * PAGE_SIZE + index + 1}
+                                />
+                            ))}
+                        </Table.Body>
+                    </Table.Root>
+
+                </Table.ScrollArea>
 
                 {totalPages > 1 && (
                     <div 

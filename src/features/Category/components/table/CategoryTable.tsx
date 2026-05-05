@@ -1,12 +1,13 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, Input, InputGroup, Table } from "@chakra-ui/react"
 import { LuChevronLeft, LuChevronRight, LuSearch } from "react-icons/lu";
-import { useCategoryDialogStore } from "../../hooks/useCategoryDialogStore";
 // import { useState } from "react";
 import type { Categories } from "../../category.model";
-import CategoryTableRow from "./CategoryTableRow";
+
 import { usePagination } from "@/shared/hooks/usePagination";
 import { PAGE_SIZE } from "@/lib/constants";
+import { useCategoryDialogStore } from "../../hooks/useCategoryDialogStore";
+import CategoryTableRow from "./CategoryTableRow";
 
 
 interface Props {
@@ -66,27 +67,29 @@ const CategoryTable = ({categories}: Props) => {
                     </Button>
                 </Box>
 
+                <Table.ScrollArea>
+                    <Table.Root size="sm">
+                        <Table.Header>
+                            <Table.Row bg={customCardBg}>
+                                <Table.ColumnHeader>#</Table.ColumnHeader>
+                                <Table.ColumnHeader>Category</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created By</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {paginatedData?.map((item, index) => (
+                                <CategoryTableRow 
+                                    key={item.category_id}
+                                    row={item} 
+                                    index={(currentPage - 1) * PAGE_SIZE + index + 1}
+                                />
+                            ))}
+                        </Table.Body>
+                    </Table.Root>
+                </Table.ScrollArea>
 
-                <Table.Root size="sm">
-                    <Table.Header>
-                        <Table.Row bg={customCardBg}>
-                            <Table.ColumnHeader>#</Table.ColumnHeader>
-                            <Table.ColumnHeader>Category</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created By</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {paginatedData?.map((item, index) => (
-                            <CategoryTableRow 
-                                key={item.category_id}
-                                row={item} 
-                                index={(currentPage - 1) * PAGE_SIZE + index + 1}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table.Root>
                 { totalPages > 1 && (
                     <div 
                         className="flex justify-end items-center"

@@ -33,7 +33,7 @@ const UnitOfMeasure = () => {
           size={'md'} 
           mb={10}
         >
-          Unt of Measure=
+          Unt of Measure
         </Heading>
   
         {unitOfMeasures?.length === 0 && (

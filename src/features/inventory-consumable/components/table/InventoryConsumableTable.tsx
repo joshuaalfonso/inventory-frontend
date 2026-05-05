@@ -68,30 +68,32 @@ const InventoryConsumableTable = ({inventoryConsumables}: Props) => {
                    
                 </Box>
 
+                <Table.ScrollArea>
+                    <Table.Root size="sm">
+                        <Table.Header>
+                            <Table.Row bg={bg}>
+                                <Table.ColumnHeader>#</Table.ColumnHeader>
+                                <Table.ColumnHeader>Item</Table.ColumnHeader>
+                                <Table.ColumnHeader>Brand</Table.ColumnHeader>
+                                <Table.ColumnHeader>Category</Table.ColumnHeader>
+                                <Table.ColumnHeader>Type</Table.ColumnHeader>
+                                <Table.ColumnHeader>Stock on Hand</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {paginatedData?.map((item, index) => (
+                                <InventoryConsumableTableRow
+                                    key={item.item_id}
+                                    row={item} 
+                                    index={(currentPage - 1) * PAGE_SIZE + index + 1}
+                                />
+                            ))}
+                        </Table.Body>
+                    </Table.Root>
+                </Table.ScrollArea>
 
-                <Table.Root size="sm">
-                    <Table.Header>
-                        <Table.Row bg={bg}>
-                            <Table.ColumnHeader>#</Table.ColumnHeader>
-                            <Table.ColumnHeader>Item</Table.ColumnHeader>
-                            <Table.ColumnHeader>Brand</Table.ColumnHeader>
-                            <Table.ColumnHeader>Category</Table.ColumnHeader>
-                            <Table.ColumnHeader>Type</Table.ColumnHeader>
-                            <Table.ColumnHeader>Stock on Hand</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {paginatedData?.map((item, index) => (
-                            <InventoryConsumableTableRow
-                                key={item.item_id}
-                                row={item} 
-                                index={(currentPage - 1) * PAGE_SIZE + index + 1}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table.Root>
                 { totalPages > 1 && (
                     <div 
                         className="flex justify-end items-center"

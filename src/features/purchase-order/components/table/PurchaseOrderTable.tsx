@@ -40,31 +40,33 @@ const PurchaseOrderTable = ({ purchaseOrders, page, setPage, totalPages }: Props
                 bg={customCardBg}
             >
 
-                <Table.Root size="sm">
-                    <Table.Header>
-                        <Table.Row bg={customCardBg}>
-                            <Table.ColumnHeader>#</Table.ColumnHeader>
-                            {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
-                            <Table.ColumnHeader>PO #</Table.ColumnHeader>
-                            <Table.ColumnHeader>Supplier</Table.ColumnHeader>
-                            <Table.ColumnHeader>PR #</Table.ColumnHeader>
-                            <Table.ColumnHeader>Total Price</Table.ColumnHeader>
-                            <Table.ColumnHeader>Total Quantity</Table.ColumnHeader>
-                            <Table.ColumnHeader>Status</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {purchaseOrders?.map((item, index) => (
-                            <PurchaseOrderTableRow 
-                                key={item.purchase_order_id}
-                                row={item} 
-                                index={(page - 1) * PAGE_SIZE + index + 1}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table.Root>
+                <Table.ScrollArea>
+                    <Table.Root size="sm">
+                        <Table.Header>
+                            <Table.Row bg={customCardBg}>
+                                <Table.ColumnHeader>#</Table.ColumnHeader>
+                                {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
+                                <Table.ColumnHeader>PO #</Table.ColumnHeader>
+                                <Table.ColumnHeader>Supplier</Table.ColumnHeader>
+                                <Table.ColumnHeader>PR #</Table.ColumnHeader>
+                                <Table.ColumnHeader>Total Price</Table.ColumnHeader>
+                                <Table.ColumnHeader>Total Quantity</Table.ColumnHeader>
+                                <Table.ColumnHeader>Status</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {purchaseOrders?.map((item, index) => (
+                                <PurchaseOrderTableRow 
+                                    key={item.purchase_order_id}
+                                    row={item} 
+                                    index={(page - 1) * PAGE_SIZE + index + 1}
+                                />
+                            ))}
+                        </Table.Body>
+                    </Table.Root>
+                </Table.ScrollArea>
 
                 {totalPages > 1 && (
                     <div 

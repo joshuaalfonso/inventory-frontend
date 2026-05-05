@@ -77,28 +77,30 @@ const EmployeeTable = ({ employees }: Props) => {
                     </Button>
                 </Box>
 
+                <Table.ScrollArea>
+                    <Table.Root size="sm">
+                        <Table.Header>
+                            <Table.Row bg={bg}>
+                                <Table.ColumnHeader>#</Table.ColumnHeader>
+                                <Table.ColumnHeader>Employee</Table.ColumnHeader>
+                                <Table.ColumnHeader>Department</Table.ColumnHeader>
+                                <Table.ColumnHeader>Email</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {paginatedData?.map((item, index) => (
+                                <EmployeeTableRow
+                                    key={item.employee_id}
+                                    row={item} 
+                                    index={(currentPage - 1) * PAGE_SIZE + index + 1}
+                                />
+                            ))}
+                        </Table.Body>
+                    </Table.Root>
+                </Table.ScrollArea>
 
-                <Table.Root size="sm">
-                    <Table.Header>
-                        <Table.Row bg={bg}>
-                            <Table.ColumnHeader>#</Table.ColumnHeader>
-                            <Table.ColumnHeader>Employee</Table.ColumnHeader>
-                            <Table.ColumnHeader>Department</Table.ColumnHeader>
-                            <Table.ColumnHeader>Email</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {paginatedData?.map((item, index) => (
-                            <EmployeeTableRow
-                                key={item.employee_id}
-                                row={item} 
-                                index={(currentPage - 1) * PAGE_SIZE + index + 1}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table.Root>
                 { totalPages > 1 && (
                     <div 
                         className="flex justify-end items-center"

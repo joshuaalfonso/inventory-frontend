@@ -78,27 +78,28 @@ const BrandTable = ({ brands }: Props) => {
                     </Button>
                 </Box>
 
-
-                <Table.Root size="sm">
-                    <Table.Header>
-                        <Table.Row bg={bg}>
-                            <Table.ColumnHeader>#</Table.ColumnHeader>
-                            <Table.ColumnHeader>Brand</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created By</Table.ColumnHeader>
-                            <Table.ColumnHeader>Created At</Table.ColumnHeader>
-                            <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
-                        </Table.Row>
-                    </Table.Header>
-                    <Table.Body>
-                        {paginatedData?.map((item, index) => (
-                            <BrandTableRow 
-                                key={item.brand_id}
-                                row={item} 
-                                index={(currentPage - 1) * PAGE_SIZE + index + 1}
-                            />
-                        ))}
-                    </Table.Body>
-                </Table.Root>
+                <Table.ScrollArea>
+                    <Table.Root size="sm">
+                        <Table.Header>
+                            <Table.Row bg={bg}>
+                                <Table.ColumnHeader>#</Table.ColumnHeader>
+                                <Table.ColumnHeader>Brand</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created By</Table.ColumnHeader>
+                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
+                            </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
+                            {paginatedData?.map((item, index) => (
+                                <BrandTableRow 
+                                    key={item.brand_id}
+                                    row={item} 
+                                    index={(currentPage - 1) * PAGE_SIZE + index + 1}
+                                />
+                            ))}
+                        </Table.Body>
+                    </Table.Root>
+                </Table.ScrollArea>
 
                 <TablePagination
                     currentPage={currentPage}
