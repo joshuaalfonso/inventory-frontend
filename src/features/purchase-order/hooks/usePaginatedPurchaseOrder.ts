@@ -42,8 +42,6 @@ export const usePaginatedPurchaseOrders = () => {
       });
   }, [setSearchParams]);
 
-
-
     // sync debounce 
   useEffect(() => {
       updateParams({ search: debouncedSearch });
@@ -78,8 +76,6 @@ export const usePaginatedPurchaseOrders = () => {
     
   })
 
-
- 
 
   //  exposed helpers
   const setPage = (newPage: number) => {

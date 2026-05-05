@@ -2,43 +2,27 @@
 
 import { useDebounce } from "@/shared/hooks/useDebounce"
 import { useQuery } from "@tanstack/react-query"
-import { useCallback, useEffect, useState } from "react"
-import { useSearchParams } from "react-router-dom"
+import {  useEffect, useState } from "react"
 import { getPaginatedIncomingApi } from "../incoming.api"
 import type { IncomingSortField } from "../incoming.model"
+import { useIncomingParams } from "./useIncomingParams"
 
 
 
 export const usePaginatedIncomings = () => {
 
-    const [searchParams, setSearchParams] = useSearchParams()
+    const {
+        page,
+        limit,
+        search,
+        sort,
+        order,
+        updateParams,
+    } = useIncomingParams();
 
-    const page = Number(searchParams.get('page') || 1)
-    const limit = Number(searchParams.get('limit') || 10)
-    const search = searchParams.get('search') || ''
-    const sort = searchParams.get('sort') || 'created_at'
-    const order = (searchParams.get('order') || 'desc') as 'asc' | 'desc'
-
-    const [searchInput, setSearchInput] = useState<string>(search)
+    const [searchInput, setSearchInput] = useState<string>(search);
 
     const debouncedSearch = useDebounce(searchInput, 500);
-
-    const updateParams = useCallback((newParams: Record<string, string | number>) => {
-        setSearchParams(prev => {
-            const params = new URLSearchParams(prev);
-
-            Object.entries(newParams).forEach(([key, value]) => {
-                if (value === '' || value === null || value === undefined) {
-                    params.delete(key)
-                } else {
-                    params.set(key, String(value))
-                }
-            });
-
-            return params;
-        });
-    }, [setSearchParams]);
-
 
     useEffect(() => {
         updateParams({ search: debouncedSearch });
@@ -74,7 +58,7 @@ export const usePaginatedIncomings = () => {
     }
 
     const setSort = (value: IncomingSortField, order: 'asc' | 'desc') => {
-        updateParams({ sort: value, order })
+        updateParams({ page: 1, sort: value, order })
     }
 
     const setOrder = (value: 'asc' | 'desc') => {
@@ -104,3 +88,55 @@ export const usePaginatedIncomings = () => {
 
 
 }
+
+// useEffect(() => {
+//         if (!query.data?.data) return;
+
+//         window.scrollTo({ top: 0, behavior: 'smooth' });
+
+//         if (query.data.page < query.data.totalPages) {
+//             queryClient.prefetchQuery({
+//                 queryKey: [
+//                     'incomings',
+//                     page + 1,
+//                     limit,
+//                     search,
+//                     sort,
+//                     order
+//                 ],
+//                 queryFn: () => 
+//                     getPaginatedIncomingApi({
+//                         page,
+//                         limit,
+//                         search,
+//                         sort,
+//                         order
+//                     }),
+//                 staleTime: 1000 * 60 * 5,
+//                 gcTime: 1000 * 60 * 10,
+//             });
+//         }
+
+//         if (page > 1) {
+//             queryClient.prefetchQuery({
+//                 queryKey: [
+//                     'incomings',
+//                     page - 1,
+//                     limit,
+//                     search,
+//                     sort,
+//                     order
+//                 ],
+//                 queryFn: () => 
+//                     getPaginatedIncomingApi({
+//                         page,
+//                         limit,
+//                         search,
+//                         sort,
+//                         order
+//                     }),
+//                 staleTime: 1000 * 60 * 5,
+//                 gcTime: 1000 * 60 * 10,
+//             });
+//         }
+//     }, [page, limit, search, sort, order, queryClient, query.data]);
