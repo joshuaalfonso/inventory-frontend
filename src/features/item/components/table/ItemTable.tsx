@@ -77,7 +77,6 @@ const ItemTable = ({ items }: Props) => {
                             <Table.Row bg={bg}>
                                 <Table.ColumnHeader>#</Table.ColumnHeader>
                                 <Table.ColumnHeader>Item</Table.ColumnHeader>
-                                <Table.ColumnHeader>Brand</Table.ColumnHeader>
                                 <Table.ColumnHeader>Category</Table.ColumnHeader>
                                 <Table.ColumnHeader>Type</Table.ColumnHeader>
                                 <Table.ColumnHeader>Unit</Table.ColumnHeader>

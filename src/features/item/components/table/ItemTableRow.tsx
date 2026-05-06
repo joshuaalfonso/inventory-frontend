@@ -56,8 +56,7 @@ const ItemTableRow = ({row, index}: Props) => {
     <>
       <Table.Row key={row.item_id} bg={bg} >
           <Table.Cell>{index}</Table.Cell>
-          <Table.Cell>{row.item_name}</Table.Cell>
-          <Table.Cell>{row.brand_name}</Table.Cell>
+          <Table.Cell>{row.brand_name} {row.item_name}</Table.Cell>
           <Table.Cell>{row.category_name}</Table.Cell>
           <Table.Cell>{row.item_type_name}</Table.Cell>
           <Table.Cell>{row.unit_of_measure_name}</Table.Cell>

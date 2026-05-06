@@ -74,11 +74,9 @@ const InventoryConsumableTable = ({inventoryConsumables}: Props) => {
                             <Table.Row bg={bg}>
                                 <Table.ColumnHeader>#</Table.ColumnHeader>
                                 <Table.ColumnHeader>Item</Table.ColumnHeader>
-                                <Table.ColumnHeader>Brand</Table.ColumnHeader>
-                                <Table.ColumnHeader>Category</Table.ColumnHeader>
                                 <Table.ColumnHeader>Type</Table.ColumnHeader>
                                 <Table.ColumnHeader>Stock on Hand</Table.ColumnHeader>
-                                <Table.ColumnHeader>Created At</Table.ColumnHeader>
+                                {/* <Table.ColumnHeader>Created At</Table.ColumnHeader> */}
                                 <Table.ColumnHeader textAlign="end"></Table.ColumnHeader>
                             </Table.Row>
                         </Table.Header>

@@ -1,10 +1,8 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
-import { displayDateTime } from "@/lib/dateFormat";
+// import { displayDateTime } from "@/lib/dateFormat";
 import { Button, FormatNumber, Menu, Portal, Stack, Table, Text } from "@chakra-ui/react";
 import type { InventoryConsumable } from "../../inventoryConsumable.model";
 import { LuEllipsis, LuEye } from "react-icons/lu";
-
-
 
 
 
@@ -22,9 +20,12 @@ const InventoryConsumableTableRow = ({ row, index }: Props) => {
         <>
             <Table.Row key={row.item_id} bg={bg}>
                 <Table.Cell>{index}</Table.Cell>
-                <Table.Cell>{row.item_name}</Table.Cell>
-                <Table.Cell>{row.brand_name}</Table.Cell>
-                <Table.Cell>{row.category_name}</Table.Cell>
+                <Table.Cell>
+                    {row.brand_name} {row.item_name}
+                    <Text fontSize={'xs'} color={'fg.muted'}>
+                        {row.category_name}
+                    </Text>
+                </Table.Cell>
                 <Table.Cell>{row.item_type_name}</Table.Cell>
                 {/* <Table.Cell>{row.unit_of_measure_name}</Table.Cell> */}
                 <Table.Cell>
@@ -33,7 +34,7 @@ const InventoryConsumableTableRow = ({ row, index }: Props) => {
                         <Text>{row.unit_of_measure_name}</Text>
                     </Stack>
                 </Table.Cell>
-                <Table.Cell>{displayDateTime(row.created_at)}</Table.Cell>
+                {/* <Table.Cell>{displayDateTime(row.created_at)}</Table.Cell> */}
                 <Table.Cell textAlign="end">
                 
                 <Menu.Root positioning={{ placement: "bottom-end" }}>
