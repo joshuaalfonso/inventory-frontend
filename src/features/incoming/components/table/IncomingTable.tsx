@@ -2,7 +2,7 @@
 import { PAGE_SIZE } from "@/lib/constants";
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { Box, Button, FormatNumber, Table } from "@chakra-ui/react";
-import { LuChevronLeft, LuChevronRight } from "react-icons/lu";
+import { LuChevronLeft, LuChevronRight, LuChevronsLeft, LuChevronsRight } from "react-icons/lu";
 import type { Incomings } from "../../incoming.model";
 import TableCard from "@/shared/components/TableCard";
 import IncomingTableRow from "./IncomingTableRow";
@@ -65,8 +65,19 @@ const IncomingTable = ({ incomings, page, setPage, totalPages }: Props) => {
                             display="flex"
                             justifyContent="space-between"
                             alignItems="center"
-                            gap={4}
+                            gap={2}
                         >
+
+                            <Button 
+                                size="xs" 
+                                variant={'ghost'}
+                                colorPalette={'gray'}
+                                onClick={() => setPage(1)}
+                                disabled={page === 1}
+                            >
+                                <LuChevronsLeft />
+                            </Button>
+
                             <Button 
                                 size="xs" 
                                 variant={'ghost'}
@@ -89,6 +100,16 @@ const IncomingTable = ({ incomings, page, setPage, totalPages }: Props) => {
                                 disabled={page === totalPages}
                             >
                                 <LuChevronRight />
+                            </Button>
+
+                            <Button 
+                                size="xs" 
+                                variant={'ghost'}
+                                colorPalette={'gray'}
+                                onClick={() => setPage(totalPages)}
+                                disabled={page === totalPages}
+                            >
+                                <LuChevronsRight />
                             </Button>
 
                         </Box>

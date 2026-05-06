@@ -1,6 +1,5 @@
 import { useColorModeValue } from "@/components/ui/color-mode";
 // import { usePurchaseOrders } from "@/features/purchase-order/hooks/usePurchaseOrders";
-import { useSinglePurchaseOrder } from "@/features/purchase-order/hooks/useSinglePurchaseOrder";
 import ReusableEmptyState from "@/shared/components/ReusableEmptyState";
 import { RHFDatePicker } from "@/shared/components/RFHDatePicker";
 import RHFVirtualComboBox from "@/shared/components/RHFVirtualComboBox";
@@ -14,6 +13,7 @@ import AssetItemsField from "./components/AssetInputField";
 import { toaster } from "@/components/ui/toaster";
 import { getApiErrorMessage } from "@/lib/errorMessage";
 import { usePendingPurchaseOrders } from "@/features/purchase-order/hooks/usePendingPurchaseOrder";
+import { useSinglePendingPurchaseOrder } from "@/features/purchase-order/hooks/useSinglePendingPurchaseOrder";
 
 
 export interface IncomingItem {
@@ -28,6 +28,7 @@ export interface IncomingItem {
   item_type_name: string;
   unit_of_measure_name: string;
   ordered_quantity: number;
+  remaining_quantity: number;
   received_quantity: number;
   asset_item?: AssetItem[];
 };
@@ -80,19 +81,14 @@ const IncomingForm = () => {
 
     const selectedPO = watch("purchase_order_id");
 
-    const { purchaseOrder } = useSinglePurchaseOrder(selectedPO);
-
-    console.log(purchaseOrder)
+    const { purchaseOrder } = useSinglePendingPurchaseOrder(selectedPO);
 
     const customCardBg = useColorModeValue('white', 'bg.subtle');
-
-    // const { purchaseOrders } = usePurchaseOrders();
 
     const { pendingPurchaseOrders } = usePendingPurchaseOrders(); 
 
     const onSubmit: SubmitHandler<IncomingFormValues> = (data) => {
     
-        console.log(data)
 
         createIncomingMutation(
             data,
@@ -103,7 +99,7 @@ const IncomingForm = () => {
                         description: response.message,
                         closable: true,
                         type: 'success'
-                    })
+                    }) 
                     navigate('/incoming')
                 },
                 onError: (err) => {
@@ -128,6 +124,7 @@ const IncomingForm = () => {
             incoming_item_id: 0,
             ...item,
             received_quantity: 0, 
+            remaining_quantity: item.remaining_quantity, 
             asset_item: [],
         }));
 
@@ -302,18 +299,18 @@ const IncomingForm = () => {
                                         
                                         <Box position="relative">
                                             <InputGroup endElement={<span>{field.unit_of_measure_name}</span>}>
-                                            <Input
-                                                type="number"
-                                                placeholder="Price"
-                                                {...register(`incoming_item.${index}.ordered_quantity`, {
-                                                valueAsNumber: true,
-                                                min: 0
-                                                })}
-                                                disabled 
-                                            />
-                                            </InputGroup>
+                                                <Input
+                                                    type="number"
+                                                    {
+                                                        ...register(`incoming_item.${index}.remaining_quantity`, {
+                                                        valueAsNumber: true,
+                                                        min: 0
+                                                    })}
+                                                    disabled 
+                                                />
+                                            </InputGroup> 
                                             <Float offsetX="9" placement={'top-start'} bg={customCardBg} px={1.5}>
-                                            <Text fontSize={'xs'} color={'fg.muted'}>Ordered</Text>
+                                                <Text fontSize={'xs'} color={'fg.muted'}>Remaining</Text>
                                             </Float>
                                         </Box>
 
@@ -330,8 +327,8 @@ const IncomingForm = () => {
                                                             message: "Minimum quantity is 1"
                                                         },
                                                         max: {
-                                                            value: field.ordered_quantity,
-                                                            message: `Cannot exceed ordered quantity (${field.ordered_quantity})`
+                                                            value: field.remaining_quantity,
+                                                            message: `Cannot exceed remaining quantity (${field.remaining_quantity})`
                                                         }
                                                     })}
                                                 />

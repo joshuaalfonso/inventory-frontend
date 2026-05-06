@@ -2,9 +2,10 @@ import { Badge, Button, FormatNumber, Menu, Portal, Stack, Table, Text } from "@
 import type { PurchaseOrders } from "../../purchaseOrder.model"
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { displayDate, displayDateTime } from "@/lib/dateFormat";
-import { LuEllipsis, LuEye, LuPencil, LuPhilippinePeso } from "react-icons/lu";
+import { LuCheck, LuEllipsis, LuEye, LuPencil, LuPhilippinePeso } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { getPurchaseOrderStatusPalette } from "@/lib/status";
+import { useUpdatePurchaseOrderStatus } from "../../hooks/useUpdatePurchaseOrderStatus";
 
 
 interface Props {
@@ -16,6 +17,8 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
 
     const navigate = useNavigate();
     const bg = useColorModeValue('white', 'bg.subtle');
+
+    const { updatePurchaseOrderStatusMutation, isUpdating } = useUpdatePurchaseOrderStatus();
 
     return (
         <>
@@ -71,13 +74,28 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                         </Menu.Item>
 
                         <Menu.Item 
-                            value="edit" 
-                            onClick={() => navigate(`${row.purchase_order_id}/edit`)}
+                            value="completed" 
+                            onClick={() => updatePurchaseOrderStatusMutation({
+                                purchase_order_id: row.purchase_order_id,
+                                status: 'Completed'
+                            })}
                             cursor={'pointer'}
+                            disabled={isUpdating}
                         >
-                            <LuPencil />
-                            Edit
+                            <LuCheck />
+                            Completed
                         </Menu.Item>
+
+                        { row.status == 'Awaiting cheque' && (
+                             <Menu.Item 
+                                value="edit" 
+                                onClick={() => navigate(`${row.purchase_order_id}/edit`)}
+                                cursor={'pointer'}
+                            >
+                                <LuPencil />
+                                Edit
+                            </Menu.Item>
+                        ) }
 
                         {/* <Menu.Item 
                             value="delete" 

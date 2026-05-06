@@ -16,8 +16,8 @@ export const usePaginatedPurchaseOrders = () => {
   const search = searchParams.get('search') || ''
   const status = searchParams.get('status') || ''
   const supplier_name = searchParams.get('supplier_name') || ''
-  const sort = searchParams.get('sort') || 'purchase_order_date'
-  const order = searchParams.get('order') || 'desc'
+  const sort = (searchParams.get('sort') || 'purchase_order_date') as PoSortField
+  const order = (searchParams.get('order') || 'desc') as 'asc' | 'desc'
 
   // local state (for typing only)
   const [searchInput, setSearchInput] = useState<string>(search)
@@ -51,7 +51,7 @@ export const usePaginatedPurchaseOrders = () => {
   //  query
   const query = useQuery({
     queryKey: [
-      'purchase-orders',
+      'purchaseOrders',
       page,
       limit,
       status,

@@ -72,7 +72,7 @@ const DepartmentTable = ({ departments }: Props) => {
                         onChange={handleSearch}
                     />
                     </InputGroup>
-                    <Button 
+                    <Button  
                         size={'sm'}
                         variant={'solid'}
                         onClick={() => openDialog(null)}

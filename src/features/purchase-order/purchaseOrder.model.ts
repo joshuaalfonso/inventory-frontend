@@ -15,6 +15,7 @@ interface PurchaseOrderItem {
   item_type_name: string;
   unit_of_measure_name: string;
   ordered_quantity: number;
+  remaining_quantity: number;
   price: number;
 };
 
@@ -34,15 +35,35 @@ export interface PurchaseOrders {
 };
 
 
+export interface CreatePurchaseOrderItem {
+    purchase_order_item_id: number, 
+    purchase_order_id: number, 
+    item_id: number,
+    employee_id: number,
+    ordered_quantity: number,
+    price: number,
+}
+
 export interface CreatePurchaseOrder {
     purchase_order_id: number;
     purchase_request_number: string;
     purchase_order_number: string;
     purchase_order_date: string;
     supplier_id: number;
-    purchase_order_item: PurchaseOrderItem[];
+    status?:   "Awaiting cheque" | "Cheque released" | "Revised" | "Completed"
+    purchase_order_item: CreatePurchaseOrderItem[];
 }
 
+
+export interface PaginatedPurchaseOrderParams {
+    page?: number;
+    limit?: number;
+    status?: string
+    supplier_name?: string;
+    search?: string;
+    sort?: PoSortField;
+    order?: 'asc' | 'desc';
+}
 
 
 export type PoSortField =

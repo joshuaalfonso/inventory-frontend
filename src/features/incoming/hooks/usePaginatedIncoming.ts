@@ -1,8 +1,8 @@
 
 
 import { useDebounce } from "@/shared/hooks/useDebounce"
-import { useQuery } from "@tanstack/react-query"
-import {  useEffect, useState } from "react"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import {  useEffect, useMemo, useState } from "react"
 import { getPaginatedIncomingApi } from "../incoming.api"
 import type { IncomingSortField } from "../incoming.model"
 import { useIncomingParams } from "./useIncomingParams"
@@ -10,6 +10,8 @@ import { useIncomingParams } from "./useIncomingParams"
 
 
 export const usePaginatedIncomings = () => {
+
+     const queryClient = useQueryClient();
 
     const {
         page,
@@ -20,54 +22,104 @@ export const usePaginatedIncomings = () => {
         updateParams,
     } = useIncomingParams();
 
-    const [searchInput, setSearchInput] = useState<string>(search);
+    const [searchInput, setSearchInput] = useState(search);
 
     const debouncedSearch = useDebounce(searchInput, 500);
 
     useEffect(() => {
-        updateParams({ search: debouncedSearch });
-    }, [debouncedSearch, updateParams]);
+        if (debouncedSearch !== search) {
+            updateParams({
+                search: debouncedSearch,
+                page: 1, 
+            });
+        }
+    }, [debouncedSearch, search, updateParams]);
 
+    useEffect(() => {
+        setSearchInput(search);
+    }, [search]);
+
+    const queryKey = useMemo(() => [
+        "incomings",
+        page,
+        limit,
+        search,
+        sort,
+        order,
+    ], [page, limit, search, sort, order]);
 
     const query = useQuery({
-        queryKey: [
-            'incomings',
-            page,
-            limit,
-            search,
-            sort,
-            order
-        ],
+        queryKey,
         queryFn: () =>
             getPaginatedIncomingApi({
                 page,
                 limit,
                 search,
                 sort,
-                order
+                order,
             }),
         placeholderData: (prev) => prev,
         staleTime: 1000 * 60 * 5,
         gcTime: 1000 * 60 * 10,
-        
-    })
+    });
 
+    useEffect(() => {
+        const data = query.data;
+        if (!data) return;
+
+        const totalPages = data.totalPages;
+
+        if (page >= totalPages) return;
+
+        const nextPage = page + 1;
+
+        if (nextPage < 1) return;
+
+        if (nextPage < 1 || nextPage > totalPages) return;
+
+        queryClient.prefetchQuery({
+            queryKey: [
+                "incomings",
+                nextPage,
+                limit,
+                search,
+                sort,
+                order,
+            ],
+            queryFn: () =>
+                getPaginatedIncomingApi({
+                    page: nextPage,
+                    limit,
+                    search,
+                    sort,
+                    order,
+                }),
+            staleTime: 1000 * 60 * 5,
+        });
+
+    }, [
+        page,
+        limit,
+        search,
+        sort,
+        order,
+        query.data,
+        queryClient,
+    ]);
 
     const setPage = (newPage: number) => {
-        updateParams({ page: newPage })
-    }
+        updateParams({ page: newPage });
+    };
 
-    const setSort = (value: IncomingSortField, order: 'asc' | 'desc') => {
-        updateParams({ page: 1, sort: value, order })
-    }
-
-    const setOrder = (value: 'asc' | 'desc') => {
-        updateParams({ order: value })
-    }
+    const setSort = (value: IncomingSortField, order: "asc" | "desc") => {
+        updateParams({ page: 1, sort: value, order });
+    };
 
     const toggleOrder = () => {
-        updateParams({ order: order === 'asc' ? 'desc' : 'asc' })
-    }
+        updateParams({
+            order: order === "asc" ? "desc" : "asc",
+        });
+    };
 
     return {
         ...query,
@@ -83,60 +135,6 @@ export const usePaginatedIncomings = () => {
         setPage,
         setSort,
         toggleOrder,
-        setOrder
-    }
+    };
 
-
-}
-
-// useEffect(() => {
-//         if (!query.data?.data) return;
-
-//         window.scrollTo({ top: 0, behavior: 'smooth' });
-
-//         if (query.data.page < query.data.totalPages) {
-//             queryClient.prefetchQuery({
-//                 queryKey: [
-//                     'incomings',
-//                     page + 1,
-//                     limit,
-//                     search,
-//                     sort,
-//                     order
-//                 ],
-//                 queryFn: () => 
-//                     getPaginatedIncomingApi({
-//                         page,
-//                         limit,
-//                         search,
-//                         sort,
-//                         order
-//                     }),
-//                 staleTime: 1000 * 60 * 5,
-//                 gcTime: 1000 * 60 * 10,
-//             });
-//         }
-
-//         if (page > 1) {
-//             queryClient.prefetchQuery({
-//                 queryKey: [
-//                     'incomings',
-//                     page - 1,
-//                     limit,
-//                     search,
-//                     sort,
-//                     order
-//                 ],
-//                 queryFn: () => 
-//                     getPaginatedIncomingApi({
-//                         page,
-//                         limit,
-//                         search,
-//                         sort,
-//                         order
-//                     }),
-//                 staleTime: 1000 * 60 * 5,
-//                 gcTime: 1000 * 60 * 10,
-//             });
-//         }
-//     }, [page, limit, search, sort, order, queryClient, query.data]);
+};

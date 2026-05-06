@@ -37,6 +37,7 @@ export interface PurchaseOrderItem {
   item_type_name: string;
   unit_of_measure_name: string;
   ordered_quantity: number;
+
   price: number;
 };
 
