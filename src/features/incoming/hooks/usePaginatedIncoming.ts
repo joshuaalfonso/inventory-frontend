@@ -58,7 +58,7 @@ export const usePaginatedIncomings = () => {
                 sort,
                 order,
             }),
-        placeholderData: (prev) => prev,
+        // placeholderData: (prev) => prev,
         staleTime: 1000 * 60 * 5,
         gcTime: 1000 * 60 * 10,
     });
@@ -112,7 +112,9 @@ export const usePaginatedIncomings = () => {
     };
 
     const setSort = (value: IncomingSortField, order: "asc" | "desc") => {
-        updateParams({ page: 1, sort: value, order });
+        // updateParams({ page: 1, sort: value, order });
+        updateParams({ page: 1, order });
+        console.log(value)
     };
 
     const toggleOrder = () => {

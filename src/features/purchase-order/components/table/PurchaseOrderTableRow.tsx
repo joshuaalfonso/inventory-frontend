@@ -1,11 +1,13 @@
-import { Badge, Button, FormatNumber, Menu, Portal, Stack, Table, Text } from "@chakra-ui/react";
-import type { PurchaseOrders } from "../../purchaseOrder.model"
+import { Badge, Button, CloseButton, Dialog, FormatNumber, Menu, Portal, Stack, Table, Text } from "@chakra-ui/react";
+import type { CreatePurchaseOrder, PurchaseOrders } from "../../purchaseOrder.model"
 import { useColorModeValue } from "@/components/ui/color-mode";
 import { displayDate, displayDateTime } from "@/lib/dateFormat";
-import { LuCheck, LuEllipsis, LuEye, LuPencil, LuPhilippinePeso } from "react-icons/lu";
+import { LuCheck, LuCheckCheck, LuEllipsis, LuEye, LuPencil, LuPhilippinePeso, LuX } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import { getPurchaseOrderStatusPalette } from "@/lib/status";
 import { useUpdatePurchaseOrderStatus } from "../../hooks/useUpdatePurchaseOrderStatus";
+import { useState } from "react";
+import { toaster } from "@/components/ui/toaster";
 
 
 interface Props {
@@ -16,15 +18,67 @@ interface Props {
 const PurchaseOrderTableRow = ({ row, index }: Props) => {
 
     const navigate = useNavigate();
-    const bg = useColorModeValue('white', 'bg.subtle');
+
+    const [open, setOpen] = useState(false);
+
+    const [pendingUpdate, setPendingUpdate] = useState<{
+        purchase_order_id: CreatePurchaseOrder['purchase_order_id']
+        status: CreatePurchaseOrder['status']
+        bttnColor?: 'blue' | 'red' | 'green' | 'yellow' | 'gray' | 'purple'
+    } | null>(null);
 
     const { updatePurchaseOrderStatusMutation, isUpdating } = useUpdatePurchaseOrderStatus();
+
+    const handleOpenConfirmation = (
+        purchase_order_id: CreatePurchaseOrder['purchase_order_id'],
+        status: CreatePurchaseOrder['status'],
+        bttnColor?: 'blue' | 'red' | 'green' | 'yellow' | 'gray' | 'purple'
+    ) => {
+        setPendingUpdate({
+            purchase_order_id,
+            status,
+            bttnColor
+        })
+
+        setOpen(true)
+    }
+
+    const handleConfirm = () => {
+        if (!pendingUpdate) return
+
+        updatePurchaseOrderStatusMutation(
+            pendingUpdate,
+            {
+                onSuccess: (response) => {
+                    toaster.create({
+                        title: 'Confirmed',
+                        description: response.message
+                    })
+                    setOpen(false)
+                }, 
+                onError: (err) => {
+                    toaster.create({
+                        title: 'Confirmed',
+                        description: err.message,
+                        type: 'error'
+                    })
+                    setOpen(false)
+                }
+            }
+        )
+
+        // setOpen(false)
+        // setPendingUpdate(null)
+    }
+
+
+    const bg = useColorModeValue('white', 'bg.subtle');
+
 
     return (
         <>
             <Table.Row bg={bg}>
                 <Table.Cell>{index}</Table.Cell>
-                {/* <Table.Cell>{displayDate(row.purchase_order_date)}</Table.Cell> */}
                 <Table.Cell>
                     {row.purchase_order_number}
                     <Text fontSize={'xs'} color={'fg.muted'}>{displayDate(row.purchase_order_date)}</Text>
@@ -73,18 +127,53 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                             View Details
                         </Menu.Item>
 
-                        <Menu.Item 
-                            value="completed" 
-                            onClick={() => updatePurchaseOrderStatusMutation({
-                                purchase_order_id: row.purchase_order_id,
-                                status: 'Completed'
-                            })}
-                            cursor={'pointer'}
-                            disabled={isUpdating}
-                        >
-                            <LuCheck />
-                            Completed
-                        </Menu.Item>
+                        { row.status == 'Cheque released' && (
+                            <Menu.Item 
+                                value="completed" 
+                                onClick={() => handleOpenConfirmation(
+                                    row.purchase_order_id,
+                                    'Completed',
+                                    'green'
+                                )}
+                                cursor={'pointer'}
+                                disabled={isUpdating}
+                            >
+                                <LuCheckCheck />
+                                Completed
+                            </Menu.Item>
+                        )}
+
+                        { row.status == 'Awaiting cheque' && (
+                            <Menu.Item 
+                                value="cheque-released" 
+                                onClick={() => handleOpenConfirmation(
+                                    row.purchase_order_id,
+                                    'Cheque released',
+                                    'blue'
+                                )}
+                                cursor={'pointer'}
+                                disabled={isUpdating}
+                            >
+                                <LuCheck />
+                                Cheque released
+                            </Menu.Item>
+                        )}
+
+                        { row.status == 'Awaiting cheque' && (
+                            <Menu.Item 
+                                value="revised" 
+                                onClick={() => handleOpenConfirmation(
+                                    row.purchase_order_id,
+                                    'Revised',
+                                    'red'
+                                )}
+                                cursor={'pointer'}
+                                disabled={isUpdating}
+                            >
+                                <LuX />
+                                Revised
+                            </Menu.Item>
+                        )}
 
                         { row.status == 'Awaiting cheque' && (
                              <Menu.Item 
@@ -97,17 +186,6 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
                             </Menu.Item>
                         ) }
 
-                        {/* <Menu.Item 
-                            value="delete" 
-                            cursor={'pointer'}
-                            color="fg.error"
-                            _hover={{ bg: "bg.error", color: "fg.error" }}
-                            onClick={() => setDeleteOpen(true)}
-                        >
-                            <LuTrash />
-                            Delete
-                        </Menu.Item> */}
-                        
                         </Menu.Content>
                     </Menu.Positioner>
                     </Portal>
@@ -115,6 +193,49 @@ const PurchaseOrderTableRow = ({ row, index }: Props) => {
 
                 </Table.Cell>
             </Table.Row>
+
+            <Dialog.Root 
+                lazyMount 
+                open={open} 
+                onOpenChange={(e) => setOpen(e.open)}
+                placement={'center'}
+            >
+                {/* <Dialog.Trigger asChild>
+                    <Button variant="outline">Open</Button>
+                </Dialog.Trigger> */}
+                <Portal>
+                    <Dialog.Backdrop />
+                    <Dialog.Positioner>
+                        <Dialog.Content>
+                            <Dialog.Header>
+                                <Dialog.Title>Confirmation</Dialog.Title>
+                            </Dialog.Header>
+                            <Dialog.Body>
+                                <Text>
+                                    Are you sure you want to change this
+                                    purchase order status to{" "}
+                                    <strong>{pendingUpdate?.status}</strong>?
+                                </Text>
+                            </Dialog.Body>
+                            <Dialog.Footer>
+                                <Dialog.ActionTrigger asChild>
+                                    <Button variant="ghost" colorPalette={'gray'}>Cancel</Button>
+                                </Dialog.ActionTrigger>
+                                <Button 
+                                    onClick={handleConfirm}
+                                    colorPalette={pendingUpdate?.bttnColor}
+                                    loading={isUpdating}
+                                >
+                                    Yes, {pendingUpdate?.status}
+                                </Button>
+                            </Dialog.Footer>
+                            <Dialog.CloseTrigger asChild>
+                                <CloseButton size="sm" colorPalette={'gray'} />
+                            </Dialog.CloseTrigger>
+                        </Dialog.Content>
+                    </Dialog.Positioner>
+                </Portal>
+            </Dialog.Root>
 
         </>
     )

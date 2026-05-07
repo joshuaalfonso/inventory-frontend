@@ -34,6 +34,7 @@ export interface PaginatedIncomingIncomingParams {
 
 
 export type IncomingSortField =
+  | 'incoming_id'
   | 'incoming_date'
   | 'purchase_order_number'
   | 'sales_invoice_number'

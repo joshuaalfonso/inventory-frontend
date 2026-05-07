@@ -25,7 +25,7 @@ const Incoming = () => {
     setSort,
   } = usePaginatedIncomings();
 
-  if (isPending) return <LoadingSpinner />;
+  // if (isPending) return <LoadingSpinner />;
 
   if (error) return (
     <Alert.Root status="error" mt={10}>
@@ -86,22 +86,25 @@ const Incoming = () => {
         setSort={setSort}
       />
 
-      {data.data?.length === 0 && (
-        <ReusableEmptyState>
-         
-        </ReusableEmptyState>
-      ) }
-
-      {(data.data ?? []).length > 0 && (
+      {isPending ? (
+        <LoadingSpinner />
+      ) : (
         <>
-          <IncomingTable
-            incomings={data.data ?? []} 
-            page={page ?? 1}
-            setPage={setPage}
-            totalPages={data.totalPages}
-          />
+          {data.data?.length === 0 && (
+            <ReusableEmptyState />
+          )}
+
+          {(data.data ?? []).length > 0 && (
+            <IncomingTable
+              incomings={data.data ?? []}
+              page={page ?? 1}
+              setPage={setPage}
+              totalPages={data.totalPages}
+            />
+          )}
+
         </>
-      ) }
+      )}
     
     </>
   )

@@ -18,7 +18,8 @@ export const useIncomingParams = () => {
             page: Number(searchParams.get("page") || 1),
             limit: Number(searchParams.get("limit") || 10),
             search: searchParams.get("search") || "",
-            sort: searchParams.get("sort") || "created_at",
+            sort: searchParams.get("sort") || "incoming_id",
+            // sort: searchParams.get("sort") || "created_at",
             order: (searchParams.get("order") || "desc") as "asc" | "desc",
         };
     }, [searchParams]);
