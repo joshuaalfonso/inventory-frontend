@@ -36,6 +36,7 @@ const IncomingTable = ({ incomings, page, setPage, totalPages }: Props) => {
                                 <Table.ColumnHeader>#</Table.ColumnHeader>
                                 {/* <Table.ColumnHeader>PO Date</Table.ColumnHeader> */}
                                 <Table.ColumnHeader>Incoming Date</Table.ColumnHeader>
+                                <Table.ColumnHeader>Code</Table.ColumnHeader>
                                 <Table.ColumnHeader>Sales Invoice #</Table.ColumnHeader>
                                 <Table.ColumnHeader>Purchase Order #</Table.ColumnHeader>
                                 <Table.ColumnHeader>Total Received</Table.ColumnHeader>

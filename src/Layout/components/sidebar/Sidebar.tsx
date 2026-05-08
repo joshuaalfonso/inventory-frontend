@@ -108,7 +108,46 @@ const Sidebar = () => {
 
                 </div>
 
-            
+
+                <div>
+
+                    <Heading
+                        fontSize={'xs'}
+                        color={'fg.muted'}
+                        mb={1.5}
+                        textTransform={'uppercase'}
+                    >
+                        Transaction
+                    </Heading>
+
+                    <ul className="flex flex-col gap-1.5 [&>li]:flex!">
+                        <li>
+                            <NavLink
+                                to="/purchase-order"
+                                className={({ isActive }) =>
+                                    `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                }
+                            >
+                                <LuShoppingCart size={'21px'} className="text-teal-500!" />
+                                Purchase Order
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink
+                                to="/incoming"
+                                className={({ isActive }) =>
+                                    `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
+                                }
+                            >
+                                <LuArrowUp10 size={'21px'} className="text-teal-500!" />
+                                Incoming
+                            </NavLink>
+                        </li>
+                    </ul>
+
+
+                    </div>
+
 
                 <div>
 
@@ -180,7 +219,7 @@ const Sidebar = () => {
                                         to="/unit-of-measure"
                                         label="Unit of Measure"
                                     />
-                                   
+                                    
                                     
                                 </ul>
                             </div>
@@ -223,7 +262,7 @@ const Sidebar = () => {
                                         label="Department"
                                     />
 
-                                   
+                                    
                                 </ul>
                             </div>
                         </li>
@@ -244,48 +283,14 @@ const Sidebar = () => {
 
                 </div>
 
-                <div>
-
-                    <Heading
-                        fontSize={'xs'}
-                        color={'fg.muted'}
-                        mb={1.5}
-                        textTransform={'uppercase'}
-                    >
-                        Transaction
-                    </Heading>
-
-                    <ul className="flex flex-col gap-1.5 [&>li]:flex!">
-                        <li>
-                            <NavLink
-                                to="/purchase-order"
-                                className={({ isActive }) =>
-                                    `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                }
-                            >
-                                <LuShoppingCart size={'21px'} className="text-teal-500!" />
-                                Purchase Order
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                to="/incoming"
-                                className={({ isActive }) =>
-                                    `${isActive ? 'bg-(--chakra-colors-teal-subtle)! text-teal-500!' : '' } flex! items-center gap-2 text-sm! px-4! py-2! rounded-sm w-full hover:bg-(--chakra-colors-teal-subtle)!`
-                                }
-                            >
-                                <LuArrowUp10 size={'21px'} className="text-teal-500!" />
-                                Incoming
-                            </NavLink>
-                        </li>
-                    </ul>
 
 
-                </div>
+
             </div>
 
-            
-            
+        
+
+        
 
             <Box 
                 className="flex items-center gap-3 bg-teal-500/5"

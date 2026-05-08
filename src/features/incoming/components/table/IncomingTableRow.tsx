@@ -3,6 +3,7 @@ import type { Incomings } from "../../incoming.model"
 import { useColorModeValue } from "@/components/ui/color-mode"
 import { displayDate, displayDateTime } from "@/lib/dateFormat"
 import { LuEllipsis, LuEye } from "react-icons/lu"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -14,8 +15,9 @@ interface Props {
 
 const IncomingTableRow = ({ row, index }: Props) => {
 
+    const navigate = useNavigate();
 
-     const bg = useColorModeValue('white', 'bg.subtle');
+    const bg = useColorModeValue('white', 'bg.subtle');
 
     return (
         <>
@@ -23,6 +25,9 @@ const IncomingTableRow = ({ row, index }: Props) => {
                 <Table.Cell>{index}</Table.Cell>
                 {/* <Table.Cell>{displayDate(row.purchase_order_date)}</Table.Cell> */}
                 <Table.Cell>{displayDate(row.incoming_date)}</Table.Cell>
+                <Table.Cell>
+                    {row.incoming_code}
+                </Table.Cell>
                 <Table.Cell>
                     {row.sales_invoice_number}
                 </Table.Cell>
@@ -53,7 +58,7 @@ const IncomingTableRow = ({ row, index }: Props) => {
 
                         <Menu.Item 
                             value="view_details" 
-                            // onClick={() => navigate(`${row.purchase_order_id}`)}
+                            onClick={() => navigate(`${row.incoming_id}`)}
                             cursor={'pointer'}
                         >
                             <LuEye />

@@ -3,7 +3,7 @@
 import { api } from "@/lib/axios";
 import type { ApiResponse } from "@/shared/models/response";
 import type { IncomingFormValues } from "./pages/Incoming-form/IncomingForm";
-import type { PaginatedIncoming, PaginatedIncomingIncomingParams } from "./incoming.model";
+import type { Incomings, PaginatedIncoming, PaginatedIncomingIncomingParams } from "./incoming.model";
 
 
 
@@ -15,6 +15,13 @@ export const getPaginatedIncomingApi = async (params: PaginatedIncomingIncomingP
         {
             params
         }
+    );
+    return data;
+};
+
+export const getSingleIncomingApi = async (incoming_id: Incomings['incoming_id']) => {
+    const { data } = await api.get<Incomings>(
+        `${TABLE_NAME}/${incoming_id}`
     );
     return data;
 };
