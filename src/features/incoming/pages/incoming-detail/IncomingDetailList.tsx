@@ -1,5 +1,5 @@
 import type { Incomings } from "../../incoming.model"
-import IncomingDetailRow from "./IncomingDetailrow"
+import IncomingDetailRow from "./IncomingDetailRow"
 
 
 
